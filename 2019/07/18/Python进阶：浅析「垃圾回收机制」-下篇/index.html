@@ -45,7 +45,7 @@
     
     <title>
         
-            Python进阶：百万「并发」基础之异步编程（上篇） | 
+            Python进阶：浅析「垃圾回收机制」(下篇) | 
         
         HackPython
     </title>
@@ -222,7 +222,7 @@
     <!-- WebAPP Icons -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="HackPython">
-    <meta name="msapplication-starturl" content="http://hackpython.github.io/blog/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/">
+    <meta name="msapplication-starturl" content="http://hackpython.github.io/blog/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/">
     <meta name="msapplication-navbutton-color" content="#0097A7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="HackPython">
@@ -237,16 +237,16 @@
     
 
     <!-- The Open Graph protocol -->
-    <meta property="og:url" content="http://hackpython.github.io/blog/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/">
+    <meta property="og:url" content="http://hackpython.github.io/blog/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Python进阶：百万「并发」基础之异步编程（上篇） | HackPython">
+    <meta property="og:title" content="Python进阶：浅析「垃圾回收机制」(下篇) | HackPython">
     <meta property="og:image" content="/blog/img/twotwo_header.png">
     <meta property="og:description" content="HackPython，最酷的方式学习python">
     <meta property="og:article:tag" content="Python,进阶"> 
 
     
-        <meta property="article:published_time" content="Mon Jul 01 2019 22:16:54 GMT+0800">
-        <meta property="article:modified_time" content="Fri Jul 05 2019 22:34:49 GMT+0800">
+        <meta property="article:published_time" content="Thu Jul 18 2019 14:13:59 GMT+0800">
+        <meta property="article:modified_time" content="Thu Jul 18 2019 14:15:00 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -254,7 +254,7 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://hackpython.github.io/blog/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/index.html" />
+        <link rel="canonical" href="http://hackpython.github.io/blog/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/index.html" />
     
 
     <!-- Structured-data for SEO -->
@@ -266,10 +266,10 @@
 {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "mainEntityOfPage": "http://hackpython.github.io/blog/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/index.html",
-    "headline": "Python进阶：百万「并发」基础之异步编程（上篇）",
-    "datePublished": "Mon Jul 01 2019 22:16:54 GMT+0800",
-    "dateModified": "Fri Jul 05 2019 22:34:49 GMT+0800",
+    "mainEntityOfPage": "http://hackpython.github.io/blog/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/index.html",
+    "headline": "Python进阶：浅析「垃圾回收机制」(下篇)",
+    "datePublished": "Thu Jul 18 2019 14:13:59 GMT+0800",
+    "dateModified": "Thu Jul 18 2019 14:15:00 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "hackpython",
@@ -362,7 +362,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#关键概念"><span class="post-toc-number">2.</span> <span class="post-toc-text">关键概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#阻塞与非阻塞"><span class="post-toc-number">3.</span> <span class="post-toc-text">阻塞与非阻塞</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#同步与异步"><span class="post-toc-number">4.</span> <span class="post-toc-text">同步与异步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#并发与并行"><span class="post-toc-number">5.</span> <span class="post-toc-text">并发与并行</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程、线程与协程"><span class="post-toc-number">6.</span> <span class="post-toc-text">进程、线程与协程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异步编程"><span class="post-toc-number">7.</span> <span class="post-toc-text">异步编程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结尾"><span class="post-toc-number">8.</span> <span class="post-toc-text">结尾</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#gc模块概况"><span class="post-toc-number">2.</span> <span class="post-toc-text">gc模块概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存泄露"><span class="post-toc-number">3.</span> <span class="post-toc-text">内存泄露</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python-GC-分代回收使用"><span class="post-toc-number">4.</span> <span class="post-toc-text">Python GC 分代回收使用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#禁用GC调高速度"><span class="post-toc-number">5.</span> <span class="post-toc-text">禁用GC调高速度</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结尾"><span class="post-toc-number">6.</span> <span class="post-toc-text">结尾</span></a></li></ol>
     </ul>
     
 
@@ -394,7 +394,7 @@
         
     
             <p class="article-headline-p">
-                Python进阶：百万「并发」基础之异步编程（上篇）
+                Python进阶：浅析「垃圾回收机制」(下篇)
             </p>
         </div>
 
@@ -413,7 +413,7 @@
     <!-- Author Name & Date -->
     <div>
         <strong>hackpython</strong>
-        <span>7月 01, 2019</span>
+        <span>7月 18, 2019</span>
     </div>
 
     <div class="section-spacer"></div>
@@ -456,7 +456,7 @@
 
     <!-- Share Weibo -->
     
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python进阶：百万「并发」基础之异步编程（上篇）&url=http://hackpython.github.io/blog/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/index.html&pic=http://hackpython.github.io/blog/img/twotwo_header.png&searchPic=false&style=simple" target="_blank">
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python进阶：浅析「垃圾回收机制」(下篇)&url=http://hackpython.github.io/blog/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/index.html&pic=http://hackpython.github.io/blog/img/twotwo_header.png&searchPic=false&style=simple" target="_blank">
             <li class="mdl-menu__item">
                 分享到微博
             </li>
@@ -465,7 +465,7 @@
 
     <!-- Share Twitter -->
     
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python进阶：百万「并发」基础之异步编程（上篇）&url=http://hackpython.github.io/blog/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/index.html&via=hackpython" target="_blank">
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python进阶：浅析「垃圾回收机制」(下篇)&url=http://hackpython.github.io/blog/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/index.html&via=hackpython" target="_blank">
             <li class="mdl-menu__item">
                 分享到 Twitter
             </li>
@@ -483,7 +483,7 @@
 
     <!-- Share QQ -->
     
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=HackPython&title=Python进阶：百万「并发」基础之异步编程（上篇）&summary=HackPython，最酷的方式学习python&pics=http://hackpython.github.io/blog/img/twotwo_header.png&url=http://hackpython.github.io/blog/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/index.html" target="_blank">
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=HackPython&title=Python进阶：浅析「垃圾回收机制」(下篇)&summary=HackPython，最酷的方式学习python&pics=http://hackpython.github.io/blog/img/twotwo_header.png&url=http://hackpython.github.io/blog/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/index.html" target="_blank">
             <li class="mdl-menu__item">
                 分享到 QQ
             </li>
@@ -505,35 +505,255 @@
         <blockquote>
 <p>HackPython致力于有趣有价值的编程教学</p>
 </blockquote>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>因为GIL(全局锁)的存在，Python在运行性能方便一直是个短板，但在IO密集型网络编程里，利用aysncio等异步处理的方式可以提升百倍运行效率，但在计算密集型程序中，Python并不是最佳的选择。</p>
-<p>异步编程会涉及比较多的概念，为了减轻阅读压力，将其分为上、中、下三篇文章。</p>
-<h2 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h2><p>要理解异步编程，首先需要理解阻塞、非阻塞、同步以及异步的概念与关系。</p>
-<p>当程序在等待某个操作完成期间，自己无法做其他事情的状态称为「阻塞」，专业点讲，当程序因未得到运行所需要的计算资源而被挂起的等待状态称为「阻塞」，「阻塞」其实无处不在，常见的有：磁盘IO阻塞、网络IO阻塞。</p>
-<h2 id="阻塞与非阻塞"><a href="#阻塞与非阻塞" class="headerlink" title="阻塞与非阻塞"></a>阻塞与非阻塞</h2><p>与「阻塞」对应的就是「非阻塞」状态，所谓「非阻塞」指的是程序在等待某个操作是，自己还可以做其他事情，需要注意的是，「非阻塞」并不能在任何程序级别都可以存在，只有当程序可以囊括独立子程序单元时，它才可能存在非阻塞状态，其本质原因在于CPU单个核在那个瞬间只能处理一件事情。</p>
-<p>与「阻塞」和「非阻塞」关联很大的概念分别是「同步」与「异步」。「同步」指不同的程序单元为了完成某个任务通过某种通信方式协调一致，此时可以称这些程序是同步执行的，这里协调一致并不是说要同时做，而是指大家有个顺序，「同步其实也就意味着有序」。</p>
-<h2 id="同步与异步"><a href="#同步与异步" class="headerlink" title="同步与异步"></a>同步与异步</h2><p>对应的「异步」指不同程序单元直接不需要协调也可单独完成任务，通常，没有先后顺序关联的业务逻辑可言利用异步的方式来实现，比如爬虫下载不同的网页、保存等操作都可以独立完成，下载程序单元直接无需通信协调，这也造成了「异步」是无序的。</p>
-<p>一个「非阻塞」进程中通常由多个独立的子进程构成，如执行到下载逻辑时，交由下载子进程去执行自身的逻辑，而自己继续之前其他逻辑，这个「交由下载子进程」的动作就可以称为「异步」。</p>
-<p>关于「同步」或「异步」描述中提出通信协调通常指异步编程或「并发」编程的同步原语，如信号量、锁、同步队列等。</p>
-<p>从具体的技术层面而言，如果调用一个耗时函数，函数会挂起直达执行完毕，返回结果，那么这个函数所在程序就是「阻塞」的，其操作就是「同步」的，如果调用一个耗时函数立刻返回，等需要的数据到达后再通知函数的调用者，则该函数所在程序就是「非阻塞」的，其操作就是「异步」的。</p>
-<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>「同步」和「异步」的概念可能会与「并发」和「并行」混淆，但两者其实描述的是不同级别的事情，对于「并发」和「并行」，Erlang 之父 Joe Armstrong 给出的图很好的解释了两者的区别</p>
-<p><img src="https://pic2.zhimg.com/80/v2-674f0d37fca4fac1bd2df28a2b78e633_hd.jpg" alt=""></p>
-<p>「并发」是两个队列交替使用一台咖啡机，「并行」是两个队列同时使用两台咖啡机。</p>
-<p>「并发」表示多个程序可以在同一个时间段内被执行，主要用于描述程序的组织结构，我们称这个程序是可以并发的通常指该程序设计了多个可独立执行的子任务，从而可以在同一时间段内利用有限的计算资源让多个任务以近实时的形式执行。</p>
-<p>而「并行」表示多个程序可以在同一时刻被执行，「并行」的关键要有物理上的支持，比如有两台咖啡机，它通常用于描述程序的执行状态而不是程序组织结构，通常用来表示有足够的计算资源让多个任何同时执行。</p>
-<p>更严谨的描述为：<br>1.「并发」是说进程B的开始时间是在进程A的开始时间与结束时间之间，我们就说A和B是「并发」的。<br>2.「并行」是「并发」的真子集，指同一时间两个进程运行在不同的机器上或者同一个机器不同的核心上。</p>
-<p>简单总结上面的概念：<br>非阻塞可以提高程序整体的执行效率，异步是一种组织非阻塞任务的方式(即操作其中的程序单元)，而并发是为了让独立的子任务有机会被尽快执行，但不一定可以加快任务整体的进度，而并行则是利用多核资源加快多任务的完成进度。</p>
-<p>要实现并发，就需要将整体任务拆分为多个相互独立的子任务，而不同子任务之间才会有所谓的阻塞/非阻塞、同步/异步等说法，所以并发、非阻塞、异步三个概念总是如影随形。</p>
-<h2 id="进程、线程与协程"><a href="#进程、线程与协程" class="headerlink" title="进程、线程与协程"></a>进程、线程与协程</h2><p>「进程」是操作系统中的最小的资源分配单位，每个「进程」都有各自独立的地址空间、资源句柄，它们相互独立，每个「进程」中都会有个用于描述当前进程的数据结构，操作系统会利用这些描述来管理进程，同时对操作系统而言，进程的创建于销毁时比较消耗资源的。</p>
-<p>「进程」会抢占式的争夺CPU资源，同一时刻下，CPU的一个核只能执行<br>一个进程，而单核CPU可以快速切换不同的进程来使得多进程看像去在同时执行。</p>
-<p>「线程」是CPU调度的最小单位，「线程」是进程的一个实体，一个进程可以包含多个「线程」，同进程的多个「线程」是可以共享当前进程的内存地址空间与资源句柄的，「线程」的切换需要操作系统来实现调度，我们写的程序无法控制这个调度过程，适用于IO密集型任务。</p>
-<p>如果想人为的控制线程的调度过程，可以使用「协程」，「协程」不等于可以自己调度的线程，它是属于线程的，即一个线程可以有多个「协程」，是一种用户状态下的轻量级线程，协程的调度可以完全由用户做主，因此使用更加灵活，可以将协程理解为可以在特定位置暂停或恢复的函数/子程序。</p>
-<h2 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h2><p>异步编程就是以进程、线程、协程、函数/方法作为执行任务程序的基本单位，结合回调、事件循环、信号量等机制，以提高程序整体执行效率和并发能力的编程方式。</p>
-<p>无论什么语言，要想实现异步编程就跳不开回调与事件循环。</p>
-<p>在执行耗时函数时，函数会提前注册回调函数返回给调度程序，而函数耗时操作的等待与监听任务交个了操作系统，当操作系统监听到耗时操作的状态改变后就调用回调函数通知调度程序，这整个过程称为「回调」。</p>
-<p>而「事件循环」是一种等待程序分配事件或消息的编程框架，简单来说就是当「 A 发生时，执行 B」，即监听当有什么发生时，就去执行什么，事件循环本质就是一种循环，它会不停的收集事件并执行对应这些事件的响应逻辑。</p>
-<p>因为异步编程离不开「回调」与「事件循环」，但回调与事件循环的使用容易出现回调地狱、堆栈撕裂、错误定位与处理困难等问题，Python基于asyncio标准库来实现事件循环，为了避免其带来的危害，衍生出了基于协程的处理方案，协程本身的特性也满足了回调的要求。</p>
-<p>在Python中协程与asyncio一同构建了异步编程。</p>
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>在本节中，主要介绍了异步编程中会涉及的各种概念，在下一篇中，会接着探讨Python中的异步编程，最后欢迎学习HackPython的教学课程并感谢您的阅读与支持。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Python垃圾回收机制本质就是对内存的操作机制，当程序需要长时间运行时，其内存的变化就变得关键，如果没有及时释放内存，即Python自动垃圾回收机制因为我们某些代码逻辑上的错误而导致某些内存一直不能被回收，从而造成程序的内存泄露。</p>
+<p>Python为GC提供了扩展模块gc，利用gc模块提供的接口，可以查看到垃圾收集器的状态，垃圾收集器收集的对象、被收集对象的详细信息等。</p>
+<p>在上篇中，我们简要的讨论了「垃圾回收机制」的原理，本篇则来讨论一下操作层面的内容。</p>
+<h2 id="gc模块概况"><a href="#gc模块概况" class="headerlink" title="gc模块概况"></a>gc模块概况</h2><p>虽说Python垃圾回收是自动的，不需要人为的干预，但人为干预的情况并不少见，如在游戏公司，为了提高Python运行的效率，Python GC被开发人员手动关闭，再在某些情况下打开，但默认情况下，Python GC通常只会在下面3种情况触发：</p>
+<p>😯1.人为手动调用了 gc.coolect()<br>😯2.GC的计数器到达阈值时<br>😯3.Python程序退出时</p>
+<p>我们可以利用gc模块来操作Python的GC，在具体操作前，先理解其提供方法的大致功能。</p>
+<p>😗gc.isenabled() 判断Python程序在当前的状态的下是否已经打开自动垃圾回收机制，如果已经打开，该方法返回True。</p>
+<p>😗gc.disable() 该方法用于关闭自动垃圾收集器，关闭自动垃圾收集器后，程序产生的垃圾对象(不可访问的对象)不会被自动回收，会持续的占用内存。</p>
+<p>😗gc.collect([generation]) 显式进行垃圾回收，可以输入参数，0 代表只检查第一代的对象，1 代表检查一，二代的对象，2 代表检查一，二，三代的对象，如果不传参数，则启动完全的垃圾回收，也就是等于传 2。该方法会返回不可达对象的个数。</p>
+<p>😗gc.set_debug(flags) 将垃圾收集器设置为调试状态，在该状态下，垃圾收集器会打印出收集到的所有对象信息并将不可访问的垃圾对象保存到 gc.garbage 列表中。</p>
+<p>😗gc.set_threshold(threshold0[, threshold1[, threshold2])<br>设置自动执行垃圾回收的频率。</p>
+<p>😗gc.garbage列表，列表内部存放着垃圾收回器找到的不可达并且无法被释放的对象，通常这些对象会一直存在到程序结束，如果程序要长时间运行，如果gc.garbage列表中的对象一直在增多，容易造成内存泄露。</p>
+<p>😗gc.is_tracked(obj) 该方法用于判断某个变量是否被垃圾回收器监控，如果是，则返回True，否则返回False，通常只有非原子类（如容器、用户自定义对象）会被监控，这是为了避免循环引用的情况出现。</p>
+<p>😗gc.get_count() 获取当前自动执行垃圾回收的计数器，返回一个长度为 3 的列表</p>
+<p>常用于set_debug()的flags:</p>
+<p>🤓gc.DEBUG_STATS<br>表示打印垃圾回收器回收完后的统计信息，当回收频率较高时，这些信息比较有利。</p>
+<p>🤓gc.DEBUG_COLLECTABLE<br>发现可回收对象时打印信息</p>
+<p>🤓gc.DEBUG_UNCOLLECTABLE<br>打印找到的不可回收对象的信息（指不能被回收器回收的不可达对象）。这些对象会被添加到 gc.garbage 列表中，即不可达又不能被释放的对象</p>
+<p>🤓gc.DEBUG_SAVEALL<br>设置后，所有垃圾回收器找到的不可达对象会被添加进 garbage 而不是直接被释放。这在调试一个内存泄漏的程序时会很有用。</p>
+<p>🤓gc.DEBUG_LEAK<br>调试内存泄漏的程序时，使回收器打印信息的调试标识位。（等价于 DEBUG_COLLECTABLE | DEBUG_UNCOLLECTABLE | DEBUG_SAVEALL ）</p>
+<p>更多功能，可以参考官方文档：<a href="https://docs.python.org/zh-cn/3.8/library/gc.html" target="_blank" rel="noopener">gc — 垃圾回收器接口 — Python 3.8.0b2 文档</a></p>
+<h2 id="内存泄露"><a href="#内存泄露" class="headerlink" title="内存泄露"></a>内存泄露</h2><p>我们已经知道Python利用「标记-清除」算法来解决循环引用的情况，但在Python2.7中要依赖于对象的<code>__del__</code>方法，如果该方法被用户自定义了，则「标记-清除」就无法打破循环引用，从而出现不可达且不可释放的垃圾对象，一个具体的例子：</p>
+<pre><code>#coding:utf-8
+import time
+import gc
+
+class A():
+    def __del__(self):
+        print(&#39;A del&#39;)
+
+
+def test_leak():
+    c1 = A()
+    c2 = A()
+    # 循环引用
+    c1.t = c2
+    c2.t = c1
+    # 删去
+    del c1
+    del c2
+
+if __name__ == &#39;__main__&#39;:
+    test_leak()
+    # collect() 显示触发垃圾回收，并获得不可达对象个数
+    print(gc.collect())
+    # 不可释放的个数
+    print(len(gc.garbage))
+    print(gc.garbage)
+</code></pre><p>如果在Python2.7下运行上述代码，输出如下内容：</p>
+<pre><code>4
+2
+[&lt;__main__.A instance at 0x103faea70&gt;, &lt;__main__.A instance at 0x103faeab8&gt;]
+</code></pre><p>可以看出有2个变量是不可释放的，如果这类对象随着程序运行的时长而增加，就容易造成程序的内存泄露，从打印也可以知道，这两个对象是A类实例，而且观察A类中的<code>__del__</code>方法，其中的内容并</p>
+<p>但这类问题在Python3.5及以上版本的Python中没有出现(没有测试Python3.5以下版本的Python)，在Python3.7下运行上面程序的结果如下：</p>
+<pre><code>A del
+A del
+4
+0
+[]
+</code></pre><p>从结果可以看出，Python3.7中已经将这一的问题修复了。</p>
+<h2 id="Python-GC-分代回收使用"><a href="#Python-GC-分代回收使用" class="headerlink" title="Python GC 分代回收使用"></a>Python GC 分代回收使用</h2><p>Python为了保证GC的速度，使用了分代回收的策略，即不对变量立刻进行回收，在上篇中提及了其中的原理，在一轮 gc 扫描中存活下来的变量存到对应「代」的列表中，其分为第0代、第1代与第2代，存活到最后，gc扫描的频率就越低，直到触发对应的阈值。</p>
+<p>gc 模快有一个自动垃圾回收的阀值，即通过 gc.get_threshold 函数获取到的长度为 3 的元组，其默认值为 (700,10,10)。每一次计数器的增加，gc 模块就会检查增加后的计数是否达到阀值的数目，如果是，就会执行对应的代数的垃圾检查，然后重置计数器<br>例如，假设阀值是 (700,10,10)：</p>
+<p>😳1.当计数器从 (699,8,0) 增加到 (700,8,0)，gc 模块就会执行 gc.collect(0), 即检查 0 代对象的垃圾，并重置计数器为 (0,9,0)</p>
+<p>😳2.当计数器从 (699,9,0) 增加到 (700,9,0)，gc 模块就会执行 gc.collect(1), 即检查 1、2 代对象的垃圾，并重置计数器为 (0,0,1)</p>
+<p>😳3.当计数器从 (699,9,9) 增加到 (700,9,9)，gc 模块就会执行 gc.collect(2), 即检查 0、1、2 代对象的垃圾，并重置计数器为 (0,0,0)</p>
+<p>可以通过set_threshold()函数来设置不同代之间的阈值，从而实现控制gc扫描频率的目的，简单代码如下：</p>
+<pre><code>import gc
+import sys
+
+threshold = int(sys.argv[1])
+
+class A(object):
+    def __init__(self, name):
+        self.name = name
+        print(&#39;Create&#39;, self.name)
+
+# 打印垃圾回收器回收完后的统计信息
+gc.set_debug(gc.DEBUG_STATS)
+# 设置分代回收阀值
+gc.set_threshold(threshold, 1, 1)
+print(&#39;Thresholds:&#39;, gc.get_threshold())
+
+print(&#39;Clear the collector by forcing a run&#39;)
+gc.collect()
+print()
+
+print(&#39;Creating objects&#39;)
+alist = []
+for i in range(10):
+    alist.append(A(&#39;A&#39;+str(i)))
+</code></pre><p>上述代码中，使用 set_debug()设置gc模块为debug模式，方便查看信息，再利用set_threshold()方法设置分代回收的阀值，从而控制Python GC的频率</p>
+<p>简单使用一下，首先将分代回收阈值设置为 (100,1,1)</p>
+<pre><code>python -u test4.py 100
+Thresholds: (100, 1, 1)
+Clear the collector by forcing a run
+gc: collecting generation 2...
+gc: objects in each generation: 574 3814 0
+gc: objects in permanent generation: 0
+gc: done, 0.0004s elapsed
+
+Creating objects
+Create A0
+Create A1
+Create A2
+Create A3
+Create A4
+Create A5
+Create A6
+Create A7
+Create A8
+Create A9
+gc: collecting generation 2...
+gc: objects in each generation: 11 0 4260
+gc: objects in permanent generation: 0
+gc: done, 0.0004s elapsed
+gc: collecting generation 2...
+gc: objects in each generation: 66 0 4177
+gc: objects in permanent generation: 0
+gc: done, 589 unreachable, 0 uncollectable, 0.0005s elapsed
+gc: collecting generation 2...
+gc: objects in each generation: 0 0 3029
+gc: objects in permanent generation: 0
+gc: done, 151 unreachable, 0 uncollectable, 0.0002s elapsed
+</code></pre><p>接着将其设置小一些</p>
+<pre><code>python -u test4.py 2
+Thresholds: (2, 1, 1)
+Clear the collector by forcing a run
+gc: collecting generation 2...
+gc: objects in each generation: 574 3814 0
+gc: objects in permanent generation: 0
+gc: done, 0.0004s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 1 0 4261
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+
+Creating objects
+gc: collecting generation 0...
+gc: objects in each generation: 3 0 4261
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+Create A0
+gc: collecting generation 1...
+gc: objects in each generation: 2 2 4261
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+Create A1
+Create A2
+gc: collecting generation 0...
+gc: objects in each generation: 2 0 4264
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+Create A3
+gc: collecting generation 0...
+gc: objects in each generation: 3 1 4264
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+Create A4
+Create A5
+gc: collecting generation 1...
+gc: objects in each generation: 2 3 4264
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+Create A6
+gc: collecting generation 0...
+gc: objects in each generation: 3 0 4268
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+Create A7
+Create A8
+gc: collecting generation 0...
+gc: objects in each generation: 2 2 4268
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+Create A9
+gc: collecting generation 2...
+gc: objects in each generation: 1 3 4267
+gc: objects in permanent generation: 0
+gc: done, 0.0003s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 5 0 4216
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 6 5 4216
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 1...
+gc: objects in each generation: 6 11 4216
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 6 0 4233
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 8 6 4232
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 1...
+gc: objects in each generation: 6 14 4232
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 10 0 4245
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 4 10 4244
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 1...
+gc: objects in each generation: 3 14 4244
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 3 0 4261
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 0...
+gc: objects in each generation: 3 3 4261
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 1...
+gc: objects in each generation: 4 6 4260
+gc: objects in permanent generation: 0
+gc: done, 0.0000s elapsed
+gc: collecting generation 2...
+gc: objects in each generation: 2 0 4241
+gc: objects in permanent generation: 0
+gc: done, 589 unreachable, 0 uncollectable, 0.0004s elapsed
+gc: collecting generation 2...
+gc: objects in each generation: 0 0 3029
+gc: objects in permanent generation: 0
+gc: done, 151 unreachable, 0 uncollectable, 0.0002s elapsed
+</code></pre><p>从打印可以看出，将分代回收阈值设置为(2,1,1)后，Python GC执行的频率明显更频繁，但这会在一定程度上影响程序的效率。</p>
+<h2 id="禁用GC调高速度"><a href="#禁用GC调高速度" class="headerlink" title="禁用GC调高速度"></a>禁用GC调高速度</h2><p>从前面的介绍可知，Python的引用计数会在每个内存对象中都存在一个计数变量，当有大量的对象新建或删除时，就会涉及到该变量的大量修改，从而影响程序的性能，为了避免这种情况，在程序进行大量对象新建或删除前，可以先将GC禁用，等这些操作结束后，再开启GC，例子如下：</p>
+<pre><code>import gc
+# 关闭GC
+gc.disable()
+# do something
+# 开启GC
+gc.enable()
+# 手动执行GC
+gc.collect()
+</code></pre><p>此时就会在批量操作后，对这些变量进行批量的回收。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>本节主要讨论了Python中的gc模块并简单的使用了该模块，</p>
+<p>本节中简单的讨论了Python中的垃圾回收机制，那是否有某些手段可以比较直观的看出当前项目中Python GC的使用情况，从而可以直观的判断项目对内存的使用是否合理呢？这些内容会尝试在浅析「垃圾回收机制」下篇中讨论😏，最后欢迎学习 HackPython 的教学课程并感觉您的阅读与支持。</p>
+<p>👋👋</p>
 
         
     
@@ -588,8 +808,8 @@
 
 <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'http://hackpython.github.io/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://hackpython.github.io/blog/2019/07/01/Python进阶：百万「并发」基础之异步编程（上篇）/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://hackpython.github.io/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://hackpython.github.io/blog/2019/07/18/Python进阶：浅析「垃圾回收机制」-下篇/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 </script>
 
@@ -638,21 +858,13 @@
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
     
-        <a href="/blog/2019/07/05/Python进阶：百万「并发」基础之异步编程（中篇）/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
 
     <!-- Section Spacer -->
     <div class="section-spacer"></div>
 
     <!-- Next Nav -->
     
-        <a href="/blog/2019/06/29/Python进阶必学库：elasticsearch-py使用详解-下篇/" id="post_nav-older" class="next-content">
+        <a href="/blog/2019/07/05/Python进阶：浅析「垃圾回收机制」-上篇/" id="post_nav-older" class="next-content">
             旧篇
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">

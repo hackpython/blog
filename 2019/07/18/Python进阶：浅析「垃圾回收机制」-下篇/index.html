@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html style="display: none;" lang="zh">
     <head>
-    <meta charset="utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <!--
         © Material Theme
         https://github.com/viosey/hexo-theme-material
@@ -309,7 +309,7 @@
     
     
 
-    <!-- Custom Head -->
+    <!-- Custom Head --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
 
 </head>
@@ -317,7 +317,7 @@
 
     
         <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+            <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="material-layout  mdl-js-layout has-drawer is-upgraded">
                 
 
                 <!-- Main Container -->
@@ -525,7 +525,7 @@
 <p>🤓gc.DEBUG_UNCOLLECTABLE<br>打印找到的不可回收对象的信息（指不能被回收器回收的不可达对象）。这些对象会被添加到 gc.garbage 列表中，即不可达又不能被释放的对象</p>
 <p>🤓gc.DEBUG_SAVEALL<br>设置后，所有垃圾回收器找到的不可达对象会被添加进 garbage 而不是直接被释放。这在调试一个内存泄漏的程序时会很有用。</p>
 <p>🤓gc.DEBUG_LEAK<br>调试内存泄漏的程序时，使回收器打印信息的调试标识位。（等价于 DEBUG_COLLECTABLE | DEBUG_UNCOLLECTABLE | DEBUG_SAVEALL ）</p>
-<p>更多功能，可以参考官方文档：<a href="https://docs.python.org/zh-cn/3.8/library/gc.html" target="_blank" rel="noopener">gc — 垃圾回收器接口 — Python 3.8.0b2 文档</a></p>
+<p>更多功能，可以参考官方文档：<a href="https://docs.python.org/zh-cn/3.8/library/gc.html" target="_blank" rel="noopener">gc —- 垃圾回收器接口 — Python 3.8.0b2 文档</a></p>
 <h2 id="内存泄露"><a href="#内存泄露" class="headerlink" title="内存泄露"></a>内存泄露</h2><p>我们已经知道Python利用「标记-清除」算法来解决循环引用的情况，但在Python2.7中要依赖于对象的<code>__del__</code>方法，如果该方法被用户自定义了，则「标记-清除」就无法打破循环引用，从而出现不可达且不可释放的垃圾对象，一个具体的例子：</p>
 <pre><code>#coding:utf-8
 import time
@@ -858,7 +858,7 @@ gc.collect()
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
     
-        <a href="/blog/2019/09/03/如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析-万字长文/" id="post_nav-newer" class="prev-content">
+        <a href="/blog/2019/10/21/一人利用无聊的技术构建商业网站/" id="post_nav-newer" class="prev-content">
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
                 <i class="material-icons">arrow_back</i>
             </button>
@@ -964,7 +964,7 @@ gc.collect()
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/blog/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/blog/archives/2019/07/">七月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/blog/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a>
+                <a class="sidebar_archives-link" href="/blog/archives/2019/10/">十月 2019<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/blog/archives/2019/07/">七月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/blog/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a>
             </ul>
         </li>
         
@@ -1258,7 +1258,7 @@ console.log('\n %c © Material Theme | Version: 1.5.2 | https://github.com/viose
 </script>
 
                 </main>
-            </div>
+            </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
         </body>
     
 </html>

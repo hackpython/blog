@@ -45,7 +45,7 @@
     
     <title>
         
-            Python进阶必学库：elasticsearch-py使用详解(上篇) | 
+            Python进阶：使用Matplotlib进行数据可视化(二) | 
         
         HackPython
     </title>
@@ -56,7 +56,7 @@
 
     <meta name="format-detection" content="telephone=no"/>
     <meta name="description" itemprop="description" content="HackPython，最酷的方式学习python">
-    <meta name="keywords" content="python,web,hack,自学编程,学习分享,漫画教学,Python,进阶库">
+    <meta name="keywords" content="python,web,hack,自学编程,学习分享,漫画教学,Python,进阶">
     <meta name="theme-color" content="#0097A7">
 
     <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -222,7 +222,7 @@
     <!-- WebAPP Icons -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="HackPython">
-    <meta name="msapplication-starturl" content="http://hackpython.github.io/blog/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/">
+    <meta name="msapplication-starturl" content="http://hackpython.github.io/blog/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/">
     <meta name="msapplication-navbutton-color" content="#0097A7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="HackPython">
@@ -237,16 +237,16 @@
     
 
     <!-- The Open Graph protocol -->
-    <meta property="og:url" content="http://hackpython.github.io/blog/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/">
+    <meta property="og:url" content="http://hackpython.github.io/blog/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Python进阶必学库：elasticsearch-py使用详解(上篇) | HackPython">
+    <meta property="og:title" content="Python进阶：使用Matplotlib进行数据可视化(二) | HackPython">
     <meta property="og:image" content="/blog/img/twotwo_header.png">
     <meta property="og:description" content="HackPython，最酷的方式学习python">
-    <meta property="og:article:tag" content="Python,进阶库"> 
+    <meta property="og:article:tag" content="Python,进阶"> 
 
     
-        <meta property="article:published_time" content="Fri Jun 28 2019 10:44:48 GMT+0800">
-        <meta property="article:modified_time" content="Fri Jun 28 2019 10:45:52 GMT+0800">
+        <meta property="article:published_time" content="Mon Oct 21 2019 16:43:09 GMT+0800">
+        <meta property="article:modified_time" content="Mon Oct 21 2019 16:44:16 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -254,7 +254,7 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://hackpython.github.io/blog/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/index.html" />
+        <link rel="canonical" href="http://hackpython.github.io/blog/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/index.html" />
     
 
     <!-- Structured-data for SEO -->
@@ -266,10 +266,10 @@
 {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "mainEntityOfPage": "http://hackpython.github.io/blog/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/index.html",
-    "headline": "Python进阶必学库：elasticsearch-py使用详解(上篇)",
-    "datePublished": "Fri Jun 28 2019 10:44:48 GMT+0800",
-    "dateModified": "Fri Jun 28 2019 10:45:52 GMT+0800",
+    "mainEntityOfPage": "http://hackpython.github.io/blog/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/index.html",
+    "headline": "Python进阶：使用Matplotlib进行数据可视化(二)",
+    "datePublished": "Mon Oct 21 2019 16:43:09 GMT+0800",
+    "dateModified": "Mon Oct 21 2019 16:44:16 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "hackpython",
@@ -287,7 +287,7 @@
             "url": "/img/twotwo_header.png"
         }
     },
-    "keywords": ",Python,进阶库python,web,hack,自学编程,学习分享,漫画教学",
+    "keywords": ",Python,进阶python,web,hack,自学编程,学习分享,漫画教学",
     "description": "HackPython，最酷的方式学习python",
 }
 </script>
@@ -362,7 +362,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装"><span class="post-toc-number">2.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#关键概念"><span class="post-toc-number">3.</span> <span class="post-toc-text">关键概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注意事项"><span class="post-toc-number">4.</span> <span class="post-toc-text">注意事项</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结尾"><span class="post-toc-number">5.</span> <span class="post-toc-text">结尾</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Python进阶：使用Matplotlib进行数据可视化-二"><span class="post-toc-number">1.</span> <span class="post-toc-text">Python进阶：使用Matplotlib进行数据可视化(二)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#箱线图-BoxPlot"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">箱线图(BoxPlot)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#小提琴图-ViolinPlot"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">小提琴图(ViolinPlot)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#双轴图-TwinAxis-Plot"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">双轴图(TwinAxis Plot)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#堆叠图-Stack-Plot"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">堆叠图(Stack Plot)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#百分比堆叠图"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">百分比堆叠图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结尾"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">结尾</span></a></li></ol></li></ol>
     </ul>
     
 
@@ -394,7 +394,7 @@
         
     
             <p class="article-headline-p">
-                Python进阶必学库：elasticsearch-py使用详解(上篇)
+                Python进阶：使用Matplotlib进行数据可视化(二)
             </p>
         </div>
 
@@ -413,7 +413,7 @@
     <!-- Author Name & Date -->
     <div>
         <strong>hackpython</strong>
-        <span>6月 28, 2019</span>
+        <span>10月 21, 2019</span>
     </div>
 
     <div class="section-spacer"></div>
@@ -437,7 +437,7 @@
     </button>
     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
         <li class="mdl-menu__item">
-        <a class="post_tag-link" href="/blog/tags/Python-进阶库/">Python,进阶库</a>
+        <a class="post_tag-link" href="/blog/tags/Python-进阶/">Python,进阶</a>
     </ul>
     
 
@@ -456,7 +456,7 @@
 
     <!-- Share Weibo -->
     
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python进阶必学库：elasticsearch-py使用详解(上篇)&url=http://hackpython.github.io/blog/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/index.html&pic=http://hackpython.github.io/blog/img/twotwo_header.png&searchPic=false&style=simple" target="_blank">
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python进阶：使用Matplotlib进行数据可视化(二)&url=http://hackpython.github.io/blog/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/index.html&pic=http://hackpython.github.io/blog/img/twotwo_header.png&searchPic=false&style=simple" target="_blank">
             <li class="mdl-menu__item">
                 分享到微博
             </li>
@@ -465,7 +465,7 @@
 
     <!-- Share Twitter -->
     
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python进阶必学库：elasticsearch-py使用详解(上篇)&url=http://hackpython.github.io/blog/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/index.html&via=hackpython" target="_blank">
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python进阶：使用Matplotlib进行数据可视化(二)&url=http://hackpython.github.io/blog/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/index.html&via=hackpython" target="_blank">
             <li class="mdl-menu__item">
                 分享到 Twitter
             </li>
@@ -483,7 +483,7 @@
 
     <!-- Share QQ -->
     
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=HackPython&title=Python进阶必学库：elasticsearch-py使用详解(上篇)&summary=HackPython，最酷的方式学习python&pics=http://hackpython.github.io/blog/img/twotwo_header.png&url=http://hackpython.github.io/blog/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/index.html" target="_blank">
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=HackPython&title=Python进阶：使用Matplotlib进行数据可视化(二)&summary=HackPython，最酷的方式学习python&pics=http://hackpython.github.io/blog/img/twotwo_header.png&url=http://hackpython.github.io/blog/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/index.html" target="_blank">
             <li class="mdl-menu__item">
                 分享到 QQ
             </li>
@@ -502,78 +502,193 @@
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <blockquote>
-<p>HackPython致力于有趣有价值的编程教学</p>
-</blockquote>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>当爬虫爬取了很多数据后，如何全面的了解爬取数据的特征？这就需要对数据进行搜索了，传统通过 SQL 方式进行搜索，在数据量较大时，效率并不佳，此时 Elasticsearch 就是首选，它是一个开源的搜索引擎，建立在全文搜索引擎库 Apache Lucene 的基础上，而 Lucene 是当前无论开源还是私有的搜索引擎中最先进、高性能与全功能的搜索引擎之一，但 Lucene 使用比较复杂，而 Elasticesarch 在 Luncene 基础上进行了封装并提供了一套简单的 RESTful API ，而 elasticsearch-py 则是在这套 API 上的封装，让我们可以在 Python 项目中直接使用 Elasticsearh。</p>
-<p>Elasticsearch 的准确形容：</p>
-<p>一个分布式的实时文档存储系统，每个字段可以被索引与搜索<br>一个分布式实时分析搜索引擎<br>可以在上百个服务节点扩展，并支持 PB 级别的结构化或非结构化数据搜索</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>可以到 Elasticsearch 的官方网站下载 Elasticsearch 下载不同平台的安装包：</p>
-<p><a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="noopener">https://www.elastic.co/downloads/elasticsearch</a></p>
-<p>具体安装步骤可以参考官网提供的内容或自行搜索，在 Mac 上可以直接使用 brew 安装。</p>
-<p>因为 Elasticsearch 是基于 Java 开发的，所有系统中需要预先安装 Java JDK，在 Mac 中同样可使用 brew 安装。</p>
-<pre><code># 安装 JDK
-brew cask install homebrew/cask-versions/adoptopenjdk8
-# 安装 Elasticsearch
-brew install elasticsearch
-</code></pre><p>Mac 下通过 brew 安装完后，可以进入 <code>/usr/local/Cellar/elasticsearch/6.8.0/bin</code> 运行 elasticsearch 。</p>
-<pre><code>cd /usr/local/Cellar/elasticsearch/6.8.0/bin &amp;&amp; ./elasticsearch
-</code></pre><p>如果想将 Elasticsearh 作为守护进程在后台运行，需要加上 -d 参数。</p>
-<p>如果你是在 Windows 上面运行 Elasticseach，你应该运行 bin\elasticsearch.bat 而不是 bin\elasticsearch 。</p>
-<p>正常启动后，访问 <code>localhost:9200</code> 可看到如下信息：</p>
-<pre><code>curl localhost:9200
-{
-  &quot;name&quot; : &quot;sbUPsxx&quot;,
-  &quot;cluster_name&quot; : &quot;elasticsearch_ayuliao&quot;,
-  &quot;cluster_uuid&quot; : &quot;Bv83QVa4QMOJti9Yn1RJsw&quot;,
-  &quot;version&quot; : {
-    &quot;number&quot; : &quot;6.8.0&quot;,
-    &quot;build_flavor&quot; : &quot;oss&quot;,
-    &quot;build_type&quot; : &quot;tar&quot;,
-    &quot;build_hash&quot; : &quot;65b6179&quot;,
-    &quot;build_date&quot; : &quot;2019-05-15T20:06:13.172855Z&quot;,
-    &quot;build_snapshot&quot; : false,
-    &quot;lucene_version&quot; : &quot;7.7.0&quot;,
-    &quot;minimum_wire_compatibility_version&quot; : &quot;5.6.0&quot;,
-    &quot;minimum_index_compatibility_version&quot; : &quot;5.0.0&quot;
-  },
-  &quot;tagline&quot; : &quot;You Know, for Search&quot;
-}
-</code></pre><p>从上述信息中，可知我们安装的是 6.8.0 版本的 elasticsearch，版本很重要，因为只有安装了对应主版本的 elasticsearch-py 才能在 python 中正常使用 elasticsearch。</p>
-<p>对于Elasticsearch 6.0及更高版本，请使用库的主要版本 6（6.x.y）。<br>对于Elasticsearch 5.0及更高版本，请使用库的主要版本 5（5.x.y）。<br>对于Elasticsearch 2.0及更高版本，请使用库的主要版本 2（2.x.y），依此类推。</p>
-<p>在setup.py或 requirements.txt 中设置需求的推荐方法是：</p>
-<pre><code># Elasticsearch 6.x
-elasticsearch&gt;=6.0.0,&lt;7.0.0
+        <h1 id="Python进阶：使用Matplotlib进行数据可视化-二"><a href="#Python进阶：使用Matplotlib进行数据可视化-二" class="headerlink" title="Python进阶：使用Matplotlib进行数据可视化(二)"></a>Python进阶：使用Matplotlib进行数据可视化(二)</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>接着 使用Matplotlib进行数据可视化(一) ，继续使用 Matplotlib 绘制图像，公众号回复 data2 就可以获得本文章的代码与使用数据。</p>
+<h2 id="箱线图-BoxPlot"><a href="#箱线图-BoxPlot" class="headerlink" title="箱线图(BoxPlot)"></a>箱线图(BoxPlot)</h2><p>箱线图(BoxPlot)也称箱须图(Box-whisker Plot)，它利用数据中的五个统计量：最小值、第一四分位数、中位数、第三四分位数与最大值来描述数据的一种方法，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826100715.png" alt=""></p>
+<p>1.minimum(最小值)与maximum(最大值)是数据中的最小值和最大值</p>
+<p>2.median(中位数)：对数据排序，找到中间位置的数，称为中位数，如果中间位置有两个数，则相加再除以2，如有数字1,2,4,5,7,7,8,9，此时中位数为：(5+7)/2 = 6</p>
+<p>3.lower quartile，也称为第一四分位数：它是数据排序后，中位数左边数据的中位数，如有数字1,2,4,5,7,7,8,9，此时第一四分位数为1,2,4的中位数，则为2</p>
+<p>4.upper quartile，也称第三四分位数：它是数据排序后，中位数右边数据的中位数，如有数字1,2,4,5,7,7,8,9，此时第三四分位数为7,8,9的中位数，则为8</p>
+<p>5.IQR(Inter Quartile Range)，即第一四分位数到第三四分位数这一部分的数据，它估计了中间50%的数据，上图没有绘制出IQR</p>
+<p>5.outlier，也称离群值，如果一个值小于(第一四分位数 - 1.5<em>IQR)或大于(第三四分位数 + 1.5\</em>IQR)，则称这个值为离群值</p>
+<p>使用箱线图可以粗略的判断出数据是否具有对称性以及数据分布的离散程度，下面就来绘制一下。</p>
+<p>一开始，依旧先读取数据并进行简单的处理</p>
+<pre><code class="lang-python">exam_data = pd.read_csv(&#39;datasets/exams.csv&#39;)
+# 仅提取考试分数相关的信息
+exam_scores = exam_data[[&#39;math score&#39;, &#39;reading score&#39;, &#39;writing score&#39;]]
+exam_scores.head()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826104943.png" alt=""></p>
+<p>为了方便绘制boxplot，将数据转为numpy中的数组类型</p>
+<pre><code class="lang-python">exam_scores_array = np.array(exam_scores)
+</code></pre>
+<p>使用matplotlib绘制boxplot</p>
+<pre><code class="lang-python">colors = [&#39;blue&#39;, &#39;grey&#39;, &#39;lawngreen&#39;]
 
-# Elasticsearch 5.x
-elasticsearch&gt;=5.0.0,&lt;6.0.0
+bp = plt.boxplot(exam_scores_array,  # 数据
+                 patch_artist=True, # patch_artist设置为True，在后面才能设置不同的颜色
+                 notch=True) # 显示是否有凹槽
 
-# Elasticsearch 2.x
-elasticsearch&gt;=2.0.0,&lt;3.0.0
-</code></pre><p>通过 pip 安装一下</p>
-<pre><code>pip install elasticsearch==6.4.0
-</code></pre><h2 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h2><p>Elasticsearch 是面向文档的，意味着它存储整个对象或文档。Elasticsearch 不仅存储文档，而且索引每个文档的内容使之可以被检索。在 Elasticsearch 中，你对文档进行索引、检索、排序和过滤 — 而不是对行列数据。这是一种完全不同的思考数据的方式，也是 Elasticsearch 能支持复杂全文检索的原因。</p>
-<p>下面简单介绍其中几个关键的概念：</p>
-<p>节点 (Node) 与集群 (Cluster) </p>
-<p>Elasticsearch 本质上是一个分布式数据库，允许多台服务器协同工作，每台服务器可以运行多个 Elasticsearch 实例。</p>
-<p>单个 Elasticsearch 实例称为一个节点（node），一组节点构成一个集群（cluster），而一个 集群 是一组拥有相同 cluster.name 的节点， 他们能一起工作并共享数据，还提供容错与可伸缩性。</p>
-<p>索引 (Index)</p>
-<p>Elasticsearch 会索引所有字段，经过处理后写入一个反向索引（Inverted Index）。查找数据的时候，直接查找该索引。</p>
-<p>Elasticsearch 数据管理的顶层单位就叫做 Index（索引），每个 Index 的名称必须是全小写形式的。</p>
-<p>文档 (Document)</p>
-<p>Index 中单条记录称为文档 (Document)，许多条 Document 构成了一个 Index。Document 使用 JSON 格式表示，例子如下：</p>
-<pre><code>{
-    &quot;name&quot;:&quot;张三&quot;,
-    &quot;age&quot;: 28
-}
-</code></pre><p>同一个 Index 里面的 Document，不要求有相同的结构（scheme），但是最好保持相同，这样有利于提高搜索效率。</p>
-<p>Type</p>
-<p>Document 可以分组，比如 weather 这个 Index 里面，可以按城市分组（北京和上海），也可以按气候分组（晴天和雨天）。这种分组就叫做 Type，它是虚拟的逻辑分组，用来过滤 Document。但 Elasticsearch 在 7.x 之后的版本中逐渐移除 Type，为了提升搜索速度。</p>
-<p>字段 (Fields)</p>
-<p>每个 Document 都是一个 JSON 结构，它包含了许多字段，每个字段都有其对应的值，多个字段组成了一个 Document。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>很多人将 Elsticsearch 中的 index 理解为关系数据中的 database，而将 type 理解为数据库中的一个数据表，虽然表面上看两者确实存在相似性，但却是错误的类比。</p>
-<p>我们都知道 Elasticsearch 是基于 Lucene 开发的，而 Elasticsearch 中不同 type 下名称相同的 filed 最终在 Lucene 中的处理方式是一样的。举个例子，两个不同 type 下的两个 user_name，在 Elasticsearch 同一个索引下其实被认为是同一个 filed，你必须在两个不同的 type 中定义相同的 filed 映射。否则，不同 type 中的相同字段名称就会在处理中出现冲突的情况，导致 Lucene 处理效率下降。</p>
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>具体如何使用 Elsaticsearch 与 Elasticsearch-py 留到下一篇再详解，最后欢迎学习 HackPython 的教学课程并感觉您的阅读与支持。</p>
+for i in range(len(bp[&#39;boxes&#39;])):
+    bp[&#39;boxes&#39;][i].set(facecolor=colors[i]) # 设置颜色，前提是：patch_artist要设置为True
+    bp[&#39;caps&#39;][2*i + 1].set(color=colors[i])
+
+plt.xticks([1, 2, 3], [&#39;Math&#39;, &#39;Reading&#39;, &#39;Writing&#39;])
+
+plt.show()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826105404.png" alt=""></p>
+<h2 id="小提琴图-ViolinPlot"><a href="#小提琴图-ViolinPlot" class="headerlink" title="小提琴图(ViolinPlot)"></a>小提琴图(ViolinPlot)</h2><p>小提琴图(ViolinPlot)用于显示数据分布以及概率密度，它结合了箱线图与密度图的特征。</p>
+<p>形象如图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826130800.png" alt=""></p>
+<p>95% confidence interval(95%的置信区间)在图中指的是延伸出来的黑色细线<br>Density Plot((数据分布)密度图)<br>Median(中位数)<br>Interquartile range(四分位数范围)<br>Split densities by category(按类别划分密度图)</p>
+<p>使用绘制箱线图的数据绘制小提琴图</p>
+<pre><code class="lang-python">vp = plt.violinplot(exam_scores_array,
+                    showmedians=True)
+
+plt.xticks([1, 2, 3], [&#39;Math&#39;, &#39;Reading&#39;, &#39;Writing&#39;])
+
+for i in range(len(vp[&#39;bodies&#39;])):
+    vp[&#39;bodies&#39;][i].set(facecolor=colors[i])
+
+plt.show()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826131720.png" alt=""></p>
+<p>从图中可以看出，小提琴图的中间部分数据分布密度更大，这表明学生分数大部分都在平均水平附近</p>
+<h2 id="双轴图-TwinAxis-Plot"><a href="#双轴图-TwinAxis-Plot" class="headerlink" title="双轴图(TwinAxis Plot)"></a>双轴图(TwinAxis Plot)</h2><p>双轴图，顾名思义，就是一张图有两个y轴，当我们的数据使用相同x轴时，就可以考虑绘制双轴图。</p>
+<p>​通过双轴图可以很直观的感受出两种数据之间的关联性，比如人口数据与国内生产总值数据在相同的时间轴(x轴)上，此时就可以用双轴图来判断两者的变化有没有关联性。</p>
+<p>这里以Austin(奥斯汀，美国得克萨斯州的首府)城镇的天气数据来绘制双轴图，主要使用其中的平均气温与平均风速这两列数据，从而判断这两者有没有什么联系</p>
+<p>首先，依旧是将数据读入，并取其中需要的数据</p>
+<pre><code class="lang-python">austin_weather = pd.read_csv(&#39;datasets/austin_weather.csv&#39;)
+austin_weather.head()
+# Data 日期
+# TempAvgF 平均气温，华氏温度
+# WindAvgMPH 平均风速，以英里/小时为单位
+austin_weather = austin_weather[[&#39;Date&#39;, &#39;TempAvgF&#39;, &#39;WindAvgMPH&#39;]].head(5)
+pritn(austin_weather)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826132919.png" alt=""></p>
+<p>使用这些数据绘制双轴图</p>
+<pre><code class="lang-python"> # 创建子图
+fig, ax_tempF = plt.subplots()  
+
+#fig=plt.figure(figsize=(12,6)) 可以实现相同效果
+fig.set_figwidth(12)
+fig.set_figheight(6)
+
+# 设置x标签
+ax_tempF.set_xlabel(&#39;Date&#39;)
+
+ax_tempF.tick_params(axis = &#39;x&#39;,
+                    bottom=False, # 禁用 ticks
+                    labelbottom=False # 禁用 x 轴标签
+                    ) 
+
+# 设置左 Y 轴标签
+ax_tempF.set_ylabel(&#39;Temp (F)&#39;, 
+                    color=&#39;red&#39;,
+                    size=&#39;x-large&#39;)
+
+# 为左 Y 轴标签设置labelcolor(标签颜色)与labelsize(标签大小)
+ax_tempF.tick_params(axis=&#39;y&#39;, 
+                     labelcolor=&#39;red&#39;, 
+                     labelsize=&#39;large&#39;)
+
+# 将 AvgTemp 绘制到 左 Y 轴上
+ax_tempF.plot(austin_weather[&#39;Date&#39;], 
+              austin_weather[&#39;TempAvgF&#39;], 
+              color=&#39;red&#39;)
+
+# 为两个图设置相同的x轴
+ax_precip = ax_tempF.twinx()
+
+#设置右 Y 轴标签
+ax_precip.set_ylabel(&#39;Avg Wind Speed (MPH)&#39;, 
+                     color=&#39;blue&#39;, 
+                     size=&#39;x-large&#39;) 
+
+# 为右 Y 轴标签设置labelcolor(标签颜色)与labelsize(标签大小)
+ax_precip.tick_params(axis=&#39;y&#39;, 
+                      labelcolor=&#39;blue&#39;,
+                      labelsize=&#39;large&#39;)
+
+# 将 WindAVg 绘制到 右 Y 轴上
+ax_precip.plot(austin_weather[&#39;Date&#39;], 
+         austin_weather[&#39;WindAvgMPH&#39;], 
+         color=&#39;blue&#39;)
+
+fig.legend(loc=1, bbox_to_anchor=(1,1), bbox_transform=ax_tempF.transAxes)
+
+plt.show()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826134314.png" alt=""></p>
+<p>从图中可以看出，两者有些关系，但平均温度并不只受平均风速影响。</p>
+<h2 id="堆叠图-Stack-Plot"><a href="#堆叠图-Stack-Plot" class="headerlink" title="堆叠图(Stack Plot)"></a>堆叠图(Stack Plot)</h2><p>堆叠图是一种特殊的面积图，可以用来比较一个区间内的多个变量，与普通面积图不同，堆叠图每个数据面积的绘制起点都是基于前面一个数据面积来绘制的。</p>
+<p>这里使用国家公园的数据来绘制堆叠图</p>
+<pre><code class="lang-python">np_data= pd.read_csv(&#39;datasets/national_parks.csv&#39;)
+print(np_data.head())
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826135044.png" alt=""></p>
+<p>national parks(国家公园)数据中有Badlands(荒废土地)、GrandCanyon(大峡谷)以及BryceCanyon(布莱斯峡谷)这3种类别的土地面积数据。</p>
+<p>因为要绘制堆叠图，所以先要讲3中类别土地面积数据整合成一个二维数组，这里直接通过numpy的vstack()方法来实现这个效果，vstack()方法简单示例如下：</p>
+<pre><code class="lang-python">import numpy as np
+a=[1,2,3]
+b=[4,5,6]
+print(np.vstack((a,b)))
+
+输出：
+[[1 2 3]
+ [4 5 6]]
+</code></pre>
+<p>接着就使用national parks数据来绘制一下堆叠图</p>
+<pre><code class="lang-python">x = np_data[&#39;Year&#39;]
+y = np.vstack([np_data[&#39;Badlands&#39;], 
+               np_data[&#39;GrandCanyon&#39;], 
+               np_data[&#39;BryceCanyon&#39;]])
+
+# 每个面积区域的标签
+labels = [&#39;Badlands&#39;, 
+          &#39;GrandCanyon&#39;, 
+          &#39;BryceCanyon&#39;]
+
+# 每个面积区域的颜色
+colors = [&#39;sandybrown&#39;, 
+          &#39;tomato&#39;, 
+          &#39;skyblue&#39;]
+
+# 与 pandas 的 df.plot.area() 类似
+# stackplot()创建堆叠图
+plt.stackplot(x, y, 
+              labels=labels,
+              colors=colors, 
+              edgecolor=&#39;black&#39;)
+
+# 绘制标注
+plt.legend(loc=2)
+
+plt.show()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826140727.png" alt=""></p>
+<h2 id="百分比堆叠图"><a href="#百分比堆叠图" class="headerlink" title="百分比堆叠图"></a>百分比堆叠图</h2><p>百分比堆叠图类似于普通堆叠图，只是每个数据被转换成了对应的百分比然后再绘制到图中，依旧使用national parks(国家公园)数据来绘制百分比堆叠图</p>
+<pre><code class="lang-python">plt.figure(figsize=(10,7))
+
+# divide函数：在整数和浮点数除法中均只保留整数部分
+data_perc = np_data.divide(np_data.sum(axis=1), axis=0)
+
+plt.stackplot(x,
+              data_perc[&quot;Badlands&quot;],data_perc[&quot;GrandCanyon&quot;],data_perc[&quot;BryceCanyon&quot;],
+              edgecolor=&#39;black&#39;,
+              colors=colors,
+              labels=labels)
+
+plt.legend(loc=&#39;center left&#39;, bbox_to_anchor=(1, 0.5))
+
+plt.show()
+</code></pre>
+<p>效果如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826141312.png" alt=""></p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>本篇文章介绍了一部分Matplotlib可视化数据的用法，在下一文章中会介绍Matplotlib绘制其他图的用法，记得关注HackPython，拜拜。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190821150724.png" alt=""></p>
 
         
     
@@ -628,8 +743,8 @@ elasticsearch&gt;=2.0.0,&lt;3.0.0
 
 <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'http://hackpython.github.io/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://hackpython.github.io/blog/2019/06/28/Python进阶必学库：elasticsearch-py使用详解-上篇/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://hackpython.github.io/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://hackpython.github.io/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-二/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 </script>
 
@@ -678,7 +793,7 @@ elasticsearch&gt;=2.0.0,&lt;3.0.0
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
     
-        <a href="/blog/2019/06/29/Python进阶必学库：elasticsearch-py使用详解-下篇/" id="post_nav-newer" class="prev-content">
+        <a href="/blog/2019/10/21/Python进阶：使用Matplotlib进行数据可视化-一/" id="post_nav-newer" class="prev-content">
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
                 <i class="material-icons">arrow_back</i>
             </button>
@@ -692,7 +807,7 @@ elasticsearch&gt;=2.0.0,&lt;3.0.0
 
     <!-- Next Nav -->
     
-        <a href="/blog/2019/06/28/Python进阶必学库：Pyinstaller使用详解/" id="post_nav-older" class="next-content">
+        <a href="/blog/2019/10/21/AutoPublish-多平台文章发布软件/" id="post_nav-older" class="next-content">
             旧篇
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">

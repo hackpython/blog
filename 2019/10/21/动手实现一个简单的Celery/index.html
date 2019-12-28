@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="简介 Celery是一个由Python实现的分布式任务队列，任务队列通常有3个方面的功能。  1.减缓高并发压力，先将任务写入队列，有空余资源再运行 2.执行定时任务，先将任务写入队列，指定时间下再执行 3.异步任务，web中存在耗时任务可以先将其写入队列，然后后台任务进程去执行  已经有很多文章来描述Celery的用法与简单原理，本篇文章也会简单提及，但不会费太多笔墨。 本篇重点在于，利用Py">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动手实现一个简单的Celery">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84Celery&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="简介 Celery是一个由Python实现的分布式任务队列，任务队列通常有3个方面的功能。  1.减缓高并发压力，先将任务写入队列，有空余资源再运行 2.执行定时任务，先将任务写入队列，指定时间下再执行 3.异步任务，web中存在耗时任务可以先将其写入队列，然后后台任务进程去执行  已经有很多文章来描述Celery的用法与简单原理，本篇文章也会简单提及，但不会费太多笔墨。 本篇重点在于，利用Py">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190925100424.png">
+<meta property="og:updated_time" content="2019-10-21T08:46:14.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190925100424.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84Celery/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>动手实现一个简单的Celery | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84Celery/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          动手实现一个简单的Celery
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:41:49 / 修改时间：16:46:14" itemprop="dateCreated datePublished" datetime="2019-10-21T16:41:49+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>Celery是一个由Python实现的分布式任务队列，任务队列通常有3个方面的功能。</p>
+<ul>
+<li>1.减缓高并发压力，先将任务写入队列，有空余资源再运行</li>
+<li>2.执行定时任务，先将任务写入队列，指定时间下再执行</li>
+<li>3.异步任务，web中存在耗时任务可以先将其写入队列，然后后台任务进程去执行</li>
+</ul>
+<p>已经有很多文章来描述Celery的用法与简单原理，本篇文章也会简单提及，但不会费太多笔墨。</p>
+<p>本篇重点在于，利用Python动手实现一个简单的Celery，并使用自己实现的Celery实现异步任务，与上一篇「Python Web:Flask异步执行任务」一样，通过Flask构建一个简单的web，然后执行耗时任务，希望前端可以通过进度条显示任务的进度。</p>
+<p>需注意，这里不会去解读Celery的源码，其源码具有很多工程细节，比较复杂，这里只是从其本质出发，简单的实现一个玩具Celery，这个玩具Celery在稳定性、效率等方面当然不能与Celery相比，但可以很好的理解Celery大体是怎么实现的。</p>
+<p>本文讲究的是「形离神合」，与Celery实现细节不同，但本质原理相同。</p>
+<p>那我们开始吧！</p>
+<h2 id="celery的概念与原理"><a class="markdownIt-Anchor" href="#celery的概念与原理"></a> Celery的概念与原理</h2>
+<p>Celery 5 个关键的概念，弄明白，就大致理解 Celery 了。</p>
+<ul>
+<li>
+<p>1.Task(任务)<br />
+简单而言就是你要做的事情，如用户注册流程中的发送邮件</p>
+</li>
+<li>
+<p>2.Worker(工作者)<br />
+在后台处理Task的人</p>
+</li>
+<li>
+<p>3.Broker(经纪人)<br />
+本质是一种队列，Task 会交给 Broker ，Worker 会从 Broker 中取 Task ，并处理</p>
+</li>
+<li>
+<p>4.Beat<br />
+定时任务调度器，根据定的时间，向 Broker 中添加数据，然后等待 Worker 去处理</p>
+</li>
+<li>
+<p>5.Backend<br />
+用于保存 Worker 执行结果的对象，每个 Task 都要有返回值，这些返回值，就在 Backend 中</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190925100424.png" alt="" /></p>
+<p>这里我们抛开这里的各种概念，从更本质的角度来看Celery，发现它就一个任务序列化存储与反序列化获取的过程。</p>
+<p>以Web异步任务为例，使用方式通常为：</p>
+<ul>
+<li>1.有一个要长时间处理I/O的函数，如果不将其异步执行就会产生的阻塞，这通常是不被允许的</li>
+<li>2.启动一个后台任务执行进程</li>
+<li>3.当要执行耗时函数时，不会立刻同步运行，而是提取函数的关键数据，将其序列化存储到队列中，队列可以使用Redis或其他方式实现</li>
+<li>4.后台任务执行进程会从队列中获取数据，并将其反序列化还原</li>
+<li>5.后台任务执行进程会使用原来的函数以及还原的数据完成函数的执行，从而实现异步执行的效果。</li>
+</ul>
+<p>流程并不复杂，Celery中不同的概念分别负责上面流程中的不同部分。</p>
+<h2 id="实现一个简单的celery"><a class="markdownIt-Anchor" href="#实现一个简单的celery"></a> 实现一个简单的Celery</h2>
+<p>接着我们来实现一个Celery，这里Celery选择Redis作为后端。</p>
+<p>先来整理一个大体的框架。</p>
+<p>首先我们需要定义一个Task类来表示要执行的任务，不同的任务要执行的具体逻辑由使用者自身编写。</p>
+<p>接着要定义一个任务队列，即Celery中的Broker，用于存储要执行的任务。</p>
+<p>随后要定义执行进程Worker，Worker要从Broker中获取任务并去执行。</p>
+<p>最后还需要定义一个用于存储任务返回数据的类，即Celery中的Backend。</p>
+<p>看上去有点复杂，不慌，其实很简单。</p>
+<h3 id="实现任务类"><a class="markdownIt-Anchor" href="#实现任务类"></a> 实现任务类</h3>
+<p><a href="http://xn--task-ko8fn16c8ntmpwy41f.py" target="_blank" rel="noopener">首先来实现task.py</a>，用于定义任务相关的一些逻辑</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># task.py</span></span><br><span class="line"><span class="keyword">import</span> abc</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> traceback</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> broker <span class="keyword">import</span> Broker</span><br><span class="line"><span class="keyword">from</span> backend <span class="keyword">import</span> Backend</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseTask</span><span class="params">(abc.ABC)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Example Usage:</span></span><br><span class="line"><span class="string">        class AdderTask(BaseTask):</span></span><br><span class="line"><span class="string">            task_name = "AdderTask"</span></span><br><span class="line"><span class="string">            def run(self, a, b):</span></span><br><span class="line"><span class="string">                result = a + b</span></span><br><span class="line"><span class="string">                return result</span></span><br><span class="line"><span class="string">        adder = AdderTask()</span></span><br><span class="line"><span class="string">        adder.delay(9, 34)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    task_name = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.task_name:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"task_name should be set"</span>)</span><br><span class="line">        self.broker = Broker()</span><br><span class="line"> </span><br><span class="line"><span class="meta">    @abc.abstractmethod # abstractmethod 派生类必须重写实现逻辑</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 写上你具体的逻辑</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">"Task `run` method must be implemented."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新任务状态</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update_state</span><span class="params">(self, task_id, state, meta=&#123;&#125;)</span>:</span></span><br><span class="line">        _task = &#123;<span class="string">"state"</span>: state, <span class="string">"meta"</span>: meta&#125;</span><br><span class="line">        serialized_task = json.dumps(_task)</span><br><span class="line">        backend = Backend()</span><br><span class="line">        backend.enqueue(queue_name=task_id, item=serialized_task)</span><br><span class="line">        print(<span class="string">f"task info: <span class="subst">&#123;task_id&#125;</span> succesfully queued"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 异步执行</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delay</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.task_id = str(uuid.uuid4())</span><br><span class="line">            _task = &#123;<span class="string">"task_id"</span>: self.task_id, <span class="string">"args"</span>: args, <span class="string">"kwargs"</span>: kwargs&#125;</span><br><span class="line">            serialized_task = json.dumps(_task)</span><br><span class="line">            <span class="comment"># 加入redis中</span></span><br><span class="line">            self.broker.enqueue(queue_name=self.task_name, item=serialized_task)</span><br><span class="line">            print(<span class="string">f"task: <span class="subst">&#123;self.task_id&#125;</span> succesfully queued"</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            <span class="comment"># traceback.print_exc()</span></span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">"Unable to publish task to the broker."</span>)</span><br><span class="line">        <span class="keyword">return</span> self.task_id</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">async_result</span><span class="params">(task_id)</span>:</span></span><br><span class="line">    backend = Backend()</span><br><span class="line">    _dequeued_item = backend.dequeue(queue_name=task_id)</span><br><span class="line">    dequeued_item = json.loads(_dequeued_item)</span><br><span class="line">    state = dequeued_item[<span class="string">"state"</span>]</span><br><span class="line">    meta = dequeued_item[<span class="string">"meta"</span>]</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Info</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, state, meta)</span>:</span></span><br><span class="line">            self.state = state</span><br><span class="line">            self.meta = meta</span><br><span class="line">    info = Info(state, meta)</span><br><span class="line">    <span class="keyword">return</span> info</span><br></pre></td></tr></table></figure>
+<p>上述代码中，定义了BaseTask类，它继承自python的abc.ABC成为一个抽象基类，其中一开始便要求必须定义task_name，这是因为后面我们需要通过task_name去找对应的任务队列。</p>
+<p>BaseTask类的run()方法被abc.abstractmethod装饰，该装饰器会要求BaseTask的派生类必须重写run()方法，这是为了让使用者可以自定义自己的任务逻辑。</p>
+<p>BaseTask类的update_state()方法用于更新任务的状态，其逻辑很简单，先将参数进行JSON序列化，然后调用Backend的enqueue()方法将数据存入，这里的Backend其实是Redis实例，enqueue()方法会将数据写入Redis的list中，需要注意，这里list的key为task_id，即当前任务的id。</p>
+<p>BaseTask类的delay()方法用于异步执行任务，首先通过uuid为任务创建一个唯一id，然后将方法的参数通过JSON序列化，然后调用Broker的enqueue()将数据存入，这里的Broker其实也是一个Redis实例，enqueue()方法同样是将数据写入到Redis的list中，只是list的key为task_name，即当前任务的名称。</p>
+<p>此外还实现了async_result()方法，该方法用于异步获取任务的数据，通过该方法可以获得任务的执行结果，或任务执行中的各种数据，数据的结构是有简单约定的，必须要有state表示当然任务的状态，必须要有meta表示当前任务的一些信息。</p>
+<h3 id="实现broker与backend"><a class="markdownIt-Anchor" href="#实现broker与backend"></a> 实现Broker与Backend</h3>
+<p>在task.py中使用了Broker与Backend，那接着就来实现一下这两个，先实现Broker。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># broker.py</span></span><br><span class="line"><span class="keyword">import</span> redis <span class="comment"># pip install redis</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Broker</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    use redis as our broker.</span></span><br><span class="line"><span class="string">    This implements a basic FIFO queue using redis.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        host = <span class="string">"localhost"</span></span><br><span class="line">        port = <span class="number">6379</span></span><br><span class="line">        password = <span class="literal">None</span></span><br><span class="line">        self.redis_instance = redis.StrictRedis(</span><br><span class="line">            host=host, port=port, password=password, db=<span class="number">0</span>, socket_timeout=<span class="number">8.0</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span><span class="params">(self, item, queue_name)</span>:</span></span><br><span class="line">        self.redis_instance.lpush(queue_name, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span><span class="params">(self, queue_name)</span>:</span></span><br><span class="line">        dequed_item = self.redis_instance.brpop(queue_name, timeout=<span class="number">3</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> dequed_item:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        dequed_item = dequed_item[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> dequed_item</span><br></pre></td></tr></table></figure>
+<p>没什么可讲的，就是定了两个方法用于数据的存储与读取，存储使用lpush方法，它会将数据从左边插入到Redis的list中，读取数据使用brpop方法，它会从list的右边取出第一个元素，返回该元素值并从list删除，左进右出就构成了一个队列。</p>
+<p>为了简便，Backend的代码与Broker一模一样，只是用来存储任务的信息而已，代码就不贴了。</p>
+<h3 id="后台任务执行进程worker"><a class="markdownIt-Anchor" href="#后台任务执行进程worker"></a> 后台任务执行进程Worker</h3>
+<p>接着来实现后台任务执行进程Worker</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># worker.py</span></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Example Usage:</span></span><br><span class="line"><span class="string">        task = AdderTask()</span></span><br><span class="line"><span class="string">        worker = Worker(task=task)</span></span><br><span class="line"><span class="string">        worker.start()</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, task)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.task = task</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start</span><span class="params">(self,)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                _dequeued_item = self.task.broker.dequeue(queue_name=self.task.task_name)</span><br><span class="line">                dequeued_item = json.loads(_dequeued_item)</span><br><span class="line">                task_id = dequeued_item[<span class="string">"task_id"</span>]</span><br><span class="line">                task_args = dequeued_item[<span class="string">"args"</span>]</span><br><span class="line">                task_kwargs = dequeued_item[<span class="string">"kwargs"</span>]</span><br><span class="line">                task_kwargs[<span class="string">'task_id'</span>] = task_id</span><br><span class="line">                self.task.run(*task_args, **task_kwargs)</span><br><span class="line">                print(<span class="string">"succesful run of task: &#123;0&#125;"</span>.format(task_id))</span><br><span class="line">            <span class="keyword">except</span> Exception:</span><br><span class="line">                print(<span class="string">"Unable to execute task."</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+<p>上述代码中，定义了Worker类，Worker类在初始化时需要指定具体的任务实例，然后从broker中获取任务相关的数据，接着调用其中的run()方法完成任务的执行，比较简单。</p>
+<h3 id="使用玩具celery"><a class="markdownIt-Anchor" href="#使用玩具celery"></a> 使用玩具Celery</h3>
+<p>玩具Celery的关键结构都定义好了，接着就来使用一下它，这里依旧会使用「Python Web:Flask异步执行任务」文章中的部分代码，如前端代码，这里也不再讨论其前端代码，没有阅读可以先阅读一下，方便理解下面的内容。</p>
+<p>首先定义出一个耗时任务</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LongTask</span><span class="params">(BaseTask)</span>:</span></span><br><span class="line"></span><br><span class="line">    task_name = <span class="string">"LongTask"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, task_id)</span>:</span></span><br><span class="line">        <span class="string">"""Background task that runs a long function with progress reports."""</span></span><br><span class="line">        verb = [<span class="string">'Starting up'</span>, <span class="string">'Booting'</span>, <span class="string">'Repairing'</span>, <span class="string">'Loading'</span>, <span class="string">'Checking'</span>]</span><br><span class="line">        adjective = [<span class="string">'master'</span>, <span class="string">'radiant'</span>, <span class="string">'silent'</span>, <span class="string">'harmonic'</span>, <span class="string">'fast'</span>]</span><br><span class="line">        noun = [<span class="string">'solar array'</span>, <span class="string">'particle reshaper'</span>, <span class="string">'cosmic ray'</span>, <span class="string">'orbiter'</span>, <span class="string">'bit'</span>]</span><br><span class="line"></span><br><span class="line">        message = <span class="string">''</span></span><br><span class="line">        total = random.randint(<span class="number">10</span>, <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(total):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> message <span class="keyword">or</span> random.random() &lt; <span class="number">0.25</span>:</span><br><span class="line">                message = <span class="string">'&#123;0&#125; &#123;1&#125; &#123;2&#125;...'</span>.format(random.choice(verb),</span><br><span class="line">                                                  random.choice(adjective),</span><br><span class="line">                                                  random.choice(noun))</span><br><span class="line">            self.update_state(task_id=task_id, state=<span class="string">'PROGRESS'</span>,</span><br><span class="line">                              meta=&#123;<span class="string">'current'</span>: i, <span class="string">'total'</span>: total,</span><br><span class="line">                                    <span class="string">'status'</span>: message&#125;)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        self.update_state(task_id=task_id, state=<span class="string">'FINISH'</span>, meta=&#123;<span class="string">'current'</span>:<span class="number">100</span>, <span class="string">'total'</span>: <span class="number">100</span>,<span class="string">'status'</span>: <span class="string">'Task completed!'</span>, <span class="string">'result'</span>:<span class="number">32</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p>每个耗时任务都要继承在BaseTask并且重写其run()方法，run()方法中的逻辑就是当前这个耗时任务要处理的具体逻辑。</p>
+<p>这里逻辑其实很简单，就是随机的从几个列表中抽取词汇而已。</p>
+<p>在for迭代中，想要前端知道当前任务for迭代的具体情况，就需要将相应的数据通过BaseTask的update_state()方法将其更新到backend中，使用task_id作为Redis中list的key。</p>
+<p>当逻辑全部执行完后，将状态为FINISH的信息存入backend中。</p>
+<p>写一个接口来触发这个耗时任务</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="meta">@app.route('/longtask', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longtask</span><span class="params">()</span>:</span></span><br><span class="line">    long_task = LongTask()</span><br><span class="line">    task_id = long_task.delay()</span><br><span class="line">    <span class="keyword">return</span> jsonify(&#123;&#125;), <span class="number">202</span>, &#123;<span class="string">'Location'</span>: url_for(<span class="string">'taskstatus'</span>,</span><br><span class="line">                                                  task_id=task_id)&#125;</span><br></pre></td></tr></table></figure>
+<p>逻辑非常简单，实例化LongTask()，并调用其中的delay()方法，该方法会将当前任务存入认为队列中，当前的请求会将当前任务的task_id通过响应包头的中的taskstatus字段传递给前端。</p>
+<p>前端获取到后，就可以通过task_id去获取当前任务执行状态等信息，从而实现前端的可视化。</p>
+<p>接着定义相应的接口来获取当前任务的信息，调用用async_result()方法，将task_id传入则可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"># app.py</span><br><span class="line">@app.route(&apos;/status/&lt;task_id&gt;&apos;)</span><br><span class="line">def taskstatus(task_id):</span><br><span class="line">    info = async_result(task_id)</span><br><span class="line">    print(info)</span><br><span class="line">    if info.state == &apos;PENDING&apos;:</span><br><span class="line">        response = &#123;</span><br><span class="line">            &apos;state&apos;: info.state,</span><br><span class="line">            &apos;current&apos;: 0,</span><br><span class="line">            &apos;total&apos;: 1,</span><br><span class="line">            &apos;status&apos;: &apos;Pending...&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    elif info.state != &apos;FAILURE&apos;:</span><br><span class="line">        response = &#123;</span><br><span class="line">            &apos;state&apos;: info.state,</span><br><span class="line">            &apos;current&apos;: info.meta.get(&apos;current&apos;, 0),</span><br><span class="line">            &apos;total&apos;: info.meta.get(&apos;total&apos;, 1),</span><br><span class="line">            &apos;status&apos;: info.meta.get(&apos;status&apos;, &apos;&apos;)</span><br><span class="line">        &#125;</span><br><span class="line">        if &apos;result&apos; in info.meta:</span><br><span class="line">            response[&apos;result&apos;] = info.meta[&apos;result&apos;]</span><br><span class="line">    else:</span><br><span class="line">        # something went wrong in the background job</span><br><span class="line">        response = &#123;</span><br><span class="line">            &apos;state&apos;: info.state,</span><br><span class="line">            &apos;current&apos;: 1,</span><br><span class="line">            &apos;total&apos;: 1,</span><br><span class="line">            &apos;status&apos;: str(info.meta),  # this is the exception raised</span><br><span class="line">        &#125;</span><br><span class="line">    return jsonify(response)</span><br><span class="line">```        </span><br><span class="line"></span><br><span class="line">最后，需要定义一个启动后台任务执行进程的逻辑</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"># run_worker.py</span><br><span class="line">from worker import Worker</span><br><span class="line">from app import LongTask</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    long_task = LongTask()</span><br><span class="line">    worker = Worker(task=long_task)</span><br><span class="line">    worker.start()</span><br><span class="line">```                  </span><br><span class="line"></span><br><span class="line">至此，整体结构就构建完了，使用一下。</span><br><span class="line"></span><br><span class="line">首先运行redis。</span><br></pre></td></tr></table></figure>
+<p>redis-server</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">然后运行Flask。</span><br></pre></td></tr></table></figure>
+<p>python <a href="http://app.py" target="_blank" rel="noopener">app.py</a></p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">最后启动一下后台任务执行进程，它相当于Celery的`celery -A xxx worker --loglevel=info`命令。</span><br></pre></td></tr></table></figure>
+<p>python run_worker.py</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">同时执行多个任务，效果如下</span><br><span class="line"></span><br><span class="line">![](https:<span class="regexp">//</span>raw.githubusercontent.com<span class="regexp">/ayuLiao/im</span>ages<span class="regexp">/master/</span><span class="number">20190925094458</span>.png)</span><br><span class="line"></span><br><span class="line">对应的一些打印如下：</span><br></pre></td></tr></table></figure>
+<p>python run_worker.py<br />
+Unable to execute task.<br />
+Unable to execute task.<br />
+Unable to execute task.<br />
+task info: 3c7cd8ac-7482-467b-b17c-dba2649b70ee succesfully queued<br />
+task info: 3c7cd8ac-7482-467b-b17c-dba2649b70ee succesfully queued<br />
+task info: 3c7cd8ac-7482-467b-b17c-dba2649b70ee succesfully queued<br />
+task info: 3c7cd8ac-7482-467b-b17c-dba2649b70ee succesfully queued</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>python <a href="http://app.py" target="_blank" rel="noopener">app.py</a></p>
+<ul>
+<li>
+<p>Serving Flask app “app” (lazy loading)</p>
+</li>
+<li>
+<p>Environment: production<br />
+WARNING: Do not use the development server in a production environment.<br />
+Use a production WSGI server instead.</p>
+</li>
+<li>
+<p>Debug mode: on</p>
+</li>
+<li>
+<p>Running on <a href="http://127.0.0.1:5000/" target="_blank" rel="noopener">http://127.0.0.1:5000/</a> (Press CTRL+C to quit)</p>
+</li>
+<li>
+<p>Restarting with stat</p>
+</li>
+<li>
+<p>Debugger is active!</p>
+</li>
+<li>
+<p>Debugger PIN: 145-285-706<br />
+127.0.0.1 - - [25/Sep/2019 11:14:07] “GET / HTTP/1.1” 200 -<br />
+task: 3c7cd8ac-7482-467b-b17c-dba2649b70ee succesfully queued<br />
+127.0.0.1 - - [25/Sep/2019 11:14:11] “POST /longtask HTTP/1.1” 202 -<br />
+&lt;task.async_result.<locals>.Info object at 0x107f50780&gt;<br />
+127.0.0.1 - - [25/Sep/2019 11:14:11] “GET /status/3c7cd8ac-7482-467b-b17c-dba2649b70ee HTTP/1.1” 200 -<br />
+&lt;task.async_result.<locals>.Info object at 0x107f50a20&gt;<br />
+127.0.0.1 - - [25/Sep/2019 11:14:13] “GET /status/3c7cd8ac-7482-467b-b17c-dba2649b70ee HTTP/1.1” 200 -</p>
+</li>
+</ul>
+<pre class="highlight"><code class="">
+## 尾
+
+需要注意一些，上面的代码中，使用Worker需要实例化具体的任务，此时任务实例与app.py中通过接口创建的任务实例是不同的，Worker利用不同的实例，使用相同的参数，从而实现执行效果相同的目的。
+
+代码已上传Githu：https://github.com/ayuLiao/toy_celery
+
+如果你觉得文章有帮助，请按一下右下角的「在看」小星星，那是可以按的，谢谢。
+
+
+
+
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E4%B8%8D%E5%A6%82%E5%90%83%E8%8C%B6%E5%8E%BB/" rel="prev" title="不如吃茶去">
+      <i class="fa fa-chevron-left"></i> 不如吃茶去
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%A6%BB%E7%9C%9F%E6%AD%A3%E7%9A%84%E6%99%BA%E8%83%BD%E8%BF%98%E5%BE%88%E6%BC%AB%E9%95%BF/" rel="next" title="人工智能离真正的智能还很漫长">
+      人工智能离真正的智能还很漫长 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#celery的概念与原理"><span class="nav-number">2.</span> <span class="nav-text"> Celery的概念与原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现一个简单的celery"><span class="nav-number">3.</span> <span class="nav-text"> 实现一个简单的Celery</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现任务类"><span class="nav-number">3.1.</span> <span class="nav-text"> 实现任务类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现broker与backend"><span class="nav-number">3.2.</span> <span class="nav-text"> 实现Broker与Backend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台任务执行进程worker"><span class="nav-number">3.3.</span> <span class="nav-text"> 后台任务执行进程Worker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用玩具celery"><span class="nav-number">3.4.</span> <span class="nav-text"> 使用玩具Celery</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

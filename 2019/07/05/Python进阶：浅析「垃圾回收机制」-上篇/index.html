@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="HackPython致力于有趣有价值的编程教学   简介 Python垃圾回收机制是很多Python岗位面试官喜欢提的一点🙃，虽然Python具有垃圾自动回收的机制，但在一些大型项目中有些资源是不能等到它自动回收的，而需要手动将使用完的资源回收释放，从而让程序尽可能的耗尽服务器的所有资源，这在游戏开发中很重要，服务器是需要成本的🤨。 Python中垃圾回收机制(Garbage Collect">
+<meta name="keywords" content="Python,进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python进阶：浅析「垃圾回收机制」(上篇)">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;07&#x2F;05&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8A%E7%AF%87&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="HackPython致力于有趣有价值的编程教学   简介 Python垃圾回收机制是很多Python岗位面试官喜欢提的一点🙃，虽然Python具有垃圾自动回收的机制，但在一些大型项目中有些资源是不能等到它自动回收的，而需要手动将使用完的资源回收释放，从而让程序尽可能的耗尽服务器的所有资源，这在游戏开发中很重要，服务器是需要成本的🤨。 Python中垃圾回收机制(Garbage Collect">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190705224034.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190705224055.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190705224111.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190705224126.png">
+<meta property="og:updated_time" content="2019-07-05T14:46:19.101Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190705224034.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8A%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Python进阶：浅析「垃圾回收机制」(上篇) | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8A%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python进阶：浅析「垃圾回收机制」(上篇)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-07-05 22:34:00 / 修改时间：22:46:19" itemprop="dateCreated datePublished" datetime="2019-07-05T22:34:00+08:00">2019-07-05</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>Python垃圾回收机制是很多Python岗位面试官喜欢提的一点🙃，虽然Python具有垃圾自动回收的机制，但在一些大型项目中有些资源是不能等到它自动回收的，而需要手动将使用完的资源回收释放，从而让程序尽可能的耗尽服务器的所有资源，这在游戏开发中很重要，服务器是需要成本的🤨。</p>
+<p>Python中垃圾回收机制(Garbage Collection, GC)主要使用「引用计数」进行垃圾回收，通过「标记-清理」解决「容器对象」产生循环引用的问题，在通过「分代回收」以空间换时间的方式来提高垃圾回收的效率。</p>
+<p>下面分别从「引用计数」、「标记-清理」以及「分代回收」来讨论一下Python中的GC。</p>
+<h2 id="引用计数"><a class="markdownIt-Anchor" href="#引用计数"></a> 引用计数</h2>
+<p>从CPython源码中，Python对象的核心是PyObject这个结构体😗，该结构体内存通过ob_refcnt实现变量的引用计数，PyObject结构体如下:</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> typedef struct_object &#123;</span><br><span class="line">    int ob_refcnt<span class="comment">;</span></span><br><span class="line">    struct_typeobject *ob_type<span class="comment">;</span></span><br><span class="line">&#125; PyObject<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>程序在运行的过程中会实时的更新 ob_refcnt 的值，来反映引用当前对象的名称数量。当某对象的引用计数值为 0, 那么它的内存就会被立即释放掉，即被垃圾回收。</p>
+<p>以下情况是导致引用计数加一的情况:</p>
+<p>😀1.对象被创建，例如 a=2333<br />
+😀2.对象被引用，b=a<br />
+😀3.对象被作为参数，传入到一个函数中<br />
+😀4.对象作为一个元素，存储在容器中</p>
+<p>下面的情况则会导致引用计数减一:</p>
+<p>🙁1.对象别名被显示销毁 del<br />
+🙁2.对象别名被赋予新的对象<br />
+🙁3.一个对象离开他的作用域<br />
+🙁4.对象所在的容器被销毁或者是从容器中删除对象</p>
+<p>可以通过 sys 包中的 getrefcount() 来获取一个名称所引用的对象当前的引用计数 (注意，这里 getrefcount () 本身会使得引用计数加一)</p>
+<p>「引用计数」这种方式很容易从逻辑层面去理解，简单而言就是有人用旧留着，没人用就回收，但这种方式是比较耗费资源的，毕竟计数也需要占用内存，而且该方法无法解决「容器对象」循环引用的问题，如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">2</span>] # 计数为 <span class="number">1</span></span><br><span class="line">b=[<span class="number">2</span>,<span class="number">3</span>] # 计数为 <span class="number">1</span></span><br><span class="line">a.append(b) # 计数为 <span class="number">2</span></span><br><span class="line">b.append(a) # 计数为 <span class="number">2</span></span><br><span class="line">DEL a # 计数为 <span class="number">1</span></span><br><span class="line">DEL b # 计数为 <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>循环引用导致变量计数永不为0，造成引用计数无法将其删除。</p>
+<h2 id="标记-清除"><a class="markdownIt-Anchor" href="#标记-清除"></a> 标记-清除</h2>
+<p>Python 中使用标记-清除的方式来解决循环引用导致的问题。</p>
+<p>只有容器对象才会产生循环引用的情况，比如列表、字典、用户自定义类的对象、元组等。而像数字，字符串这类简单类型不会出现循环引用。</p>
+<p>「标记-清除」作为一种优化策略，对于只包含简单类型的元组也不在标记清除算法的考虑之列，简单来看，「标记-清除」算法在进行垃圾回收时分成了两步，分别是：</p>
+<p>🤫A）标记阶段，遍历所有的对象，如果是可达的（reachable），也就是还有对象引用它，那么就标记该对象为可达；<br />
+🤫B）清除阶段，再次遍历对象，如果发现某个对象没有标记为可达，则就将其回收。</p>
+<p>下面看图来理解 标记-清除 ，图片出自 <a href="https://andrewpqc.github.io/2018/10/08/python-memory-management/" target="_blank" rel="noopener">聊聊 Python 内存管理</a></p>
+<p>在标记清除算法中，为了追踪容器对象，需要每个容器对象维护两个额外的指针，用来将容器对象组成一个双端链表，指针分别指向前后两个容器对象，方便插入和删除操作😎。python 解释器 (Cpython) 维护了两个这样的双端链表，一个链表存放着需要被扫描的容器对象，称为 Object to Scan，另一个链表存放着临时不可达对象，称为 Unreachable。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190705224034.png" alt="" /></p>
+<p>上图中 link1,link2,link3 组成一个引用环，此外 link1 还被变量 A 引用，看图中 link1 被几个箭头指着就知道了，其中 ref_count 记录当前对象的引用计数，而 gc_ref 在一开始，gc_ref 只是 ref_count 的副本，所以 gc_ref 的初始值等于 ref_count。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190705224055.png" alt="" /></p>
+<p>gc 启动的时候，会逐个遍历”Object to Scan” 链表中的容器对象，并且将当前对象所引用的所有对象的 gc_ref 减一😐。这一步操作就相当于解除了循环引用对引用计数的影响。如 link4 是自己引用了自己造成了循环引用，此时 link4 的 gc_ref 为 0.</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190705224111.png" alt="" /></p>
+<p>接着，gc 会再次扫描所有的容器对象，如果对象的 gc_ref 值为 0，且引用该对象的对象其 gc_ref 也为 0 ，那么这个对象就被标记为 GC_TENTATIVELY_UNREACHABLE，并且被移至”Unreachable” 链表中😐。下图中的 link3 和 link4 就是这样一种情况。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190705224126.png" alt="" /></p>
+<p>如果对象的 gc_ref 不为 0，那么这个对象就会被标记为 GC_REACHABLE😐。同时当 gc 发现有一个节点是可达的，那么他会递归式的将从该节点出发可以到达的所有节点标记为 GC_REACHABLE, 这就是下图中 link2 和 link3 所碰到的情形😯。除了将所有可达节点标记为 GC_REACHABLE 之外，如果该节点当前在”Unreachable” 链表中的话，还需要将其移回到”Object to Scan” 链表中，下图就是 link3 移回之后的情形。</p>
+<p>第二次遍历的所有对象都遍历完成之后，存在于”Unreachable” 链表中的对象就是真正需要被释放的对象。如上图所示，此时 link4 存在于 Unreachable 链表中，gc 随即释放之。</p>
+<p>上面描述的垃圾回收的阶段，会暂停整个应用程序，等待标记清除结束后才会恢复应用程序的运行🙂。</p>
+<h2 id="分代回收"><a class="markdownIt-Anchor" href="#分代回收"></a> 分代回收</h2>
+<p>引用计数 + 标记-清除 的方式实现了Python垃圾回收，但整个过程比较慢，而且在 标记-清除 过程中还需要暂停整个程序，为了减少应用程序暂停使用，Python利用分代回收(Generational Collection)以空间换时间的方式来提高垃圾回收效率😯。</p>
+<p>分代回收是基于这样的一个统计事实，对于程序，存在一定比例的内存块的生存周期比较短；而剩下的内存块，生存周期会比较长，甚至会从程序开始一直持续到程序结束。生存期较短对象的比例通常在 80%～90% 之间，这种思想简单点说就是：对象存在时间越长，越可能不是垃圾，应该越少去收集🤯。这样在执行标记 - 清除算法时可以有效减小遍历的对象数，从而提高垃圾回收的速度。</p>
+<p>python gc 给对象定义了三种世代 (0,1,2), 每一个新生对象在 generation zero 中，如果它在一轮 gc 扫描中活了下来，那么它将被移至 generation one, 在那里他将较少的被扫描，如果它又活过了一轮 gc, 它又将被移至 generation two，在那里它被扫描的次数将会更少🤔。</p>
+<p>当某一世代被分配的对象与被释放的对象之差达到某一阈值的时候，就会触发 gc 对某一世代的扫描。值得注意的是当某一世代的扫描被触发的时候，比该世代年轻的世代也会被扫描😯。也就是说如果世代 2 的 gc 扫描被触发了，那么世代 0, 世代 1 也将被扫描，如果世代 1 的 gc 扫描被触发，世代 0 也会被扫描。</p>
+<p>该阈值可以通过下面两个函数查看和调整:</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import gc</span><br><span class="line">gc.get<span class="constructor">_threshold()</span> # (threshold0, threshold1, threshold2).</span><br><span class="line">gc.set<span class="constructor">_threshold(<span class="params">threshold0</span>[, <span class="params">threshold1</span>[, <span class="params">threshold2</span>]])</span></span><br></pre></td></tr></table></figure>
+<p>gc 会记录自从上次收集以来新分配的对象数量与释放的对象数量，当两者之差超过 threshold0 的值时，gc 的扫描就会启动，初始的时候只有世代 0 被检查。如果自从世代 1 最近一次被检查以来，世代 0 被检查超过 threshold1 次，那么对世代 1 的检查将被触发。相同的，如果自从世代 2 最近一次被检查以来，世代 1 被检查超过 threshold2 次，那么对世代 2 的检查将被触发。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>本节中简单的讨论了Python中的垃圾回收机制，那是否有某些手段可以比较直观的看出当前项目中Python GC的使用情况，从而可以直观的判断项目对内存的使用是否合理呢？这些内容会尝试在浅析「垃圾回收机制」下篇中讨论😏，最后欢迎学习 HackPython 的教学课程并感觉您的阅读与支持。</p>
+<p>👋👋</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python-%E8%BF%9B%E9%98%B6/" rel="tag"># Python,进阶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8B%E7%AF%87%EF%BC%89/" rel="prev" title="Python进阶：百万「并发」基础之异步编程（下篇）">
+      <i class="fa fa-chevron-left"></i> Python进阶：百万「并发」基础之异步编程（下篇）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/07/18/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8B%E7%AF%87/" rel="next" title="Python进阶：浅析「垃圾回收机制」(下篇)">
+      Python进阶：浅析「垃圾回收机制」(下篇) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用计数"><span class="nav-number">2.</span> <span class="nav-text"> 引用计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标记-清除"><span class="nav-number">3.</span> <span class="nav-text"> 标记-清除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分代回收"><span class="nav-number">4.</span> <span class="nav-text"> 分代回收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">5.</span> <span class="nav-text"> 结尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

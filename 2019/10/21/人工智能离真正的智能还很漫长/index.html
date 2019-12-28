@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="简介 在跟非IT行业的朋友解释人工智能总是一个比较费劲的事情，他们对这块也有比较大的误区，本人虽然不是什么知名人士，但也从事过一段时间相关内容的学习与研究，本篇文章就尝试从较高的层面去讨论一下人工智能以及它目前的局限。 我会以我比较擅长的NLP(自然语言处理)领域作为例子，下面都是我个人观点，如有不对，还请斧正。  当前人工智能的本质 我们常说的人工智能通常指的是深度学习，因为近年大数据的兴起，">
+<meta name="keywords" content="AI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能离真正的智能还很漫长">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%A6%BB%E7%9C%9F%E6%AD%A3%E7%9A%84%E6%99%BA%E8%83%BD%E8%BF%98%E5%BE%88%E6%BC%AB%E9%95%BF&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="简介 在跟非IT行业的朋友解释人工智能总是一个比较费劲的事情，他们对这块也有比较大的误区，本人虽然不是什么知名人士，但也从事过一段时间相关内容的学习与研究，本篇文章就尝试从较高的层面去讨论一下人工智能以及它目前的局限。 我会以我比较擅长的NLP(自然语言处理)领域作为例子，下面都是我个人观点，如有不对，还请斧正。  当前人工智能的本质 我们常说的人工智能通常指的是深度学习，因为近年大数据的兴起，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-18T01:52:44.440Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%A6%BB%E7%9C%9F%E6%AD%A3%E7%9A%84%E6%99%BA%E8%83%BD%E8%BF%98%E5%BE%88%E6%BC%AB%E9%95%BF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>人工智能离真正的智能还很漫长 | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%A6%BB%E7%9C%9F%E6%AD%A3%E7%9A%84%E6%99%BA%E8%83%BD%E8%BF%98%E5%BE%88%E6%BC%AB%E9%95%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          人工智能离真正的智能还很漫长
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-21 16:42:04" itemprop="dateCreated datePublished" datetime="2019-10-21T16:42:04+08:00">2019-10-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-18 09:52:44" itemprop="dateModified" datetime="2019-11-18T09:52:44+08:00">2019-11-18</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>在跟非IT行业的朋友解释人工智能总是一个比较费劲的事情，他们对这块也有比较大的误区，本人虽然不是什么知名人士，但也从事过一段时间相关内容的学习与研究，本篇文章就尝试从较高的层面去讨论一下人工智能以及它目前的局限。</p>
+<p>我会以我比较擅长的NLP(自然语言处理)领域作为例子，下面都是我个人观点，如有不对，还请斧正。</p>
+<h2 id="当前人工智能的本质"><a class="markdownIt-Anchor" href="#当前人工智能的本质"></a> 当前人工智能的本质</h2>
+<p>我们常说的人工智能通常指的是深度学习，因为近年大数据的兴起，让深度学习大展拳脚，但深度学习「理论层面的东西并没有大的突破」，依旧是旧的东西，本质依旧是概率论与统计学。</p>
+<p>这里以微软小冰、苹果Siri这些智能助手为例，它们的技术原理其实都是对话系统+语音识别。当我们说一句话给小冰时，小冰此时做了什么？</p>
+<p>小冰接收到这句话时，首先会进行语音识别，所谓语音识别就是利用它此前训练好的概率模型，计算这些语音数据对应了哪些文字，然后再进行对话预测，即这些文字下一句出现概率最大的文字是哪些，「小冰本身并没有理解我说的话，它只是通过计算概率给出回答」。</p>
+<p>训练一个可以商用的聊天机器需要很多工程技巧的支撑，但本质就是概率模型这么回事，我们可以从微博上、从论坛上爬取大量的语料数据，这些数据是我们正常人类在网上留下的，进行复杂的预处理后，得到训练数据，而训练大致就是从这些数据中找到文字之间的规律。</p>
+<p>举个例子，比如一个100T的语料中，出现了很多次「快来关注HackPython」这句话，那么模型就会记住「关注」这个词后大概率要接「HackPython」，但模型并没有理解这句话，它并不知道「HackPython」是一个公众号，并不知道「快来关注」是一种宣传表述，它知道的就只有概率。</p>
+<p>NLP领域中，无论是「LSTM」、「GRU」，还是「注意力机制」，亦或是当前比较热门的「知识图谱」，都是基于文本在玩概率游戏，不同的方式只是在使用训练数据的信息时不同。</p>
+<p>当前所有知名模型的本质都是如此，通过矩阵运算训练数据来获得某种概率分布，复杂模型的概率分布通常是高维的，这里又会引申出各种数学方法，如测度论、流形，但本质的思想依旧是想通过概率分布来描述训练数据的特征。有了这些，对于同类的数据，就可以使用相同的概率分布去描述，从而实现所谓的「识别」。</p>
+<p>获得了概率分布后，其实还有问题缠绕着我们，如：为什么会训练出这样的概率分布？</p>
+<p>这块对我们来说依旧是黑盒，我们也不知道这些数据通过这种模型训练后，为什么是这样的概率分布，即不可解释。</p>
+<p>不可解释性的问题让深度学习在某些领域的使用受到一定的障碍，如金融领域，模型说这样投，大概率赚钱，但你无法严格的去证明这个结论的可靠性，只能直观的去解释，这就会让人犹豫，毕竟可能损失大量金钱。</p>
+<p>同样的，自动驾驶也受到模型不可解释带来的困扰，自动驾驶依赖于图像识别技术。通过大量数据训练出的图像识别模型虽然有很高的识别率，但依旧存在问题，这点从「对抗攻击」领域的研究可以看出，当我们改变图像中少量的数据，图像识别模型就无法识别或识别错误。因为我们无法从数据层面去解释图像识别模型的概率分布，所以不清楚它在什么情况会失效。</p>
+<h2 id="识别与理解的差异"><a class="markdownIt-Anchor" href="#识别与理解的差异"></a> 识别与理解的差异</h2>
+<p>通过前面的讨论，可以知道，目前的深度学习做到的是「识别」，如语言识别、图像识别等，而并没有做到「理解」，这点从NLP领域可以很直观的看出，最智能的对话系统表现的依旧强差人意。</p>
+<p>我们通过大量的数据的训练，在「识别」上已经有了不错的效果，这些效果已经可以产生很大的作用，比如人脸识别用于安检领域、车牌识别用于交通系统等等，「但关于理解的工作可能才刚刚开始」。</p>
+<p>人工智能并不像我们想象的那么智能，无论是多么大的公司，推出多么先进的框架，什么自动调参、什么自动学习等牛逼的功能，本质都是如此，先进的框架只是让我们更快、更好的获得可以描述数据特征的概率分布，而这些概率分布并不能实现「理解」。</p>
+<p>我们思考一下，人类是怎么做到「理解」的？</p>
+<p>我们「理解」某个东西，通常指知道其背后抽象的概念，如「苹果」这个词，当我们看到这个词时，脑中会浮现出「苹果」相关的信息，这些信息并不来自「苹果」这个词，而是来自我曾经经历的生活，这些生活给了我们相应的背景知识，而这些背景知识让我们可以理解「苹果」这个词。</p>
+<p>这些背景知识我们是怎么得到的？目前也还在研究。</p>
+<p>这让很多学者开始质疑当前深度学习的研究路径是否正确，这里给出一个著名的讨论来展现当下我们训练模型的方式与自然界中真正学习方式的巨大差异。</p>
+<p>日本的街头有很多乌鸦，研究人员发现这些乌鸦会偷坚果来吃，但乌鸦本身无法破开坚果的壳，那它们是怎么吃到坚果果肉的呢？它们在电线杆上观察十字路口的红绿灯，当红灯的时候，将坚果放在马路上，然后飞走，等绿灯，绿灯时，车流走过，将坚果果壳碾碎，当下次红灯时，乌鸦再飞过去悠闲的吃其中的果肉。</p>
+<p>这件普通的事情表现了生物的学习其实只需要简单的观察就可以习得某个技能，这与深度学习学习方式完全不同，深度学习会利用大量的数据，然后反复的训练试错，使用试错获得的损失，利用梯度下降与反向传播的算法去更新模型，最终得到可以描述数据特征的概率分布，而乌鸦没有那么多命去试错，也没有那么多时间去试错。</p>
+<p>可以说，乌鸦通过少量的观察「理解」了红绿灯的规律，而深度学习获得的模型无法做到。</p>
+<p>自然界生物的学习方式与当前深度学习主流的学习方式之间具有的差异难以不让人疑惑。</p>
+<h2 id="莫拉维克悖论"><a class="markdownIt-Anchor" href="#莫拉维克悖论"></a> 莫拉维克悖论</h2>
+<p>1980 年汉斯・莫拉维克提到：要让电脑如成人般地下棋是相对容易的，但是要让电脑有如一岁小孩般的感知和行动能力却是相当困难甚至是不可能的。这便是著名的莫拉维克悖论(Moravec’s paradox)，这个悖论在当下依旧适用，简单而言，「困难的问题是简单的，简单的问题是困难的」是当下人工智能的处境。</p>
+<p>对计算机而言，实现逻辑推理、数学运算等人类高级智慧只需要相对很少的计算能力，而实现感知、运动等低等级智慧却需要巨大的计算资源，这刚好与人类相反，对于感知、运动等，我们自身并不用费多少脑子就可以做好，而逻辑推导、数学计算这类问题却需要思考很久。</p>
+<p>如何让人工智能具有「理解」能力？如何让人工智能对真实世界有基本的背景知识与反应？</p>
+<p>当这两个问题解决了，我们才需要开始担心，人类会不会被人工智能取代。</p>
+<p>但，深度学习带来的对数据特征的描述能力已经可以对一些职业产生致命的冲击，如工厂的工人，加了图像识别的机械臂可以很好的代替工人的大部分工作。</p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>如果你担心一种技术或某件事情会对自己的产生影响，最好的方法就是去了解它，弄明白它的原理，而不是看各种媒体文章，他们只能扰乱视线，增加游戏难度。知道原理后，无知带来的担忧就会消散，自己也可以做出相应的调整。</p>
+<p>文章虽然主要从NLP的角度去讨论问题，但这些现象存在于不同的领域，如图像处理、强化学习等。</p>
+<p>最后，感谢阅读。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/AI/" rel="tag"># AI</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84Celery/" rel="prev" title="动手实现一个简单的Celery">
+      <i class="fa fa-chevron-left"></i> 动手实现一个简单的Celery
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/Python-Web-Flask%E5%BC%82%E6%AD%A5%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1/" rel="next" title="Python Web:Flask异步执行任务">
+      Python Web:Flask异步执行任务 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当前人工智能的本质"><span class="nav-number">2.</span> <span class="nav-text"> 当前人工智能的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#识别与理解的差异"><span class="nav-number">3.</span> <span class="nav-text"> 识别与理解的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#莫拉维克悖论"><span class="nav-number">4.</span> <span class="nav-text"> 莫拉维克悖论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾"><span class="nav-number">5.</span> <span class="nav-text"> 尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

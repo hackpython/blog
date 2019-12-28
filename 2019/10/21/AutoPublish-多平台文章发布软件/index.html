@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="简介 当我们完成一篇文章时，当然希望将自己的文章发布到多个不同的平台，让更多人看到，但自己一个个手动登录然后手动去发送实在太枯燥的，自己也有这样的需求，希望自己公众号的文章可以同步到知乎、CSDN等各种不同的平台上，找了一下市面上的工具，没有特别满意的，所以就着手自己开发一个。 现在已经开源到Github上：https:&#x2F;&#x2F;github.com&#x2F;ayuLiao&#x2F;AutoPublish  欢迎大家">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AutoPublish:多平台文章发布软件">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;AutoPublish-%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%96%87%E7%AB%A0%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="简介 当我们完成一篇文章时，当然希望将自己的文章发布到多个不同的平台，让更多人看到，但自己一个个手动登录然后手动去发送实在太枯燥的，自己也有这样的需求，希望自己公众号的文章可以同步到知乎、CSDN等各种不同的平台上，找了一下市面上的工具，没有特别满意的，所以就着手自己开发一个。 现在已经开源到Github上：https:&#x2F;&#x2F;github.com&#x2F;ayuLiao&#x2F;AutoPublish  欢迎大家">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190828202415.png">
+<meta property="og:updated_time" content="2019-10-21T08:44:32.205Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190828202415.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/AutoPublish-%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%96%87%E7%AB%A0%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>AutoPublish:多平台文章发布软件 | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/AutoPublish-%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%96%87%E7%AB%A0%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AutoPublish:多平台文章发布软件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:42:56 / 修改时间：16:44:32" itemprop="dateCreated datePublished" datetime="2019-10-21T16:42:56+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>当我们完成一篇文章时，当然希望将自己的文章发布到多个不同的平台，让更多人看到，但自己一个个手动登录然后手动去发送实在太枯燥的，自己也有这样的需求，希望自己公众号的文章可以同步到知乎、CSDN等各种不同的平台上，找了一下市面上的工具，没有特别满意的，所以就着手自己开发一个。</p>
+<p>现在已经开源到Github上：<a href="https://github.com/ayuLiao/AutoPublish" target="_blank" rel="noopener">https://github.com/ayuLiao/AutoPublish</a></p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190828202415.png" alt="" /></p>
+<p>欢迎大家使用以及提PR</p>
+<p>至于如何使用，Github的README.md中有比较详细的说明，这里就不再说明，本文主要从源码层面介绍一下AutoPublish</p>
+<h2 id="原理分析"><a class="markdownIt-Anchor" href="#原理分析"></a> 原理分析</h2>
+<h3 id="平台登录"><a class="markdownIt-Anchor" href="#平台登录"></a> 平台登录</h3>
+<p>为了快速实现这个文章多平台发送的功能，选择使用Selenium来实现登录和文章发布的逻辑，但在实现过程中遇到了一些问题，如知乎、CSDN登录时都会检测到Selenium。</p>
+<p>​在开发AutoPublish时主要使用 Chrome，这里尝试让 Selenium 通过开发者模式控制 Chrome，开发者模型下的Chrome在某些关键参数上会与正常使用相同，但是可惜的是依旧没有绕过检查，这说明这些网站使用了其他参数来判断你使用了Selenium，只是这个参数我们自身无法确定，遇到这种情况，有三种解决方法</p>
+<ul>
+<li>1.使用中间人 mitmproxy，将请求中的参数修改，这里可以将Selenium中所有的参数都修改了(推荐)</li>
+<li>2.编写Chrome插件，Selenium通过插件模式加载Chrome，让插件通过JS直接修改Chrome的参数(编写插件难度较大，本人未使用过)</li>
+<li>3.重新编译Selenium，替换关键变量名(难度大，本人未使用过)</li>
+</ul>
+<p>但目前支持的3个平台(知乎、CSDN、豆瓣)都没有使用上面3种方式，而是直接使用requests通过模拟请求的方式来实现登录，其中知乎的登录规则最为恶心:(。</p>
+<h3 id="使用selenium"><a class="markdownIt-Anchor" href="#使用selenium"></a> 使用Selenium</h3>
+<p>完成登录后，会获得对应的Cookies，这些Cookies就类似于身份证一样的存在，有了正确的Cookies你就可以在登录状态做相应的事情了，比如在登录的账号下发表文章。</p>
+<p>其实发表文章理论上也是可以使用requests的形式来实现的，但简单看一下，不同平台发送文章的逻辑不相同，图片处理、样式处理这些也比较棘手，为了最快速度的实现项目，依旧通过Selenium的形式去实现，简单快速。</p>
+<p>​但在使用 Selenium 的过程中也遇到了一些问题，比如文章中图像的输入，像 CSDN 还好，因为后台就是 MarkDown 编辑器，样式这些不需要我们关心，而知乎需要自己将 MarkDown 渲染成 HTML，此时图像输入就比较麻烦了，此外 Selenium 不支持输入 emoji 表情，我的部分文章为了让读者不感觉到无趣，在部分段落中添加了 emoji，而 Selenium 发送输入包含 emoji 的文字时就会抛出异常。</p>
+<h3 id="使用autogui"><a class="markdownIt-Anchor" href="#使用autogui"></a> 使用autogui</h3>
+<p>最后决定使用autogui，autogui可以控制计算机的鼠标与键盘，从而实现点击、输入等效果，安装autogui需要安装相应的依赖驱动，这也操作了一些困扰，当autogui控制你鼠标或键盘时，你就无法使用鼠标或键盘了，因为它是通过驱动去控制的，与通过真实鼠标去控制是类似的，所以你使用autogui会暂时失去对鼠标或键盘的控制。</p>
+<p>如果不在意暂时失去鼠标或键盘的控制，autogui就是非常好用了，直接通过控制键盘的方式，实现「键盘级」的复制粘贴，此时内容就会完全复制到不同平台相应编写内容的区域了，但这其实也隐藏着一个问题，就是操作对象必须获得了「焦点」，即浏览器要在所有窗口前，此时复制的内容才会被正确复制在浏览器对应的位置。</p>
+<p>如果你使用PyCharm来运行该项目，此时代码无法完整的运行完，这是因为PyCharm无论是运行模式还是Debug模式，其实都占据了「焦点」，autogui复制的内容会出现在PyCharm光标处。</p>
+<h2 id="代码分析"><a class="markdownIt-Anchor" href="#代码分析"></a> 代码分析</h2>
+<h3 id="selenium二次封装"><a class="markdownIt-Anchor" href="#selenium二次封装"></a> Selenium二次封装</h3>
+<p>因为整个项目会经常使用Selenium，为了让代码更加简洁，这里以单例模式创建浏览器实例并将Selenium的常用方法了二次封装。</p>
+<p>简单看一下单例模式的实现方式，代码如下，其实就是利用了<code>__new__</code>方法，先判断实例是否存在，不存在再创建。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Driver</span><span class="params">(object)</span>:</span></span><br><span class="line">    _instance = <span class="literal">None</span></span><br><span class="line">    driver = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Singleton mode</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> cls._instance:</span><br><span class="line">            cls._instance = super(Driver, cls).__new__(cls, *args, **kwargs)</span><br><span class="line">            cls.driver = cls._instance.initdriver()</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initdriver</span><span class="params">(self, plug=False, brower=<span class="string">'Chrome'</span>)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> brower == <span class="string">'Chrome'</span>:</span><br><span class="line">            option = webdriver.ChromeOptions()</span><br><span class="line">            <span class="comment"># Remove warnings from browser that 'Chrome is under the control of automated software'</span></span><br><span class="line">            option.add_argument(<span class="string">'disable-infobars'</span>)</span><br><span class="line">            <span class="comment"># No interface</span></span><br><span class="line">            <span class="comment"># option.add_argument('headless')</span></span><br><span class="line">            driver = webdriver.Chrome(executable_path=CHROMEDIRVER, chrome_options=option)</span><br><span class="line">            driver.set_window_size(<span class="number">1200</span>, <span class="number">900</span>)</span><br><span class="line">        <span class="keyword">elif</span> brower == <span class="string">'FireFox'</span>:</span><br><span class="line">            <span class="keyword">if</span> plug:</span><br><span class="line">                <span class="comment">#  open %APPDATA%\Mozilla\Firefox\Profiles\ find firefox plugin，then load plugin configuration.</span></span><br><span class="line">                firefox_plug_dir = <span class="string">''</span></span><br><span class="line">                profile_directory = os.path.join(appdata, <span class="string">'Mozilla\Firefox\Profiles'</span>, firefox_plug_dir)</span><br><span class="line">                profile = webdriver.FirefoxProfile(profile_directory)</span><br><span class="line">            <span class="comment"># Launch browser</span></span><br><span class="line">            driver = webdriver.Firefox(firefox_profile=profile)</span><br><span class="line">        <span class="keyword">return</span> driver</span><br></pre></td></tr></table></figure>
+<p>接着看一下对Selenium的二次封装，比如一些点击的操作，为了确保操作对象的存在，这里会先隐式判断元素是否存在，如果存在再点击</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@run_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">waitxpath</span><span class="params">(self, xpath)</span>:</span></span><br><span class="line">   <span class="keyword">try</span>:</span><br><span class="line">       WebDriverWait(self.driver, WAITTIME, <span class="number">1</span>).until(</span><br><span class="line">           <span class="keyword">lambda</span> x: x.find_element_by_xpath(xpath)</span><br><span class="line">       )</span><br><span class="line">   <span class="keyword">except</span>:</span><br><span class="line">       traceback.print_exc()</span><br><span class="line">       <span class="keyword">return</span> ERROR, <span class="string">'waif xpath 20s timeout, try again'</span></span><br><span class="line">   <span class="keyword">return</span> SUCCESS, <span class="string">'wait xpath finish'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@run_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">choice_select</span><span class="params">(self, xpath, content, sleeptime=<span class="number">0</span>)</span>:</span></span><br><span class="line">   <span class="string">'''</span></span><br><span class="line"><span class="string">   Choick select element</span></span><br><span class="line"><span class="string">   :param xpath: select xpath</span></span><br><span class="line"><span class="string">   :param content: select value</span></span><br><span class="line"><span class="string">   '''</span></span><br><span class="line">   self.waitxpath(xpath)</span><br><span class="line">   select = Select(self.driver.find_element_by_xpath(xpath))</span><br><span class="line">   <span class="comment">#  select the value of text='xxx'</span></span><br><span class="line">   select.select_by_visible_text(content)</span><br><span class="line">   <span class="keyword">if</span> sleeptime:</span><br><span class="line">       time.sleep(sleeptime)</span><br></pre></td></tr></table></figure>
+<h3 id="tkinter编写界面"><a class="markdownIt-Anchor" href="#tkinter编写界面"></a> tkinter编写界面</h3>
+<p>为了方便使用，我还是 tkinter 编写了一个「很丑」的界面，之所以选择 tkinter 是因为它是 Python 的内置库，使用起来也比较简单。</p>
+<p>使用 tkinter 制作界面有个关键点，就是不能让负责界面渲染的主线程执行耗时操作，不然，界面就会出现严重的卡顿现象，常规的做法就是开启一个新线程来负责耗时逻辑，然后通过全局变量在不同的线程之间传递数据，这个全局变量通常会定义为队列。</p>
+<p>在登录不同平台时，如果遇到验证码也需要通过 tkinter 显示并获取验证码正确的值，此时可以使用 tkinter 的弹窗机制，弹出一个新窗口来显示验证码并获取验证码的真实值，实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PopUpCaptchWindow</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    弹出验证码窗口</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,master, imgpath)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param master: 父窗口</span></span><br><span class="line"><span class="string">        :param imgpath: 图像路径(验证码图片路径)</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        top=self.top=Toplevel(master)</span><br><span class="line">        self.l=Label(top,text=<span class="string">"请输入验证码："</span>)</span><br><span class="line">        self.l.pack()</span><br><span class="line"></span><br><span class="line">        im = Image.open(imgpath)</span><br><span class="line">        img = ImageTk.PhotoImage(im)</span><br><span class="line">        panel = Label(top, image=img)</span><br><span class="line">        panel.image = img</span><br><span class="line">        panel.pack(expand=<span class="string">"yes"</span>)</span><br><span class="line"></span><br><span class="line">        self.e=Entry(top)</span><br><span class="line">        self.e.pack()</span><br><span class="line">        self.b=Button(top,text=<span class="string">'确定'</span>,command=self.cleanup)</span><br><span class="line">        self.b.pack()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cleanup</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.value=self.e.get()</span><br><span class="line">        self.top.destroy()</span><br></pre></td></tr></table></figure>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>AutoPublish 本质其实是与不同平台做对抗，如果平台登录规则变动或发送文章的规则变动，AutoPublish 的逻辑就会失去效果，这不只是 AutoPublish 会面临的问题，任何爬虫项目都会面对这样的问题。</p>
+<p>​希望感兴趣的朋友为 AutoPublish 点个星，此外也欢迎关注 HackPython<br />
+​<br />
+最后再提一下，项目地址：<a href="https://github.com/ayuLiao/AutoPublish" target="_blank" rel="noopener">https://github.com/ayuLiao/AutoPublish</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E4%BD%BF%E7%94%A8Python%E5%AF%B9%E5%A4%A7%E8%84%91%E6%88%90%E5%83%8F%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E6%9E%90/" rel="prev" title="使用Python对大脑成像数据进行可视化分析">
+      <i class="fa fa-chevron-left"></i> 使用Python对大脑成像数据进行可视化分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E4%BD%BF%E7%94%A8Matplotlib%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96-%E4%BA%8C/" rel="next" title="Python进阶：使用Matplotlib进行数据可视化(二)">
+      Python进阶：使用Matplotlib进行数据可视化(二) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理分析"><span class="nav-number">2.</span> <span class="nav-text"> 原理分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#平台登录"><span class="nav-number">2.1.</span> <span class="nav-text"> 平台登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用selenium"><span class="nav-number">2.2.</span> <span class="nav-text"> 使用Selenium</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用autogui"><span class="nav-number">2.3.</span> <span class="nav-text"> 使用autogui</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码分析"><span class="nav-number">3.</span> <span class="nav-text"> 代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#selenium二次封装"><span class="nav-number">3.1.</span> <span class="nav-text"> Selenium二次封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tkinter编写界面"><span class="nav-number">3.2.</span> <span class="nav-text"> tkinter编写界面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾"><span class="nav-number">4.</span> <span class="nav-text"> 尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

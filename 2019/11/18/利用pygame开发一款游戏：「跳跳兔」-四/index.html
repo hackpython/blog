@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="简介 「跳跳兔」小游戏中的玩家当然要有跳跃能力，本节就来实现玩家类的跳跃以及整个游戏框界面的更新，当玩家跳跃时，游戏背景要往后移动，要有新的平台产生，让玩家可以继续跳跃，本节就来实现这样的功能。  赋予玩家跳跃功能 为了让界面有多个元素，在一开始初始化游戏框时，就初始化多个平台元素，效果如下：  代码如下，为了方便理解，没有展示无关代码，将多个文件的代码一同显示。 123456789101112">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用pygame开发一款游戏：「跳跳兔」(四)">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;11&#x2F;18&#x2F;%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F%EF%BC%9A%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%9B%9B&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="简介 「跳跳兔」小游戏中的玩家当然要有跳跃能力，本节就来实现玩家类的跳跃以及整个游戏框界面的更新，当玩家跳跃时，游戏背景要往后移动，要有新的平台产生，让玩家可以继续跳跃，本节就来实现这样的功能。  赋予玩家跳跃功能 为了让界面有多个元素，在一开始初始化游戏框时，就初始化多个平台元素，效果如下：  代码如下，为了方便理解，没有展示无关代码，将多个文件的代码一同显示。 123456789101112">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191104201221.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191104214402.png">
+<meta property="og:updated_time" content="2019-11-18T02:02:29.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191104201221.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F%EF%BC%9A%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%9B%9B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>利用pygame开发一款游戏：「跳跳兔」(四) | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F%EF%BC%9A%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%9B%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用pygame开发一款游戏：「跳跳兔」(四)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:11 / 修改时间：10:02:29" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:11+08:00">2019-11-18</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>「跳跳兔」小游戏中的玩家当然要有跳跃能力，本节就来实现玩家类的跳跃以及整个游戏框界面的更新，当玩家跳跃时，游戏背景要往后移动，要有新的平台产生，让玩家可以继续跳跃，本节就来实现这样的功能。</p>
+<h2 id="赋予玩家跳跃功能"><a class="markdownIt-Anchor" href="#赋予玩家跳跃功能"></a> 赋予玩家跳跃功能</h2>
+<p>为了让界面有多个元素，在一开始初始化游戏框时，就初始化多个平台元素，效果如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191104201221.png" alt="" /></p>
+<p>代码如下，为了方便理解，没有展示无关代码，将多个文件的代码一同显示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 平台列表</span></span><br><span class="line">PLATFORM_LIST = [(<span class="number">0</span>, HEIGHT - <span class="number">40</span>, WIDTH, <span class="number">40</span>),</span><br><span class="line">                 (WIDTH / <span class="number">2</span> - <span class="number">50</span>, HEIGHT * <span class="number">3</span> / <span class="number">4</span>, <span class="number">100</span>, <span class="number">20</span>),</span><br><span class="line">                 (<span class="number">125</span>, HEIGHT - <span class="number">350</span>, <span class="number">100</span>, <span class="number">20</span>),</span><br><span class="line">                 (<span class="number">350</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">20</span>),</span><br><span class="line">                 (<span class="number">175</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">20</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># start a new game</span></span><br><span class="line">        self.all_sprites = pg.sprite.Group()</span><br><span class="line">        self.platforms = pg.sprite.Group()</span><br><span class="line">        self.player = Player(self)</span><br><span class="line">        self.all_sprites.add(self.player)</span><br><span class="line">        <span class="comment"># 实例化一系列平台，并添加到所有元素组与平台元素组中</span></span><br><span class="line">        <span class="keyword">for</span> plat <span class="keyword">in</span> PLATFORM_LIST:</span><br><span class="line">            p = Platform(*plat)</span><br><span class="line">            self.all_sprites.add(p)</span><br><span class="line">            self.platforms.add(p)</span><br><span class="line">        self.run()</span><br></pre></td></tr></table></figure>
+<p>上述逻辑就是在开始新游戏时，for迭代创建PLATFORM_LIST列表中给定位位置与大小的平台。</p>
+<p>接着就来实现跳跃逻辑。</p>
+<p>为了代码直观，将监控跳跃相关的逻辑写到events()方法中(该方法负责事件处理)，我们希望点击空格键，玩家元素跳跃，其具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">events</span><span class="params">(self)</span>:</span></span><br><span class="line">   <span class="keyword">for</span> event <span class="keyword">in</span> pg.event.get():</span><br><span class="line">       <span class="keyword">if</span> event.type == pg.QUIT:</span><br><span class="line">           <span class="keyword">if</span> self.playing:</span><br><span class="line">               self.playing = <span class="literal">False</span></span><br><span class="line">           self.running = <span class="literal">False</span></span><br><span class="line">       <span class="comment"># 玩家跳跃</span></span><br><span class="line">       <span class="keyword">if</span> event.type == pg.KEYDOWN:</span><br><span class="line">           <span class="keyword">if</span> event.key == pg.K_SPACE:</span><br><span class="line">               self.player.jump() <span class="comment"># 调用玩家跳跃方法</span></span><br></pre></td></tr></table></figure>
+<p>简单而言，就是监控键盘敲击事件，然后判断敲击的按键为空格键(K_SPACE)，最后调用玩家对象的jump()方法实现跳跃。</p>
+<p>看一下jump()方法的具体逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#sprites.py/Player</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 跳跃</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jump</span><span class="params">(self)</span>:</span></span><br><span class="line">   <span class="comment"># 对x轴进行加一减一操作，玩家只有站立在平台上，才能跳跃成功。</span></span><br><span class="line">   self.rect.x += <span class="number">1</span></span><br><span class="line">   hits = pg.sprite.spritecollide(self, self.game.platforms, <span class="literal">False</span>)</span><br><span class="line">   self.rect.x -= <span class="number">1</span></span><br><span class="line">   <span class="keyword">if</span> hits: <span class="comment"># 碰撞检测成功，站立在了平台上</span></span><br><span class="line">       self.vel.y = <span class="number">-20</span> <span class="comment"># 跳跃</span></span><br></pre></td></tr></table></figure>
+<p>对player玩家对象的x走了加一减一并进行碰撞检测的操作，通过这种方式，就可以判断当前玩家对象是否站立与平台上，只有在平台上，才能让其跳跃，在空中是不允许玩家跳跃的(无法二段跳).</p>
+<p>跳跃的本质是让玩家对象向上移动，这里就是-20，之所以是负数，是因为最上传y轴坐标为0，最下方y轴坐标为游戏框的高度，-20就是让玩家对象向上移动，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191104214402.png" alt="" /></p>
+<p>但这里跟新的只是self.vel速度属性，真正移动玩家对象的方法依旧是update()方法，其逻辑如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#sprites.py/Player</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 有初始的加速度 - 玩家没有在平台上就会掉落</span></span><br><span class="line">        self.acc = vec(<span class="number">0</span>, PLAYER_GRAV)</span><br><span class="line">        keys = pg.key.get_pressed()</span><br><span class="line">        <span class="keyword">if</span> keys[pg.K_LEFT]:</span><br><span class="line">            self.acc.x = -PLAYER_ACC</span><br><span class="line">        <span class="keyword">if</span> keys[pg.K_RIGHT]:</span><br><span class="line">            self.acc.x = PLAYER_ACC</span><br><span class="line"></span><br><span class="line">        self.acc.x += self.vel.x * PLAYER_FRICTION</span><br><span class="line">        self.vel += self.acc</span><br><span class="line">        self.pos += self.vel + <span class="number">0.5</span> * self.acc</span><br><span class="line">        <span class="keyword">if</span> self.pos.x &gt; WIDTH:</span><br><span class="line">            self.pos.x = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> self.pos.x &lt; <span class="number">0</span>:</span><br><span class="line">            self.pos.x = WIDTH</span><br><span class="line">        <span class="comment"># 赋值给底部 - 碰撞检测相关</span></span><br><span class="line">        self.rect.midbottom = self.pos</span><br></pre></td></tr></table></figure>
+<p>update()方法逻辑与上节内容相同，不再赘述。</p>
+<p>至此，就完成了玩家的跳跃。</p>
+<h2 id="背景移动效果"><a class="markdownIt-Anchor" href="#背景移动效果"></a> 背景移动效果</h2>
+<p>但玩家对象光跳跃是不够的，整个游戏界面不移动，玩家跳两下就没有平台可以跳跃了，所以接着来实现游戏界面整体移动的效果。</p>
+<p>在开始写之前，需要理清一个概念，要实现移动效果，并不是游戏界面整体向下移动了，而是游戏框中的元素整体向后移动的，具体而言就是玩家类向下移动了一部分具体，对应的平台元素也向下移动了一段距离。</p>
+<p>要实现这个效果，可以通过Game游戏类的update()方法来实现，该方法主要用于更新游戏的整体状态，其具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.all_sprites.update()</span><br><span class="line">        <span class="comment"># # 玩家在界面中时(y&gt;0)，进行碰撞检测，检测玩家是否碰撞到平台</span></span><br><span class="line">        <span class="keyword">if</span> self.player.vel.y &gt; <span class="number">0</span>:</span><br><span class="line">            hits = pg.sprite.spritecollide(self.player, self.platforms, <span class="literal">False</span>)</span><br><span class="line">            <span class="keyword">if</span> hits:</span><br><span class="line">                self.player.pos.y = hits[<span class="number">0</span>].rect.top</span><br><span class="line">                self.player.vel.y = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 玩家到达游戏框 1/4 处时（注意，游戏框，头部为0，底部为游戏框长度，到到游戏框的1/4处，表示已经到达了顶部一部分了）</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.top &lt;= HEIGHT / <span class="number">4</span>:</span><br><span class="line">            <span class="comment"># 玩家位置移动（往下移动）</span></span><br><span class="line">            self.player.pos.y += abs(self.player.vel.y)</span><br><span class="line">            <span class="comment"># 平台在游戏框外时，将其注销，避免资源浪费</span></span><br><span class="line">            <span class="keyword">for</span> plat <span class="keyword">in</span> self.platforms:</span><br><span class="line">                <span class="comment"># 平台移动位置（往下移动，移动的距离与玩家相同，这样玩家才能依旧站立在原本的平台上）</span></span><br><span class="line">                plat.rect.y += abs(self.player.vel.y)</span><br><span class="line">                <span class="keyword">if</span> plat.rect.top &gt;= HEIGHT: </span><br><span class="line">                    plat.kill()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 判断平台数，产生新的平台</span></span><br><span class="line">        <span class="keyword">while</span> len(self.platforms) &lt; <span class="number">6</span>:</span><br><span class="line">            width = random.randrange(<span class="number">50</span>, <span class="number">100</span>)</span><br><span class="line">            <span class="comment"># 随机生成平台</span></span><br><span class="line">            p = Platform(random.randrange(<span class="number">0</span>, WIDTH - width),</span><br><span class="line">                         random.randrange(<span class="number">-75</span>, <span class="number">-30</span>),</span><br><span class="line">                         width, <span class="number">20</span>)</span><br><span class="line">            self.platforms.add(p)</span><br><span class="line">            self.all_sprites.add(p)</span><br></pre></td></tr></table></figure>
+<p>Game类的update()方法中，主要新增了两段逻辑。</p>
+<p>当玩家到达游戏框的1/4时，此时玩家对象已经在高位，此时要做的就是移动玩家对象以及通过for迭代移动所有的平台对象，让玩家对象与平台对象向下移动相同的距离实现整个游戏框界面向下移动的效果。此外还会判断平台对象的顶部是否大于游戏框高度，如果大于，说明当前的平台对象依旧完全在游戏框外了，调用kill()方法将其注销，避免占用额外的内存。</p>
+<p>接着通过while循环当前平台对象的个数，通过此前的逻辑，我们消除了在游戏框外的平台对象，为了让平台对象个数总是为6，这里会随机创建相应个数的平台对象作为补充，通过random来实现平台位置的随机，让游戏不至于太过无聊。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%89/" rel="prev" title="利用pygame开发一款游戏:「跳跳兔」(三)">
+      <i class="fa fa-chevron-left"></i> 利用pygame开发一款游戏:「跳跳兔」(三)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%BA%94/" rel="next" title="利用pygame开发一款游戏:「跳跳兔」(五)">
+      利用pygame开发一款游戏:「跳跳兔」(五) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#赋予玩家跳跃功能"><span class="nav-number">2.</span> <span class="nav-text"> 赋予玩家跳跃功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背景移动效果"><span class="nav-number">3.</span> <span class="nav-text"> 背景移动效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">4.</span> <span class="nav-text"> 结尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

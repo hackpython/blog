@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言 本节会增加计分机制，即跳跃了多少个平台，有多少积分，此外如果玩家掉落在游戏框外，玩家死亡，开始新的一局游戏。  增加积分机制 积分机制的原理其实很简单，通过pygame在游戏框中绘制相应的文字，当玩家跳跃到新平台时，积分发生相应的变更，en…逻辑太简单了，直接看代码 12345678910111213141516171819202122# main.py&#x2F;Game    # 开始新游戏时">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用pygame开发一款游戏:「跳跳兔」(五)">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;11&#x2F;18&#x2F;%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%BA%94&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="前言 本节会增加计分机制，即跳跃了多少个平台，有多少积分，此外如果玩家掉落在游戏框外，玩家死亡，开始新的一局游戏。  增加积分机制 积分机制的原理其实很简单，通过pygame在游戏框中绘制相应的文字，当玩家跳跃到新平台时，积分发生相应的变更，en…逻辑太简单了，直接看代码 12345678910111213141516171819202122# main.py&#x2F;Game    # 开始新游戏时">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191105123441.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191105124405.png">
+<meta property="og:updated_time" content="2019-11-18T02:02:28.849Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191105123441.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%BA%94/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>利用pygame开发一款游戏:「跳跳兔」(五) | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%BA%94/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用pygame开发一款游戏:「跳跳兔」(五)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:20 / 修改时间：10:02:28" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:20+08:00">2019-11-18</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>本节会增加计分机制，即跳跃了多少个平台，有多少积分，此外如果玩家掉落在游戏框外，玩家死亡，开始新的一局游戏。</p>
+<h2 id="增加积分机制"><a class="markdownIt-Anchor" href="#增加积分机制"></a> 增加积分机制</h2>
+<p>积分机制的原理其实很简单，通过pygame在游戏框中绘制相应的文字，当玩家跳跃到新平台时，积分发生相应的变更，en…逻辑太简单了，直接看代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始新游戏时</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 初始化积分</span></span><br><span class="line">        self.score = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 玩家到达游戏框 1/4 处时（注意，游戏框，头部为0，底部为游戏框长度，到到游戏框的1/4处，表示已经到达了顶部一部分了）</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.top &lt;= HEIGHT / <span class="number">4</span>:</span><br><span class="line">            <span class="comment"># 玩家位置移动（往下移动）</span></span><br><span class="line">            self.player.pos.y += abs(self.player.vel.y)</span><br><span class="line">            <span class="comment"># 平台在游戏框外时，将其注销，避免资源浪费</span></span><br><span class="line">            <span class="keyword">for</span> plat <span class="keyword">in</span> self.platforms:</span><br><span class="line">                <span class="comment"># 平台移动位置（往下移动，移动的距离与玩家相同，这样玩家才能依旧站立在原本的平台上）</span></span><br><span class="line">                plat.rect.y += abs(self.player.vel.y)</span><br><span class="line">                <span class="keyword">if</span> plat.rect.top &gt;= HEIGHT: </span><br><span class="line">                    plat.kill()</span><br><span class="line">                    <span class="comment"># 分数增加 - 平台销毁，分数相加</span></span><br><span class="line">                    self.score += <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>在new()方法中，初始化了积分对象，然后在update()方法中更新。这里的计分方式不是玩家跳跃到一个新的平台就积分，而是旧的平台被销毁后，再计分。这就能避免玩家不向上跳跃，而一直在原地跳跃就能获得积分的情况。</p>
+<p>接着就是绘制积分文字的逻辑，将其放置在draw()方法中实现.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(self)</span>:</span></span><br><span class="line">   <span class="comment"># 绘制</span></span><br><span class="line">   self.screen.fill(BLACK)</span><br><span class="line">   self.all_sprites.draw(self.screen)</span><br><span class="line">   <span class="comment"># 绘制文字 - 具体的分数</span></span><br><span class="line">   self.draw_text(str(self.score), <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, <span class="number">15</span>)</span><br><span class="line">   <span class="comment"># 翻转</span></span><br><span class="line">   pg.display.flip()</span><br></pre></td></tr></table></figure>
+<p>在draw()方法中，调用了self.draw_text()方法进行文字的显示，该方法代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        <span class="comment"># 设置绘制时使用的字体，你也可以直接使用系统本身的字体</span></span><br><span class="line">        self.font_name = pg.font.match_font(FONT_NAME)</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 绘制文字</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">draw_text</span><span class="params">(self, text, size, color, x, y)</span>:</span></span><br><span class="line">        font = pg.font.Font(self.font_name, size) <span class="comment"># 设置字体与大小</span></span><br><span class="line">        text_surface = font.render(text, <span class="literal">True</span>, color) <span class="comment"># 设置颜色</span></span><br><span class="line">        text_rect = text_surface.get_rect() <span class="comment"># 获得字体对象</span></span><br><span class="line">        text_rect.midtop = (x, y) <span class="comment"># 定义位置</span></span><br><span class="line">        self.screen.blit(text_surface, text_rect) <span class="comment"># 在屏幕中绘制字体</span></span><br></pre></td></tr></table></figure>
+<p>代码中给出了详细的注释，不再赘述。</p>
+<p>增加了上面的代码，运行游戏，就会有相应的积分效果</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191105123441.png" alt="" /></p>
+<h2 id="玩家死亡"><a class="markdownIt-Anchor" href="#玩家死亡"></a> 玩家死亡</h2>
+<p>如果玩家这个方块位于游戏框范围外，该玩家就死亡了，将这个逻辑实现到Game类的update()方法中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 死亡 - 玩家底部大于游戏框高度</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.bottom &gt; HEIGHT:</span><br><span class="line">            <span class="keyword">for</span> sprite <span class="keyword">in</span> self.all_sprites:</span><br><span class="line">                sprite.rect.y -= max(self.player.vel.y, <span class="number">10</span>)</span><br><span class="line">                <span class="comment"># 元素底部小于0 - 说明在游戏框外面，将其删除</span></span><br><span class="line">                <span class="keyword">if</span> sprite.rect.bottom &lt; <span class="number">0</span>:</span><br><span class="line">                    sprite.kill()</span><br></pre></td></tr></table></figure>
+<p>一开始判断玩家对象方块的底部是否大于游戏框高度了，如果大于，说明玩家已经在游戏框最底部了，而且有一部分已经在游戏框外了，此时玩家死亡，游戏结束。</p>
+<h2 id="绘制游戏开始界面"><a class="markdownIt-Anchor" href="#绘制游戏开始界面"></a> 绘制游戏开始界面</h2>
+<p>你是否还记得第二节中给出的整体结构，其中包括了show_start_screen()方法与show_go_screen()方法，因为整体的运行逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">g = Game()</span><br><span class="line">g.show_start_screen() <span class="comment"># 游戏开始前会执行的逻辑</span></span><br><span class="line"><span class="keyword">while</span> g.running:</span><br><span class="line">    g.new()</span><br><span class="line">    g.show_go_screen() <span class="comment"># 一轮游戏结束后会执行的逻辑</span></span><br><span class="line"></span><br><span class="line">pg.quit()</span><br></pre></td></tr></table></figure>
+<p>可以将游戏开始界面的绘制逻辑写到show_start_screen()方法中，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始游戏的钩子函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_start_screen</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.screen.fill(BGCOLOR) <span class="comment"># 填充颜色</span></span><br><span class="line">        self.draw_text(TITLE, <span class="number">48</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">4</span>)</span><br><span class="line">        <span class="comment"># 绘制文字</span></span><br><span class="line">        self.draw_text(<span class="string">"Left and right button move, space bar jump"</span>, <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.draw_text(<span class="string">"Press any key to start the game"</span>, <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT * <span class="number">3</span> / <span class="number">4</span>)</span><br><span class="line">        <span class="comment"># 画布翻转</span></span><br><span class="line">        pg.display.flip()</span><br><span class="line">        self.wait_for_key() <span class="comment"># 等待用户敲击键盘中的仍以位置</span></span><br></pre></td></tr></table></figure>
+<p>在show_start_screen()方法中，一开会先填充了整个背景颜色，然后调用了draw_text()方法绘制文字，这里如果使用中文是无法显示的，pygame中要显示中文，需要指定对应的系统字体，如系统中的「宋体」、「黑体」等，最后调用了wait_for_key()方法进行等待，该方法逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wait_for_key</span><span class="params">(self)</span>:</span></span><br><span class="line">        waiting = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">while</span> waiting:</span><br><span class="line">            self.clock.tick(FPS)</span><br><span class="line">            <span class="keyword">for</span> event <span class="keyword">in</span> pg.event.get():</span><br><span class="line">                <span class="keyword">if</span> event.type == pg.QUIT: <span class="comment"># 点击退出，结束等待循环</span></span><br><span class="line">                    waiting = <span class="literal">False</span></span><br><span class="line">                    self.running = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">if</span> event.type == pg.KEYUP: <span class="comment"># 按下键盘，结束等待循环</span></span><br><span class="line">                    waiting = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>wait_for_key()方法的逻辑就是一个无限循环，只有用户点击关闭按钮或敲击键盘中的任意键才能退出这个循环。</p>
+<p>退出循环后，才能进入真正的游戏循环开始游戏。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191105124405.png" alt="" /></p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>在本节中，我们实现了计分逻辑、死亡逻辑以及游戏启动时简单欢迎界面逻辑。</p>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F%EF%BC%9A%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%9B%9B/" rel="prev" title="利用pygame开发一款游戏：「跳跳兔」(四)">
+      <i class="fa fa-chevron-left"></i> 利用pygame开发一款游戏：「跳跳兔」(四)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%85%AD/" rel="next" title="利用pygame开发一款游戏:「跳跳兔」(六)">
+      利用pygame开发一款游戏:「跳跳兔」(六) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text"> 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加积分机制"><span class="nav-number">2.</span> <span class="nav-text"> 增加积分机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#玩家死亡"><span class="nav-number">3.</span> <span class="nav-text"> 玩家死亡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绘制游戏开始界面"><span class="nav-number">4.</span> <span class="nav-text"> 绘制游戏开始界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">5.</span> <span class="nav-text"> 结尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

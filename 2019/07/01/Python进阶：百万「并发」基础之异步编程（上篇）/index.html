@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="HackPython致力于有趣有价值的编程教学   简介 因为GIL(全局锁)的存在，Python在运行性能方便一直是个短板，但在IO密集型网络编程里，利用aysncio等异步处理的方式可以提升百倍运行效率，但在计算密集型程序中，Python并不是最佳的选择。 异步编程会涉及比较多的概念，为了减轻阅读压力，将其分为上、中、下三篇文章。  关键概念 要理解异步编程，首先需要理解阻塞、非阻塞、同步以">
+<meta name="keywords" content="Python,进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python进阶：百万「并发」基础之异步编程（上篇）">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;07&#x2F;01&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="HackPython致力于有趣有价值的编程教学   简介 因为GIL(全局锁)的存在，Python在运行性能方便一直是个短板，但在IO密集型网络编程里，利用aysncio等异步处理的方式可以提升百倍运行效率，但在计算密集型程序中，Python并不是最佳的选择。 异步编程会涉及比较多的概念，为了减轻阅读压力，将其分为上、中、下三篇文章。  关键概念 要理解异步编程，首先需要理解阻塞、非阻塞、同步以">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;pic2.zhimg.com&#x2F;80&#x2F;v2-674f0d37fca4fac1bd2df28a2b78e633_hd.jpg">
+<meta property="og:updated_time" content="2019-07-05T14:34:49.907Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;pic2.zhimg.com&#x2F;80&#x2F;v2-674f0d37fca4fac1bd2df28a2b78e633_hd.jpg">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/07/01/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Python进阶：百万「并发」基础之异步编程（上篇） | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/07/01/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python进阶：百万「并发」基础之异步编程（上篇）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-07-01 22:16:54" itemprop="dateCreated datePublished" datetime="2019-07-01T22:16:54+08:00">2019-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-07-05 22:34:49" itemprop="dateModified" datetime="2019-07-05T22:34:49+08:00">2019-07-05</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>因为GIL(全局锁)的存在，Python在运行性能方便一直是个短板，但在IO密集型网络编程里，利用aysncio等异步处理的方式可以提升百倍运行效率，但在计算密集型程序中，Python并不是最佳的选择。</p>
+<p>异步编程会涉及比较多的概念，为了减轻阅读压力，将其分为上、中、下三篇文章。</p>
+<h2 id="关键概念"><a class="markdownIt-Anchor" href="#关键概念"></a> 关键概念</h2>
+<p>要理解异步编程，首先需要理解阻塞、非阻塞、同步以及异步的概念与关系。</p>
+<p>当程序在等待某个操作完成期间，自己无法做其他事情的状态称为「阻塞」，专业点讲，当程序因未得到运行所需要的计算资源而被挂起的等待状态称为「阻塞」，「阻塞」其实无处不在，常见的有：磁盘IO阻塞、网络IO阻塞。</p>
+<h2 id="阻塞与非阻塞"><a class="markdownIt-Anchor" href="#阻塞与非阻塞"></a> 阻塞与非阻塞</h2>
+<p>与「阻塞」对应的就是「非阻塞」状态，所谓「非阻塞」指的是程序在等待某个操作是，自己还可以做其他事情，需要注意的是，「非阻塞」并不能在任何程序级别都可以存在，只有当程序可以囊括独立子程序单元时，它才可能存在非阻塞状态，其本质原因在于CPU单个核在那个瞬间只能处理一件事情。</p>
+<p>与「阻塞」和「非阻塞」关联很大的概念分别是「同步」与「异步」。「同步」指不同的程序单元为了完成某个任务通过某种通信方式协调一致，此时可以称这些程序是同步执行的，这里协调一致并不是说要同时做，而是指大家有个顺序，「同步其实也就意味着有序」。</p>
+<h2 id="同步与异步"><a class="markdownIt-Anchor" href="#同步与异步"></a> 同步与异步</h2>
+<p>对应的「异步」指不同程序单元直接不需要协调也可单独完成任务，通常，没有先后顺序关联的业务逻辑可言利用异步的方式来实现，比如爬虫下载不同的网页、保存等操作都可以独立完成，下载程序单元直接无需通信协调，这也造成了「异步」是无序的。</p>
+<p>一个「非阻塞」进程中通常由多个独立的子进程构成，如执行到下载逻辑时，交由下载子进程去执行自身的逻辑，而自己继续之前其他逻辑，这个「交由下载子进程」的动作就可以称为「异步」。</p>
+<p>关于「同步」或「异步」描述中提出通信协调通常指异步编程或「并发」编程的同步原语，如信号量、锁、同步队列等。</p>
+<p>从具体的技术层面而言，如果调用一个耗时函数，函数会挂起直达执行完毕，返回结果，那么这个函数所在程序就是「阻塞」的，其操作就是「同步」的，如果调用一个耗时函数立刻返回，等需要的数据到达后再通知函数的调用者，则该函数所在程序就是「非阻塞」的，其操作就是「异步」的。</p>
+<h2 id="并发与并行"><a class="markdownIt-Anchor" href="#并发与并行"></a> 并发与并行</h2>
+<p>「同步」和「异步」的概念可能会与「并发」和「并行」混淆，但两者其实描述的是不同级别的事情，对于「并发」和「并行」，Erlang 之父 Joe Armstrong 给出的图很好的解释了两者的区别</p>
+<p><img src="https://pic2.zhimg.com/80/v2-674f0d37fca4fac1bd2df28a2b78e633_hd.jpg" alt="" /></p>
+<p>「并发」是两个队列交替使用一台咖啡机，「并行」是两个队列同时使用两台咖啡机。</p>
+<p>「并发」表示多个程序可以在同一个时间段内被执行，主要用于描述程序的组织结构，我们称这个程序是可以并发的通常指该程序设计了多个可独立执行的子任务，从而可以在同一时间段内利用有限的计算资源让多个任务以近实时的形式执行。</p>
+<p>而「并行」表示多个程序可以在同一时刻被执行，「并行」的关键要有物理上的支持，比如有两台咖啡机，它通常用于描述程序的执行状态而不是程序组织结构，通常用来表示有足够的计算资源让多个任何同时执行。</p>
+<p>更严谨的描述为：<br />
+1.「并发」是说进程B的开始时间是在进程A的开始时间与结束时间之间，我们就说A和B是「并发」的。<br />
+2.「并行」是「并发」的真子集，指同一时间两个进程运行在不同的机器上或者同一个机器不同的核心上。</p>
+<p>简单总结上面的概念：<br />
+非阻塞可以提高程序整体的执行效率，异步是一种组织非阻塞任务的方式(即操作其中的程序单元)，而并发是为了让独立的子任务有机会被尽快执行，但不一定可以加快任务整体的进度，而并行则是利用多核资源加快多任务的完成进度。</p>
+<p>要实现并发，就需要将整体任务拆分为多个相互独立的子任务，而不同子任务之间才会有所谓的阻塞/非阻塞、同步/异步等说法，所以并发、非阻塞、异步三个概念总是如影随形。</p>
+<h2 id="进程-线程与协程"><a class="markdownIt-Anchor" href="#进程-线程与协程"></a> 进程、线程与协程</h2>
+<p>「进程」是操作系统中的最小的资源分配单位，每个「进程」都有各自独立的地址空间、资源句柄，它们相互独立，每个「进程」中都会有个用于描述当前进程的数据结构，操作系统会利用这些描述来管理进程，同时对操作系统而言，进程的创建于销毁时比较消耗资源的。</p>
+<p>「进程」会抢占式的争夺CPU资源，同一时刻下，CPU的一个核只能执行<br />
+一个进程，而单核CPU可以快速切换不同的进程来使得多进程看像去在同时执行。</p>
+<p>「线程」是CPU调度的最小单位，「线程」是进程的一个实体，一个进程可以包含多个「线程」，同进程的多个「线程」是可以共享当前进程的内存地址空间与资源句柄的，「线程」的切换需要操作系统来实现调度，我们写的程序无法控制这个调度过程，适用于IO密集型任务。</p>
+<p>如果想人为的控制线程的调度过程，可以使用「协程」，「协程」不等于可以自己调度的线程，它是属于线程的，即一个线程可以有多个「协程」，是一种用户状态下的轻量级线程，协程的调度可以完全由用户做主，因此使用更加灵活，可以将协程理解为可以在特定位置暂停或恢复的函数/子程序。</p>
+<h2 id="异步编程"><a class="markdownIt-Anchor" href="#异步编程"></a> 异步编程</h2>
+<p>异步编程就是以进程、线程、协程、函数/方法作为执行任务程序的基本单位，结合回调、事件循环、信号量等机制，以提高程序整体执行效率和并发能力的编程方式。</p>
+<p>无论什么语言，要想实现异步编程就跳不开回调与事件循环。</p>
+<p>在执行耗时函数时，函数会提前注册回调函数返回给调度程序，而函数耗时操作的等待与监听任务交个了操作系统，当操作系统监听到耗时操作的状态改变后就调用回调函数通知调度程序，这整个过程称为「回调」。</p>
+<p>而「事件循环」是一种等待程序分配事件或消息的编程框架，简单来说就是当「 A 发生时，执行 B」，即监听当有什么发生时，就去执行什么，事件循环本质就是一种循环，它会不停的收集事件并执行对应这些事件的响应逻辑。</p>
+<p>因为异步编程离不开「回调」与「事件循环」，但回调与事件循环的使用容易出现回调地狱、堆栈撕裂、错误定位与处理困难等问题，Python基于asyncio标准库来实现事件循环，为了避免其带来的危害，衍生出了基于协程的处理方案，协程本身的特性也满足了回调的要求。</p>
+<p>在Python中协程与asyncio一同构建了异步编程。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>在本节中，主要介绍了异步编程中会涉及的各种概念，在下一篇中，会接着探讨Python中的异步编程，最后欢迎学习HackPython的教学课程并感谢您的阅读与支持。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python-%E8%BF%9B%E9%98%B6/" rel="tag"># Python,进阶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/06/29/Python%E8%BF%9B%E9%98%B6%E5%BF%85%E5%AD%A6%E5%BA%93%EF%BC%9Aelasticsearch-py%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3-%E4%B8%8B%E7%AF%87/" rel="prev" title="Python进阶必学库：elasticsearch-py使用详解(下篇)">
+      <i class="fa fa-chevron-left"></i> Python进阶必学库：elasticsearch-py使用详解(下篇)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/" rel="next" title="Python进阶：百万「并发」基础之异步编程（中篇）">
+      Python进阶：百万「并发」基础之异步编程（中篇） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键概念"><span class="nav-number">2.</span> <span class="nav-text"> 关键概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞与非阻塞"><span class="nav-number">3.</span> <span class="nav-text"> 阻塞与非阻塞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步与异步"><span class="nav-number">4.</span> <span class="nav-text"> 同步与异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发与并行"><span class="nav-number">5.</span> <span class="nav-text"> 并发与并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程-线程与协程"><span class="nav-number">6.</span> <span class="nav-text"> 进程、线程与协程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步编程"><span class="nav-number">7.</span> <span class="nav-text"> 异步编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">8.</span> <span class="nav-text"> 结尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

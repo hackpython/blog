@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="译自：https:&#x2F;&#x2F;medium.com&#x2F;coinmonks&#x2F;visualizing-brain-imaging-data-fmri-with-python-e1d0358d9dba   简介 大脑是人类目前所知的最复杂的器官，为了很好的了解大脑这个器官，我们做了很多努力，核磁共振成像(Magnetic Resonance Image,MRI)技术就是其中的重要突破，通过MRI的方式，我们可以">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Python对大脑成像数据进行可视化分析">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;%E4%BD%BF%E7%94%A8Python%E5%AF%B9%E5%A4%A7%E8%84%91%E6%88%90%E5%83%8F%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E6%9E%90&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="译自：https:&#x2F;&#x2F;medium.com&#x2F;coinmonks&#x2F;visualizing-brain-imaging-data-fmri-with-python-e1d0358d9dba   简介 大脑是人类目前所知的最复杂的器官，为了很好的了解大脑这个器官，我们做了很多努力，核磁共振成像(Magnetic Resonance Image,MRI)技术就是其中的重要突破，通过MRI的方式，我们可以">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190829112912.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190829113145.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901183337.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190906222807.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190906221812.png">
+<meta property="og:updated_time" content="2019-10-21T08:45:02.972Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190829112912.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/%E4%BD%BF%E7%94%A8Python%E5%AF%B9%E5%A4%A7%E8%84%91%E6%88%90%E5%83%8F%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>使用Python对大脑成像数据进行可视化分析 | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/%E4%BD%BF%E7%94%A8Python%E5%AF%B9%E5%A4%A7%E8%84%91%E6%88%90%E5%83%8F%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用Python对大脑成像数据进行可视化分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:42:46 / 修改时间：16:45:02" itemprop="dateCreated datePublished" datetime="2019-10-21T16:42:46+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>译自：<a href="https://medium.com/coinmonks/visualizing-brain-imaging-data-fmri-with-python-e1d0358d9dba" target="_blank" rel="noopener">https://medium.com/coinmonks/visualizing-brain-imaging-data-fmri-with-python-e1d0358d9dba</a></p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>大脑是人类目前所知的最复杂的器官，为了很好的了解大脑这个器官，我们做了很多努力，核磁共振成像(Magnetic Resonance Image,MRI)技术就是其中的重要突破，通过MRI的方式，我们可以获得大脑的一些数据。</p>
+<p>近年来，随着机器学习的兴起，医学数据与机器学习结合使用的情况越来越多，而要有效的使用好医学数据，其前提就是处理好这些数据，本文内容会重点介绍如何使用Python来处理与分析这些脑成像数据，不会涉及过多医学知识。</p>
+<h2 id="smri与fmri"><a class="markdownIt-Anchor" href="#smri与fmri"></a> sMRI与fMRI</h2>
+<p>脑成像相关的数据可以去SPM网站中下载，SPM的含义是统计参数映射(Statistical Paramtric Mapping)，MRI生成的数据其实就是一种参数映射数据，当然，更加方便的是在工作公众号中回复data3获得相应的数据与jupyter代码文件。</p>
+<p>下载后，其中有4个文件，其中README开头的为描述文件，fM00223为功能性核磁共振(funciton MRI,fMRI)成像数据,sM00223为结构性核磁共振(structural MRI, sMRI)成像数据。通过描述文件可知，这些数据是一个人躺在MRI机器上听「双音节词」时大脑的成像数据。</p>
+<p>为了方便理解后面数据处理的内容，有必要理解sMRI与fMRI是什么以及两者的差异。</p>
+<h3 id="结构性核磁共振smri"><a class="markdownIt-Anchor" href="#结构性核磁共振smri"></a> 结构性核磁共振(sMRI)</h3>
+<p>因为人的体内存有大量的水分子，而水分子中还有氢原子，sMRI其实就是利用氢原子来成像，这意味着人身体中的内脏、软组织等含有高水分与脂肪的器官会被清楚的扫描出来，而大脑就是这样的一个器官，通过sMRI可以清晰的看到大脑中的密集结构与大量细节，但sMRI的成像无法观察到大脑的运动情况，即无法判断那些部位目前是比较活跃的，只能给出大脑的结构细节。</p>
+<p>如下图，科学家利用sMRI对人体腹腔进行成像，从图可以看出，腹腔的结构很明显。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190829112912.png" alt="" /></p>
+<h3 id="功能性核磁共振fmri"><a class="markdownIt-Anchor" href="#功能性核磁共振fmri"></a> 功能性核磁共振(fMRI)</h3>
+<p>为了弥补sMRI的缺陷，fMRI应运而出，fMRI主要通过血氧浓度水平依赖(Blood-oxygen-level dependent，BOLD)来成像，一个器官的某个部位活跃，此时这个器官的这个部位就需要消耗更多的氧气，以此为依据，来进行成像。</p>
+<p>通过fMRI的方式，我们可以很好的判断出大脑此时那些区域是活跃的，但这种活动并不等同于神经活动，但fMRI也有缺陷，即它的成像会损失大量的细节。</p>
+<p>如下图，科学家通过fMRI，利用BOLD探索大脑活跃区域。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190829113145.png" alt="" /></p>
+<p>但从图中可以看出，大脑的细节几乎看不清晰，所以目前常规的方式是使用sMRI对大脑结构进行成像，而fMRI对大脑活跃区域进行成像。</p>
+<h2 id="smri数据可视化处理"><a class="markdownIt-Anchor" href="#smri数据可视化处理"></a> sMRI数据可视化处理</h2>
+<p>通常，神经影像文件都会以相应的规律将数据存储在固定文件格式的文件中，我们可以通过NiBabel库来读/写常见的神经影像文件中的数据。</p>
+<p>sMRI对应的数据在sM00223文件夹下，进入文件夹可以发现有两种不同文件格式的数据，分别是.img与.hdr，这其实是医学影像领域常见的格式，主要用于「分析」，其中，.img作为数据文件，包含二进制的图像资料，而.hdr作为头文件，包含图像的元数据，但这两种格式现在逐渐被.nifti格式代替，这是因为.hdr头文件难以完全真实反映元数据。</p>
+<p>使用NiBabel将sMRI获得的数据载入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> nibabel</span><br><span class="line"></span><br><span class="line"><span class="comment"># sM0223对应的文件</span></span><br><span class="line">data_path = <span class="string">'./fMRI_data/sM00223/'</span></span><br><span class="line">files = os.listdir(data_path)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取其中的数据</span></span><br><span class="line">data_all = []</span><br><span class="line"><span class="keyword">for</span> data_file <span class="keyword">in</span> files:</span><br><span class="line">    <span class="keyword">if</span> data_file[<span class="number">-3</span>:] == <span class="string">'hdr'</span>:</span><br><span class="line">        data = nibabel.load(data_path + data_file).get_data() </span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印数据维数</span></span><br><span class="line">print(data.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># -------结果</span></span><br><span class="line">(<span class="number">256</span>, <span class="number">256</span>, <span class="number">54</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>可以看出，sMRI产生的是4维数据，但第4维其实没有包含任何信息，其说明了sMRI每次扫描会产生54个数据切片，每个切片对应图像的大小为256x256个体素。</p>
+<blockquote>
+<p>体素：类似像素，像素表示的是二维图像的最小单位，而体素则用于三维成像空间。</p>
+</blockquote>
+<p>为了方面可视化每个切片的数据，可以简单处理一下数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">data = np.rot90(data.squeeze(), <span class="number">1</span>)</span><br><span class="line">print(data.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># -------结果</span></span><br><span class="line">(<span class="number">256</span>, <span class="number">256</span>, <span class="number">54</span>)</span><br></pre></td></tr></table></figure>
+<p>上述代码中，先通过numpy.squeeze()删除了数组中的单维条目，此时无用的第四维会被删除，接着使用numpy.rot90()将数组逆时针旋转了90度。</p>
+<p>简单处理后，直接使用Matplotlib对每10个切片中的一个切片进行数据的绘制。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 6 个子图，不清楚其中概念，可以看本公众号关于Matplotlib的文章</span></span><br><span class="line">fig, ax = plt.subplots(<span class="number">1</span>, <span class="number">6</span>, figsize=[<span class="number">18</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">n = <span class="number">0</span></span><br><span class="line">slice = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">    ax[n].imshow(data[:, :, slice], <span class="string">'gray'</span>)</span><br><span class="line">    ax[n].set_xticks([])</span><br><span class="line">    ax[n].set_yticks([])</span><br><span class="line">    ax[n].set_title(<span class="string">'Slice number: &#123;&#125;'</span>.format(slice), color=<span class="string">'r'</span>)</span><br><span class="line">    n += <span class="number">1</span></span><br><span class="line">    slice += <span class="number">10</span></span><br><span class="line">    </span><br><span class="line">fig.subplots_adjust(wspace=<span class="number">0</span>, hspace=<span class="number">0</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901183337.png" alt="" /></p>
+<p>这就是通过sMRI数据绘制出的大脑结构图了，其中第0层切片是最低的一个(接近脖子位置)，而第50层切片是最高的一个(接近头顶)，在第20层，可以看具有眼睛的切片。</p>
+<h2 id="fmri数据可视化处理"><a class="markdownIt-Anchor" href="#fmri数据可视化处理"></a> fMRI数据可视化处理</h2>
+<p>阅读README.txt可知fM00223数据集中，每张图像的大小为64x64个体素，采集的片数为64以及采集的卷数为96。知道了这些信息，就可以对fM00223数据集中的数据进行重构。</p>
+<p>打开fM00223文件夹，可以发现确实正好有96个Hdr文件，这意味着每个文件包含了一个卷的所有片。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># fMRI数据的基本信息</span></span><br><span class="line">x_size = <span class="number">64</span></span><br><span class="line">y_size = <span class="number">64</span></span><br><span class="line">n_slice = <span class="number">64</span></span><br><span class="line">n_volumes = <span class="number">96</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获得所有文件</span></span><br><span class="line">data_path = <span class="string">'./fMRI_data/fM00223/'</span></span><br><span class="line">files = os.listdir(data_path)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取数据并进行重塑</span></span><br><span class="line">data_all = []</span><br><span class="line"><span class="keyword">for</span> data_file <span class="keyword">in</span> files:</span><br><span class="line">    <span class="keyword">if</span> data_file[<span class="number">-3</span>:] == <span class="string">'hdr'</span>:</span><br><span class="line">        data = nibabel.load(data_path + data_file).get_data()</span><br><span class="line">        <span class="comment"># 将所有数据添加到list中，从而多了一个维度：时间维度      </span></span><br><span class="line">        data_all.append(data.reshape(x_size, y_size, n_slice))</span><br></pre></td></tr></table></figure>
+<p>接着就可以通过Matplotlib可视化展示数据了，因为组成这些数据的是体素，是三维的图像，我们无法直接看到所有的数据，所有进行切片操作，通常会横切大脑从而获得冠状面(coronal)、横切面(transversal)和矢状面(sagittal)这3个平面，理解这三个概念很重要，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190906222807.png" alt="" /></p>
+<ul>
+<li>冠状面为左，右方向将人体纵切为前后两部分的断面</li>
+<li>横切面指横向水平切割的平面</li>
+<li>矢状面是指将躯体纵断为左右两部分的解剖平面</li>
+</ul>
+<p>看一下下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 3x6 的子图，大小为 18x11</span></span><br><span class="line">fig, ax = plt.subplots(<span class="number">3</span>, <span class="number">6</span>, figsize=[<span class="number">18</span>, <span class="number">11</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 组织数据以冠状平面进行可视化，第四维度为时间维度，这里取第一个时间点</span></span><br><span class="line">coronal = np.transpose(data_all, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">0</span>])</span><br><span class="line">coronal = np.rot90(coronal, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 组织数据以横切平面进行可视化</span></span><br><span class="line">transversal = np.transpose(data_all, [<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">0</span>])</span><br><span class="line">transversal = np.rot90(transversal, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 组织数据以矢状平面进行可视化</span></span><br><span class="line">sagittal = np.transpose(data_all, [<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line">sagittal = np.rot90(sagittal, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化不同平面</span></span><br><span class="line">n = <span class="number">10</span></span><br><span class="line"><span class="comment"># 对每个切片的6个切面进行操作</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">    ax[<span class="number">0</span>][i].imshow(coronal[:, :, n, <span class="number">0</span>], cmap=<span class="string">'gray'</span>)</span><br><span class="line">    ax[<span class="number">0</span>][i].set_xticks([])</span><br><span class="line">    ax[<span class="number">0</span>][i].set_yticks([])</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">        ax[<span class="number">0</span>][i].set_ylabel(<span class="string">'coronal'</span>, fontsize=<span class="number">25</span>, color=<span class="string">'r'</span>)</span><br><span class="line">    n += <span class="number">10</span></span><br><span class="line">    </span><br><span class="line">n = <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">    ax[<span class="number">1</span>][i].imshow(transversal[:, :, n, <span class="number">0</span>], cmap=<span class="string">'gray'</span>)</span><br><span class="line">    ax[<span class="number">1</span>][i].set_xticks([])</span><br><span class="line">    ax[<span class="number">1</span>][i].set_yticks([])</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">        ax[<span class="number">1</span>][i].set_ylabel(<span class="string">'transversal'</span>, fontsize=<span class="number">25</span>, color=<span class="string">'r'</span>)</span><br><span class="line">    n += <span class="number">10</span></span><br><span class="line">    </span><br><span class="line">n = <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">    ax[<span class="number">2</span>][i].imshow(sagittal[:, :, n, <span class="number">0</span>], cmap=<span class="string">'gray'</span>)</span><br><span class="line">    ax[<span class="number">2</span>][i].set_xticks([])</span><br><span class="line">    ax[<span class="number">2</span>][i].set_yticks([])</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">        ax[<span class="number">2</span>][i].set_ylabel(<span class="string">'sagittal'</span>, fontsize=<span class="number">25</span>, color=<span class="string">'r'</span>)</span><br><span class="line">    n += <span class="number">10</span></span><br><span class="line"></span><br><span class="line">fig.subplots_adjust(wspace=<span class="number">0</span>, hspace=<span class="number">0</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190906221812.png" alt="" /></p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>感谢阅读，如果喜欢，点好看关注，如果有很想跟我说的话，欢迎直接跟我对话，个人微信：sighblue。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E8%87%AA%E7%94%B1%E8%81%8C%E4%B8%9A%E4%B9%8B%E8%B7%AF-%E4%BB%8E%E6%AF%8F%E5%B0%8F%E6%97%B65%E7%BE%8E%E5%85%83%E7%9A%84Upwork%E5%B7%A5%E4%BD%9C%E5%88%B0%E7%99%BE%E4%B8%87%E7%BE%8E%E5%85%83%E8%B7%A8%E5%A2%83%E5%92%A8%E8%AF%A2%E4%B8%9A%E5%8A%A1/" rel="prev" title="自由职业之路-从每小时5美元的Upwork工作到百万美元跨境咨询业务">
+      <i class="fa fa-chevron-left"></i> 自由职业之路-从每小时5美元的Upwork工作到百万美元跨境咨询业务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/AutoPublish-%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%96%87%E7%AB%A0%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6/" rel="next" title="AutoPublish:多平台文章发布软件">
+      AutoPublish:多平台文章发布软件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smri与fmri"><span class="nav-number">2.</span> <span class="nav-text"> sMRI与fMRI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#结构性核磁共振smri"><span class="nav-number">2.1.</span> <span class="nav-text"> 结构性核磁共振(sMRI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能性核磁共振fmri"><span class="nav-number">2.2.</span> <span class="nav-text"> 功能性核磁共振(fMRI)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smri数据可视化处理"><span class="nav-number">3.</span> <span class="nav-text"> sMRI数据可视化处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fmri数据可视化处理"><span class="nav-number">4.</span> <span class="nav-text"> fMRI数据可视化处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾"><span class="nav-number">5.</span> <span class="nav-text"> 尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

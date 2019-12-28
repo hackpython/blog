@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="简介 Python是否可以开发简单的游戏？明显是可以的。 在Python中可以利用pygame来开发一款游戏，有了pygame，就不需要我们自己去实现很低层的逻辑，如界面的刷新，物体的碰撞检测等等。 这一系列文章是我个人此前学习笔记加以整理而成(学习内容来自：http:&#x2F;&#x2F;kidscancode.org&#x2F;)，所以开发的游戏并不是我个人原创的，本系列文章会开发一款「跳跳兔」，比互联网上随处可见的飞">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用pygame开发一款游戏:「跳跳兔」(一)">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;11&#x2F;18&#x2F;%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%80&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="简介 Python是否可以开发简单的游戏？明显是可以的。 在Python中可以利用pygame来开发一款游戏，有了pygame，就不需要我们自己去实现很低层的逻辑，如界面的刷新，物体的碰撞检测等等。 这一系列文章是我个人此前学习笔记加以整理而成(学习内容来自：http:&#x2F;&#x2F;kidscancode.org&#x2F;)，所以开发的游戏并不是我个人原创的，本系列文章会开发一款「跳跳兔」，比互联网上随处可见的飞">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;WX20191101-190016.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191101193015.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191101193058.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191101212611.png">
+<meta property="og:updated_time" content="2019-11-18T02:02:29.259Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;WX20191101-190016.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>利用pygame开发一款游戏:「跳跳兔」(一) | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用pygame开发一款游戏:「跳跳兔」(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:46:36 / 修改时间：10:02:29" itemprop="dateCreated datePublished" datetime="2019-11-18T09:46:36+08:00">2019-11-18</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>Python是否可以开发简单的游戏？明显是可以的。</p>
+<p>在Python中可以利用pygame来开发一款游戏，有了pygame，就不需要我们自己去实现很低层的逻辑，如界面的刷新，物体的碰撞检测等等。</p>
+<p>这一系列文章是我个人此前学习笔记加以整理而成(学习内容来自：<a href="http://kidscancode.org/" target="_blank" rel="noopener">http://kidscancode.org/</a>)，所以开发的游戏并不是我个人原创的，本系列文章会开发一款「跳跳兔」，比互联网上随处可见的飞机大战有趣一些，其最终效果如下。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/WX20191101-190016.png" alt="" /></p>
+<p>跳跳兔🐰可以左右移动以及上下跳动，如果获得了蓝色火箭卡片，就可以跳跃比较远的距离，如果碰到了飞行敌人，就会死亡，当然，没有跳动平台上也会死亡。</p>
+<p>下面我们就分多篇文章来理解，如何利用pygame来开发这一款麻雀虽小五脏俱全的小游戏。</p>
+<p>本系列使用MacOS+Python3.6来讲解。</p>
+<p>本篇先从pygame基本使用开会讲解。</p>
+<h2 id="pygame安装与介绍"><a class="markdownIt-Anchor" href="#pygame安装与介绍"></a> pygame安装与介绍</h2>
+<p>Pygame 是跨平台 Python 模块，专为 电子游戏设计。包含图像、声音。创建在 SDL 基础上，允许实时 电子游戏研发而无需被低级语言，如 C 语言或是更低级的汇编语言束缚。</p>
+<p>Pygame 应用程序能够在 Android 手机和平板运行，采用 Pygame 对于 Andorid 的子集 (pgs4a)。支持 Android 的声音，振动，键盘和加速。但缺点是没有办法在 iOS 上运行 Pygame 应用程序。</p>
+<p>pgs4a 的主要限制是缺乏对于多点触控的支持， 这使得双指缩放，以及旋转无法使用。另一个 Pygame 在 Android 子集的替代方案是 Kivy，它包含了多点触控及 iOS 的支持。</p>
+<p>pygame的安装非常简单，直接pip安装则可</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> pygame</span><br></pre></td></tr></table></figure>
+<h2 id="pyweek游戏制作竞赛"><a class="markdownIt-Anchor" href="#pyweek游戏制作竞赛"></a> PyWeek游戏制作竞赛</h2>
+<p>PyWeek 是一个用 Python 语言开发游戏的竞赛，早期多利用 Pygame 作游戏引擎，后来也有很多不同的参赛者使用 Pyglet。这项竞赛开始于 2005 年 6 月，所有游戏必须开放源代码和媒体文件，作者持有版权并以 自由软件的协议发布。</p>
+<p>​如果使用者使用第三方的资源来发布游戏，必须确定第三方的资源为公开的 public domain 协议发放。因为开放源代码的特殊性，被众多游戏媒体所忽视。<br />
+​<br />
+因为开放源码，PyWeek 上有很多优秀的游戏代码以及游戏资源供我们参考与下载。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191101193015.png" alt="" /></p>
+<p>点开其中的游戏，可以看到提供的资源文件，我们可以将其下载到本地加以学习与使用。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191101193058.png" alt="" /></p>
+<h2 id="pygame基本使用"><a class="markdownIt-Anchor" href="#pygame基本使用"></a> pygame基本使用</h2>
+<p>开发一款游戏，本质就是利用计算机不停的刷新屏幕(帧率)并同时判断物体方块之间有没有发生碰撞，我们游戏中的各种元素本质都是一个方块，方块的移动、碰撞就可以实现游戏元素的各种效果。</p>
+<p>使用一下pygame</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">WIDTH = <span class="number">360</span></span><br><span class="line">HEIGHT = <span class="number">400</span></span><br><span class="line">FPS = <span class="number">30</span> <span class="comment"># 帧率，一秒刷新多少次</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define colors</span></span><br><span class="line">WHITE = (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)</span><br><span class="line">BLACK = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">RED = (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">GREEN = (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>)</span><br><span class="line">BLUE = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">pygame.init() <span class="comment"># pygame初始化</span></span><br><span class="line">pygame.mixer.init() <span class="comment"># mixer在pygame中用于处理一切音频相关的东西</span></span><br><span class="line">screen = pygame.display.set_mode((WIDTH, HEIGHT)) <span class="comment"># 初始化窗口</span></span><br><span class="line">pygame.display.set_caption(<span class="string">'My Game'</span>) <span class="comment"># 标题名</span></span><br><span class="line">clock = pygame.time.Clock() <span class="comment"># 计时器，主要用于控制界面刷新的频率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在一个游戏中，通过一个元素组来表示该游戏中所有的角色</span></span><br><span class="line">all_sprites = pygame.sprite.Group()</span><br></pre></td></tr></table></figure>
+<p>在代码中，我给出的了详细的注释，都是一些初始化的逻辑。我们初始化了pygame，然后初始化了mixer来处理音频相关的内容，初始化了窗口并设置了标题名，初始化了计时器，计数器主要用于控制界面刷新的频率，刷新界面的频率也称为帧率。</p>
+<p>普通人在传统的显示器上 75HZ 一下就会感觉到闪烁，85Hz 以上才可以。理论上人眼有一个 0.1 秒的视觉延迟，所以通常每秒刷新 10 次以上就可以了，但实际情况是每秒刷新 24 次以上时人眼才会分辨不出来。这里我们使用了30作为帧率，在这个帧率上，人眼看见的内容就会是连贯的。</p>
+<p>初始化完成后，还需要知道游戏开发的一个背景知识。</p>
+<p>所有的游戏其实都是一个循环，循环中通常由三个部分组成，这三个部分分别是：事件输入、元素状态更新、绘制，不同游戏之所以不同，只是对这三个事件的处理有所不同，下面我来实现最简单的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Game loop 所有游戏都是一个循环, 循环中通常由三个部分组成，事件输入、元素状态更新、绘制</span></span><br><span class="line">running = <span class="literal">True</span></span><br><span class="line"><span class="keyword">while</span> running:</span><br><span class="line">    <span class="comment"># 让循环以正确的速度运行 - 即以正确的帧率运行</span></span><br><span class="line">    clock.tick(FPS)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># some code</span></span><br><span class="line">    <span class="comment"># 处理事件输入并实现各种相应的逻辑。</span></span><br><span class="line">    <span class="comment"># some code</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line">        <span class="keyword">if</span> event.type == pygame.QUIT: <span class="comment">#如果点击 x 按钮，游戏退出，即跳出循环</span></span><br><span class="line">            running = <span class="literal">False</span></span><br><span class="line">    all_sprites.update() <span class="comment"># 更新角色</span></span><br><span class="line">    <span class="comment"># 绘制 / 渲染</span></span><br><span class="line">    screen.fill(BLACK)</span><br><span class="line">    <span class="comment"># 翻转绘画板，更新界面，绘制任何内容，都需要这个步骤，不然绘制的内容在背面，玩家是不可见的</span></span><br><span class="line">    pygame.display.flip()</span><br></pre></td></tr></table></figure>
+<p>代码中有详细的注释，唯一需要解释的就是：为何需要使用「pygame.display.flip()」实现绘画的反转，为什么要以这种方式来更新界面？</p>
+<p>这是为了避免界面卡顿与界面元素混乱等现象。</p>
+<p>可以将屏幕想象成一张卡片，卡片的正面是我们观察到的界面，此时pygame会将下一帧要绘制/渲染的内容生成到卡片的背面，当要展示时，再将卡片翻转，此时正面变为背面，背面变为正面，pygame会将背面内容清除，然后再重新绘制。</p>
+<p>运行上述代码，获得如下效果。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191101212611.png" alt="" /></p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>本节简单的介绍了Pygame相关的一些内容，此外也介绍了开发游戏的基本思路。</p>
+<p>在下一篇文章中，我们将引入玩家类，看一下pygame是如何操作元素的。</p>
+<p>如果文章对你有所帮助，请点「在看」给作者一点鼓励，叩谢豪恩。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/PyConChina-2019-%E6%B7%B1%E5%9C%B3%E4%B9%8B%E8%A1%8C/" rel="prev" title="PyConChina 2019 深圳之行">
+      <i class="fa fa-chevron-left"></i> PyConChina 2019 深圳之行
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%BA%8C/" rel="next" title="利用pygame开发一款游戏:「跳跳兔」(二)">
+      利用pygame开发一款游戏:「跳跳兔」(二) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pygame安装与介绍"><span class="nav-number">2.</span> <span class="nav-text"> pygame安装与介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pyweek游戏制作竞赛"><span class="nav-number">3.</span> <span class="nav-text"> PyWeek游戏制作竞赛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pygame基本使用"><span class="nav-number">4.</span> <span class="nav-text"> pygame基本使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾"><span class="nav-number">5.</span> <span class="nav-text"> 尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

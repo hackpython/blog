@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="这是一篇没什么用的随笔。  我写文章的时候喜欢泡茶喝，这个习惯不知道什么时候开始有的，喝茶会让我内心更加平和，手指在键盘上飞舞时也更加灵动。 我不懂茶，只是喜欢那种「纯」的感觉，这种感觉是模糊的，并不透彻，我也难以用文字将其描述清楚，但喝了一口，人就会静下来。 相比于喝西洋咖啡，茶会多出一种文化的厚重感，这很有可能是心理作用。 闲来无事泡茶喝，脑中总会时不时浮现武侠高人煮茶笑谈天下的画面，便会有">
+<meta name="keywords" content="随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不如吃茶去">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;%E4%B8%8D%E5%A6%82%E5%90%83%E8%8C%B6%E5%8E%BB&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="这是一篇没什么用的随笔。  我写文章的时候喜欢泡茶喝，这个习惯不知道什么时候开始有的，喝茶会让我内心更加平和，手指在键盘上飞舞时也更加灵动。 我不懂茶，只是喜欢那种「纯」的感觉，这种感觉是模糊的，并不透彻，我也难以用文字将其描述清楚，但喝了一口，人就会静下来。 相比于喝西洋咖啡，茶会多出一种文化的厚重感，这很有可能是心理作用。 闲来无事泡茶喝，脑中总会时不时浮现武侠高人煮茶笑谈天下的画面，便会有">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-21T08:46:37.116Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/%E4%B8%8D%E5%A6%82%E5%90%83%E8%8C%B6%E5%8E%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>不如吃茶去 | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/%E4%B8%8D%E5%A6%82%E5%90%83%E8%8C%B6%E5%8E%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          不如吃茶去
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:41:31 / 修改时间：16:46:37" itemprop="dateCreated datePublished" datetime="2019-10-21T16:41:31+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>这是一篇没什么用的随笔。</p>
+</blockquote>
+<p>我写文章的时候喜欢泡茶喝，这个习惯不知道什么时候开始有的，喝茶会让我内心更加平和，手指在键盘上飞舞时也更加灵动。</p>
+<p>我不懂茶，只是喜欢那种「纯」的感觉，这种感觉是模糊的，并不透彻，我也难以用文字将其描述清楚，但喝了一口，人就会静下来。</p>
+<p>相比于喝西洋咖啡，茶会多出一种文化的厚重感，这很有可能是心理作用。</p>
+<p>闲来无事泡茶喝，脑中总会时不时浮现武侠高人煮茶笑谈天下的画面，便会有向往之情。</p>
+<p>我泡茶十分随意，既不讲究水的使用，也不讲究茶叶的使用，更不讲究茶具的时候，电磁壶烧一壶热水，茶饼掰上小块，放入廉价的茶壶中，水入茶成，在热气腾腾之际，小品一口，将热气呼出，心神畅快。</p>
+<p>凡喝茶之人定听过洗茶一说，所谓先洗而后饮之，所以我泡茶也会装模作样，先洗后饮，但洗茶其实并不一定能洗取茶中之杂物。</p>
+<p>据查，洗茶出于北宋，主要用于洗去散茶表面杂质，从而诱发茶的香与味，但我总感觉洗茶一事形式意义大于实际意义，大多数工艺生产的茶叶，其污垢可能难以通过洗茶去除。</p>
+<p>我自己偶尔会外出买一些茶，但通常会选择普洱茶饼，回想以前不喝茶时，买了两个2005年的普洱茶饼，本想带回给父亲喝，但他却不要，儿时自己对父亲的一个印象是喜喝茶，因为平常去看他，都有泡茶喝，万万没想到，他并不喜欢，只是没啥可喝，别人又送了很多茶，才泡来喝，他喜喝的应该是啤酒，所以两个茶饼只能自己享用。</p>
+<p>我此前买茶多买铁盒子装的散茶，当时是我第一次买茶饼，喝了之后，感觉味道更浓郁，就喜欢上了。</p>
+<p>前段时间，小青柑比较流行，也买了一盒回来喝，小青柑的味道比较特别，茶中含有青柑之味，喝起来会有青涩之感，偶尔泡来提神也是极佳的，唯有不足就是，一个小青柑对于我的廉价茶壶而言太大了，很多时候，泡一壶会有很重的茶与青柑之味，此时茶已非茶，过于浓郁的茶，喝起来难以让人喜欢。</p>
+<p>现在我最常泡的茶其实并不是茶饼之茶，而是泰式手标茶，说来也巧，当时泰国之行，只是顺带买了一盒回来，并没有对其抱有什么期待，毕竟在我的印象中，泰国并不算一个有茶文化的国家，但买回来喝却别有一番味道。</p>
+<p>泰式手标茶通常是袋装的，要泡时，直接取出一袋茶叶，往壶中一放，加水即可成茶，这种茶会带有微甜之味，而缺少茶本来的淡苦，甜味时常会让人感到愉悦，但苦涩有时也很重要。</p>
+<p>那混着喝？我女友有时确实会混合着泡，但我个人并没有那么喜欢。</p>
+<p>说来惭愧，品茶之友常言：「茶里乾坤大，壶中日月长」，我虽常喝茶，但连门径都未曾窥得。</p>
+<p>茶道历史悠久，我有时会问自己，是否也要学一学茶道？</p>
+<p>此前我一直以为茶道源于中国，但后来发现「中国无茶道，茶道源于日本，中国有的是茶艺。」</p>
+<p>对我们中国人而言，茶只是开门七事之一：柴米油盐酱醋茶，它只是一个很生活化的东西，而「道」在传统文化中是很神圣的，所谓得道便可升仙，没人会将如此生活化的东西称为道，也没人会将自己高超的技艺称为道。</p>
+<p>在传统文化中，对某人高超技艺最高的褒奖就是「技近乎道」(出自&lt;庄子-养生篇&gt;，「庖丁解牛，技进乎道」)，所以我们更多将其称为「术」或「艺」，而很少称为「道」，而日本很喜欢定义各种道，但感觉更多只是喜欢那种仪式感以及那种仪式感创造出的氛围。</p>
+<p>虽说中国无茶道，但却是丰厚茶文化的起源地，这其实才是茶道、茶艺的核心，其他的只是名词之争。</p>
+<p>懂茶文化的人与我这种不懂茶文化的人，虽然都喝茶，但喝的肯定不是一种茶，这很好理解，懂音乐的听音乐会，懂艺术的鉴赏名画，跟不懂的人感受到肯定是不一样的。</p>
+<p>如何获得这种高级体验呢？</p>
+<p>这个话题太深刻了，此次不聊，吃茶去了。</p>
+<p>对了，你平时喜欢喝什么茶呢？</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/%E9%9A%8F%E7%AC%94/" rel="tag"># 随笔</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E8%AF%A6%E8%A7%A3Python-import%E6%9C%BA%E5%88%B6-%E4%B8%80-import%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="prev" title="详解Python import机制(一):import中的基本概念">
+      <i class="fa fa-chevron-left"></i> 详解Python import机制(一):import中的基本概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84Celery/" rel="next" title="动手实现一个简单的Celery">
+      动手实现一个简单的Celery <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="HackPython，最酷的方式学习python">
+<meta name="keywords" content="python,web,hack">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HackPython">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="HackPython，最酷的方式学习python">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%AE%9E%E7%8E%B0%E6%BB%A1%E8%B6%B3WSGI%E5%8D%8F%E8%AE%AE%E7%9A%84Web%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%AE%9E%E7%8E%B0%E6%BB%A1%E8%B6%B3WSGI%E5%8D%8F%E8%AE%AE%E7%9A%84Web%E6%9C%8D%E5%8A%A1/" class="post-title-link" itemprop="url">实现满足WSGI协议的Web服务</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-18 09:52:16" itemprop="dateCreated datePublished" datetime="2019-11-18T09:52:16+08:00">2019-11-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-30 22:59:53" itemprop="dateModified" datetime="2019-11-30T22:59:53+08:00">2019-11-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>面试Python web相关岗位时，最容易被问到的问题，WSGI协议是什么？</p>
+<p>这篇文章就简单解释一下WSGI并实现一个满足WSGI协议的服务。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/2019/11/18/%E5%AE%9E%E7%8E%B0%E6%BB%A1%E8%B6%B3WSGI%E5%8D%8F%E8%AE%AE%E7%9A%84Web%E6%9C%8D%E5%8A%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E4%B8%8D%E8%A6%81%E7%AD%89%E5%88%B0%E4%BD%BF%E7%94%A8%E3%80%8C%E6%B0%B4%E6%BB%B4%E7%AD%B9%E3%80%8D%E6%97%B6%E6%89%8D%E6%84%8F%E8%AF%86%E5%88%B0%E9%A3%8E%E9%99%A9%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E4%B8%8D%E8%A6%81%E7%AD%89%E5%88%B0%E4%BD%BF%E7%94%A8%E3%80%8C%E6%B0%B4%E6%BB%B4%E7%AD%B9%E3%80%8D%E6%97%B6%E6%89%8D%E6%84%8F%E8%AF%86%E5%88%B0%E9%A3%8E%E9%99%A9%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">不要等到使用「水滴筹」时才意识到风险控制</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:51:48 / 修改时间：09:51:58" itemprop="dateCreated datePublished" datetime="2019-11-18T09:51:48+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>时常在朋友圈看见好友们为人转发「水滴筹」，某某重病，很需要钱，我路过看见，是认识的人，都会小捐10~20块。</p>
+<p>对重病来说，我这点钱形式意义大于实际意义，杯水车薪。</p>
+<p>有时看见「水滴筹」会有点恍惚，自己父母也到了容易生各种病的年纪了，我是不是马上也要面临这样的问题了？</p>
+<p>我是个爱面子的人，不到很困难的时候，是不会弄「水滴筹」求朋友转发集钱治病的，但谁不爱面子？现实就是，一场重病掏空普通中产家庭，这可能就是富人与中产之间最明显的差别，此时钱就是命。</p>
+<p>实话说，我家没什么钱，我想象着自己父母重病，我能做什么？</p>
+<p>那时我自己可能也成家了，父母重病，作为子女，我得拿出所有的钱给他们治病？那后面的房贷、小孩开销呢？而且钱也不都是我挣的，跟另一半该怎么说？</p>
+<p>没有钱，自己的小家难以维持，不给钱治父母的病又不现实。</p>
+<p>为了减少这种两难情况落到我头上的概率，我选择去了解商业保险。</p>
+<p>注意，我不会给你推荐任何保险，只会说出我个人的看法感觉以及我与父母在保险这事上的博弈。</p>
+<p>商业保险，给人的第一印象就是骗钱的。</p>
+<p>无论跟父母说还是跟几个亲近的朋友讲，他们都会有这样的感觉，商业保险会给你设置很多细节，到你真的得病了，肯定会说你不满足这个条件不满足那个条件，最终不会给你赔钱。这玩意就是骗钱的。</p>
+<p>面对这样的问题，我会简单的解释，商业保险是为了挣钱，我们买，只是买个不一定用的上的保障而已，主要的目的是减低自己未来生活所面对的风险。</p>
+<p>这话说的很像一个保险推销人员。</p>
+<p>对于朋友，我简单说一下，他们不听就罢了，但对于父母，他们就必须理解。</p>
+<p>没错，我就TM想给保险公司赚这个钱，我不想以后你们得个重病，我挣扎都无法挣扎，所以我花钱，跟保险公司做对赌。</p>
+<p>要说服对商业保险已有比较严重偏见的父母是很有难度的事情，母亲常跟我讲，我们已经买了200多的社保了，你给我和老爸买的保险就没必要了，那么贵。</p>
+<p>此前，母亲在我面前说这话的频率并不高，直到她腰部出了问题，去住院后，想起我有这个保险，寻思着可以弄一下，省一笔钱，可结果是被拒保了。</p>
+<p>原因其实也简单，因为这个病在投保前就存在了，所以你买的保险无法生效了。</p>
+<p>但其实我在投保前，我母亲身体是很健康的，至少在电子病历上，问题出在治病时，母亲想要医生意识到自己的问题挺严重的，希望他认真的治一下，就特意说，腰痛了很久了，医生这样一记，电子病历就显示你这个病有很长时间了，而商业保险不会理会你主观倾诉，只看数据这些客观条件，它此时就会判断你在购买它之前已经患有这个病，是不能被报销的。</p>
+<p>这事之后，父母愈发觉得这玩意骗钱，让我费了点脑子。最后使出大绝招，我的钱怎么花，花谁身上是我个人的事情，你们要做的就是提供个人信息配合一下我花钱，而且这个钱本质上来说不是为你们花的，是为我自己花的，避免你们生病了，我产生严重的财务危机。</p>
+<p>此外，跟父母交流的一个技巧就是用他们熟悉的东西来举例子，比如我跟父亲说，你买那些乱七八糟的股票都知道要弄个对冲，买个车子，都要上这个保险那个保险，到最重要的身体上，你就觉得这个不行那个骗人，你觉得身体和股票车子这些哪个重要？</p>
+<p>有这样的情况并不奇怪，我个人就是从怀疑商业保险被「洗脑」成相信商业保险的，想被「洗脑」？去看本专门讲保险的书就好了，了解其盈利原理，了解其大致种类，了解保险经纪人这个物种等等，大致的了解后，对商业保险妖魔化的感觉就会清淡很多。</p>
+<p>但就算看完一些相关的书籍，我也不建议你自己去选保险，选择保险还是需要专业人士的，毕竟品种那么多，差异那么细。</p>
+<p>另外一个误解就是觉得，商业保险我想买就能买。实话说，我想给我父亲上重疾已经没有较高性价比的产品给我选择了，最终只给他老人家上了百万医疗险，而我母亲年轻一些，可以选的产品比较多，我就将重疾和医疗险都上了。</p>
+<p>总结而言，我买了一些保险，要连续交个10年左右，花个十几万，在这段时间，父母不幸患了病，如果满足保险要求，就有一定的缓冲。</p>
+<p>你可能会问，那不满足呢？又花了保险钱，到头来还是要花那多钱治病？</p>
+<p>如果这种最惨情况发生了，只能认。我对保险做的所有事情都是降低出现重大风险的概率，而无法杜绝它，我一直都明白，成年人的世界难有十全十美的方法，选个「较好的」就行了。</p>
+<p>希望这篇文章可以让你思考一下保险，思考一下风险控制，我们现在也老大不小了，除了游戏外，是得掌握点其他东西了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%AE%8C%E7%BB%93%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%AE%8C%E7%BB%93%E7%AF%87/" class="post-title-link" itemprop="url">利用pygame开发一款游戏:「跳跳兔」(完结篇)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:48:17 / 修改时间：10:02:28" itemprop="dateCreated datePublished" datetime="2019-11-18T09:48:17+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>通过前面九篇文章的编写，「跳跳兔」游戏基本已经被编写出来了，本节在此基础上进一步完善它，并添加上云彩背景。</p>
+<h2 id="添加云彩背景"><a class="markdownIt-Anchor" href="#添加云彩背景"></a> 添加云彩背景</h2>
+<p>添加云彩背景的大致步骤如下。</p>
+<ul>
+<li>1.编写云彩类</li>
+<li>2.载入云彩图片</li>
+<li>3.随机生成云彩</li>
+<li>4.云彩同步移动</li>
+</ul>
+<p>一步步来编写，首先是创建云彩类，代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cloud</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        self._layer = CLOUD_LAYER</span><br><span class="line">        self.groups = game.all_sprites, game.clouds</span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups)</span><br><span class="line">        self.game = game</span><br><span class="line">        self.image = random.choice(self.game.cloud_images)</span><br><span class="line">        self.image.set_colorkey(BLACK)</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        <span class="comment"># 随机出现位置</span></span><br><span class="line">        scale = random.randrange(<span class="number">50</span>, <span class="number">101</span>) / <span class="number">100</span></span><br><span class="line">        self.image = pg.transform.scale(self.image, (int(self.rect.width * scale),</span><br><span class="line">                                                     int(self.rect.height * scale)))</span><br><span class="line">        self.rect.x = random.randrange(WIDTH - self.rect.width)</span><br><span class="line">        self.rect.y = random.randrange(<span class="number">-500</span>, <span class="number">-50</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 云朵大于2倍高度，就被消除</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.top &gt; HEIGHT * <span class="number">2</span>:</span><br><span class="line">            self.kill()</span><br></pre></td></tr></table></figure>
+<p>代码内容与此前内容非常类似，不再详细分析。</p>
+<p>但你仔细观察，你会发现，Cloud类的__init__()方法中创建了 self._layer，并通过如下形式将其加入到相应的groups中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.groups = game.all_sprites, game.clouds</span><br><span class="line">pg.sprite.Sprite.__init__(self, self.groups)</span><br></pre></td></tr></table></figure>
+<p>这是一个优化点，后文再讨论。</p>
+<p>构建了Cloud类后，接着要做的就是载入图片、随机生成以及同步移动了，轻车熟路。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">(self)</span>:</span> <span class="comment"># 加载数据</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        <span class="comment"># 加载云彩图片</span></span><br><span class="line">        self.cloud_images = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):</span><br><span class="line">            self.cloud_images.append(pg.image.load(os.path.join(img_dir, <span class="string">'cloud&#123;&#125;.png'</span>.format(i))).convert())</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.score = <span class="number">0</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        <span class="comment"># 创建云彩</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">            c = Cloud(self)</span><br><span class="line">            c.rect.y += <span class="number">500</span></span><br><span class="line">        self.run()</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">         <span class="comment"># 玩家到达游戏框 1/4 处时（注意，游戏框，头部为0，底部为游戏框长度，到到游戏框的1/4处，表示已经到达了顶部一部分了）</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.top &lt;= HEIGHT / <span class="number">4</span>:</span><br><span class="line">            <span class="comment"># 玩家位置移动（往下移动）</span></span><br><span class="line">            self.player.pos.y += max(abs(self.player.vel.y), <span class="number">2</span>)</span><br><span class="line">            <span class="comment"># 随机生成新云朵</span></span><br><span class="line">            <span class="keyword">if</span> random.randrange(<span class="number">100</span>) &lt; <span class="number">10</span>:</span><br><span class="line">                Cloud(self)</span><br><span class="line">            <span class="comment"># 云彩同步移动</span></span><br><span class="line">            <span class="keyword">for</span> cloud <span class="keyword">in</span> self.clouds:</span><br><span class="line">                cloud.rect.y += max(abs(self.player.vel.y / <span class="number">2</span>), <span class="number">2</span>)</span><br><span class="line">            <span class="comment"># 敌人位置同步往下移动</span></span><br><span class="line">            <span class="keyword">for</span> mob <span class="keyword">in</span> self.mobs:</span><br><span class="line">                mob.rect.y += max(abs(self.player.vel.y), <span class="number">2</span>)</span><br><span class="line">            <span class="comment"># 平台在游戏框外时，将其注销，避免资源浪费</span></span><br><span class="line">            <span class="keyword">for</span> plat <span class="keyword">in</span> self.platforms:</span><br><span class="line">                <span class="comment"># 平台移动位置（往下移动，移动的距离与玩家相同，这样玩家才能依旧站立在原本的平台上）</span></span><br><span class="line">                plat.rect.y += max(abs(self.player.vel.y), <span class="number">2</span>)</span><br><span class="line">                <span class="keyword">if</span> plat.rect.top &gt;= HEIGHT: </span><br><span class="line">                    plat.kill()</span><br><span class="line">                    <span class="comment"># 分数增加 - 平台销毁，分数相加</span></span><br><span class="line">                    self.score += <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>woo~，搞定，如果有疑惑，可以拉下github代码对照着看。</p>
+<h2 id="优化"><a class="markdownIt-Anchor" href="#优化"></a> 优化</h2>
+<p>云彩类添加完了，接着来进行一些优化。</p>
+<p>首先，对碰撞检测的优化，如果你仔细观察，你会发现，玩家对象与敌人对象的本体还没有接触到，就触发了碰撞检测，游戏就结束了，造成这种现象的原因是，玩家也好、敌人也好，游戏中的任何元素都是一个对应大小的长方形，碰撞检测默认形式就是对这两个方块进行检测，此时两个元素本身可能没有接触，但对应的方块接触到了，所以触发了碰撞检测。</p>
+<p>为了避免这种情况，可以利用pygame的蒙版机制mask，为Player、Mob都创建相应的蒙版，具体做法如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">animate</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        self.mask = pg.mask.from_surface(self.image) <span class="comment"># 创建蒙版</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mob</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        self.mask = pg.mask.from_surface(self.image) <span class="comment"># 创建蒙版</span></span><br><span class="line">        self.rect.center = center</span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br></pre></td></tr></table></figure>
+<p>检测时，加上pygame.sprite.collide_mask回调则可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        <span class="comment"># 碰撞检测 - 如果碰撞到了敌人，游戏结束</span></span><br><span class="line">        mob_hits = pg.sprite.spritecollide(self.player, self.mobs, <span class="literal">False</span>, pg.sprite.collide_mask)</span><br><span class="line">        <span class="keyword">if</span> mob_hits:</span><br><span class="line">            self.playing = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>此外还有个需要优化的问题，就是元素图层关系，增加云彩对象后，图层关系的问题显得明显，云彩作为背景却会遮挡玩家对象、敌人对象、平台对象等，这是不合理的，不同元素应该在不同图层，从而合理的显示出来。</p>
+<p>首先定义好不同元素要出现的图层。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不同元素在不同层</span></span><br><span class="line">PLAYER_LAYER = <span class="number">2</span> <span class="comment"># 玩家</span></span><br><span class="line">PLATFORM_LAYER = <span class="number">1</span> <span class="comment"># 平台</span></span><br><span class="line">POW_LAYER = <span class="number">1</span> <span class="comment"># 道具</span></span><br><span class="line">MOB_LAYER = <span class="number">2</span> <span class="comment"># 敌人</span></span><br><span class="line">CLOUD_LAYER = <span class="number">0</span> <span class="comment"># 云</span></span><br></pre></td></tr></table></figure>
+<p>然后为不同的元素对象都添加上设置图层的逻辑</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Sprite.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        self._layer = PLAYER_LAYER <span class="comment"># 对应的图层</span></span><br><span class="line">        self.groups = game.all_sprites <span class="comment"># 所在的组</span></span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups) <span class="comment"># 添加、实例化</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Platform</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game, x, y)</span>:</span></span><br><span class="line">        self._layer = PLATFORM_LAYER <span class="comment"># 对应的图层</span></span><br><span class="line">        self.groups = game.all_sprites, game.platforms <span class="comment"># 所在的组</span></span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups) <span class="comment"># 添加、实例化</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pow</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game, plat)</span>:</span></span><br><span class="line">        self._layer = POW_LAYER</span><br><span class="line">        self.groups = game.all_sprites, game.powerups</span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups)</span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mob</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        self._layer = MOB_LAYER</span><br><span class="line">        self.groups = game.all_sprites, game.mobs</span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups)</span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cloud</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        self._layer = CLOUD_LAYER</span><br><span class="line">        self.groups = game.all_sprites, game.clouds</span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups)</span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br></pre></td></tr></table></figure>
+<p>优化后，再修改一个Game类的new()方法，使用pygame.sprite.LayeredUpdates()来实例化all_sprites对象。</p>
+<p>LayeredUpdates（分层更新）是一个精灵组，它可以处理图层并顺序绘制元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.score = <span class="number">0</span></span><br><span class="line">        <span class="comment"># self.all_sprites = pg.sprite.Group()</span></span><br><span class="line">        <span class="comment"># 层次添加，避免元素重叠显示(如背景云遮挡住平台与玩家)</span></span><br><span class="line">        self.all_sprites = pg.sprite.LayeredUpdates()</span><br><span class="line">        self.platforms = pg.sprite.Group()</span><br><span class="line">        self.powerups = pg.sprite.Group() <span class="comment"># 急速飞跃道具</span></span><br><span class="line">        self.mobs = pg.sprite.Group() <span class="comment"># 敌人对象</span></span><br><span class="line">        self.clouds = pg.sprite.Group() <span class="comment"># 云彩对象</span></span><br><span class="line">        self.player = Player(self)</span><br><span class="line">        self.all_sprites.add(self.player)</span><br><span class="line">        <span class="keyword">for</span> plat <span class="keyword">in</span> PLATFORM_LIST:</span><br><span class="line">            p = Platform(self, *plat)</span><br><span class="line">            <span class="comment"># self.all_sprites.add(p)</span></span><br><span class="line">            <span class="comment"># self.platforms.add(p)</span></span><br><span class="line">        self.mob_timer = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 游戏的背景音乐</span></span><br><span class="line">        pg.mixer.music.load(os.path.join(self.snd_dir, <span class="string">'Happy Tune.ogg'</span>))</span><br><span class="line">        <span class="comment"># 创建云彩</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">            c = Cloud(self)</span><br><span class="line">            c.rect.y += <span class="number">500</span></span><br><span class="line">        self.run()</span><br></pre></td></tr></table></figure>
+<p>最终效果如下。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191115121354.png" alt="" /></p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>「跳跳兔」至此开发完啦，Pygame系列的文章也暂时告一段落啦。</p>
+<p>「跳跳兔」代码github：<a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>Pygame还有很多有趣的功能在「跳跳兔」游戏中并没有体现出来。</p>
+<p>正如本系列第一篇文章所说，这些文章只是学习笔记，此外还有下面两个游戏的学习笔记，一个是打飞机、一个是RPG打僵尸游戏。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191115122050.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191115122131.png" alt="" /></p>
+<p>如果大家感兴趣，记得告诉我，我才有动力继续分享，后面按个人计划应该会以漫画形式分享算法、计算机基础方面的东西，希望喜欢。</p>
+<p>最后，再次声明一下，学习内容来自：<a href="http://kidscancode.org/%EF%BC%8C%E6%B8%B8%E6%88%8F%E5%B9%B6%E4%B8%8D%E6%98%AF%E8%87%AA%E4%B8%BB%E5%8E%9F%E5%88%9B%E7%9A%84%E3%80%82" target="_blank" rel="noopener">http://kidscancode.org/，游戏并不是自主原创的。</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B9%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B9%9D/" class="post-title-link" itemprop="url">利用pygame开发一款游戏:「跳跳兔」(九)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:48:04 / 修改时间：10:02:26" itemprop="dateCreated datePublished" datetime="2019-11-18T09:48:04+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>在上一节中，我们对「跳跳兔」进行了简单的优化，然后为游戏中不同的状态添加不同的音乐。</p>
+<p>这一节，为游戏添加道具与敌人，触碰到道具，玩家可以急速飞跃，触碰到敌人，玩家将会死亡，游戏结束</p>
+<h2 id="添加道具"><a class="markdownIt-Anchor" href="#添加道具"></a> 添加道具</h2>
+<p>先整理一下添加道具其整体思路。</p>
+<ul>
+<li>1.加载道具图片</li>
+<li>2.加载触发道具时的音效</li>
+<li>3.让道具随机出现到平台上</li>
+<li>4.碰撞检测 - 触碰到道具后会有的效果</li>
+</ul>
+<p>想要的效果，道具随机出现在不同的平台上，玩家触碰到，会飞速向上飞跃。</p>
+<p>一步步来实现。</p>
+<p>首先构建一个新的类来表示这个道具。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pow</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game, plat)</span>:</span></span><br><span class="line">        self.groups = game.all_sprites, game.powerups</span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups)</span><br><span class="line">        self.game = game <span class="comment"># 整个游戏对象</span></span><br><span class="line">        self.plat = plat <span class="comment"># 平台对象</span></span><br><span class="line">        self.type = random.choice([<span class="string">'boost'</span>])</span><br><span class="line">        <span class="comment"># 加载道具图片</span></span><br><span class="line">        self.image = self.game.spritesheet.get_image(<span class="number">820</span>, <span class="number">1805</span>, <span class="number">71</span>, <span class="number">70</span>)</span><br><span class="line">        self.image.set_colorkey(BLACK)</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        <span class="comment"># 道具出现在平台中间的上方</span></span><br><span class="line">        self.rect.centerx = self.plat.rect.centerx</span><br><span class="line">        self.rect.bottom = self.plat.rect.top - <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>代码关键部分有相应的注释，不再详细分析。</p>
+<p>然后在平台实例化时，随机实例化道具对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Platform</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game, x, y)</span>:</span></span><br><span class="line">        <span class="comment">#... 省略无关代码</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 随机在平台上初始化道具</span></span><br><span class="line">        <span class="keyword">if</span> random.randrange(<span class="number">100</span>) &lt; POW_SPAWN_PCT:</span><br><span class="line">            Pow(self.game, self)</span><br></pre></td></tr></table></figure>
+<p>这样，道具实例化就完成了。</p>
+<p>接着添加音效。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">(self)</span>:</span> <span class="comment"># 加载数据</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载音乐</span></span><br><span class="line">        self.snd_dir = os.path.join(self.dir, <span class="string">'snd'</span>)</span><br><span class="line">        <span class="comment"># 跳跃时音效</span></span><br><span class="line">        self.jump_sound = pg.mixer.Sound(os.path.join(self.snd_dir, <span class="string">'Jump33.wav'</span>))</span><br><span class="line">        <span class="comment"># 使用道具时音效</span></span><br><span class="line">        self.boost_sound = pg.mixer.Sound(os.path.join(self.snd_dir, <span class="string">'Boost16.wav'</span>))</span><br></pre></td></tr></table></figure>
+<p>至此，只剩道具碰撞检测逻辑未完成了。来搞一搞</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        <span class="comment"># 碰撞检测 - 玩家碰撞到急速飞跃道具</span></span><br><span class="line">        pow_hits = pg.sprite.spritecollide(self.player, self.powerups, <span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">for</span> pow <span class="keyword">in</span> pow_hits:</span><br><span class="line">            <span class="comment"># 道具类型 - 不同道具可以实现不同的效果</span></span><br><span class="line">            <span class="keyword">if</span> pow.type == <span class="string">'boost'</span>:</span><br><span class="line">                self.boost_sound.play() <span class="comment"># 播放相应的音效</span></span><br><span class="line">                self.player.vel.y = -BOOST_POWER <span class="comment"># 快递移动的距离</span></span><br><span class="line">                self.player.jumping = <span class="literal">False</span> <span class="comment"># 此时不为跳跃状态</span></span><br></pre></td></tr></table></figure>
+<p>此时如果直接运行，会发现，玩家移动时，道具也会同步移动，原因是这部分代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 调用所有元素的update()方法</span></span><br><span class="line">        self.all_sprites.update()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 玩家到达游戏框 1/4 处时（注意，游戏框，头部为0，底部为游戏框长度，到到游戏框的1/4处，表示已经到达了顶部一部分了）</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.top &lt;= HEIGHT / <span class="number">4</span>:</span><br><span class="line">            <span class="comment"># 玩家位置移动（往下移动）</span></span><br><span class="line">            self.player.pos.y += abs(self.player.vel.y)</span><br><span class="line">            <span class="comment"># 平台在游戏框外时，将其注销，避免资源浪费</span></span><br><span class="line">            <span class="keyword">for</span> plat <span class="keyword">in</span> self.platforms:</span><br><span class="line">                <span class="comment"># 平台移动位置（往下移动，移动的距离与玩家相同，这样玩家才能依旧站立在原本的平台上）</span></span><br><span class="line">                plat.rect.y += abs(self.player.vel.y)</span><br><span class="line">                <span class="keyword">if</span> plat.rect.top &gt;= HEIGHT: </span><br><span class="line">                    plat.kill()</span><br><span class="line">                    <span class="comment"># 分数增加 - 平台销毁，分数相加</span></span><br><span class="line">                    self.score += <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>此时为了避免道具同步移动，在Pow类中创建update()方法，实现如下逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 道具对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pow</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game, plat)</span>:</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 更新时，避免道具一同移动</span></span><br><span class="line">        self.rect.bottom = self.plat.rect.top - <span class="number">5</span></span><br><span class="line">        <span class="comment"># 如果道具对应的平台已经被消除，那么道具也要被消除</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.game.platforms.has(self.plat):</span><br><span class="line">            self.kill() <span class="comment"># 消除道具</span></span><br></pre></td></tr></table></figure>
+<p>最终效果如下。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191114112553.png" alt="" /></p>
+<h2 id="添加敌人"><a class="markdownIt-Anchor" href="#添加敌人"></a> 添加敌人</h2>
+<p>在实现前，依旧先整理一下实现的整体逻辑。</p>
+<ul>
+<li>1.构建敌人类</li>
+<li>2.敌人移动效果</li>
+<li>3.敌人随机出现效果</li>
+<li>4.敌人碰撞检测</li>
+<li>5.敌人不与跳跳兔同步移动</li>
+</ul>
+<p>首先来构建敌人类，代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mob</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        self.groups = game.all_sprites, game.mobs</span><br><span class="line">        pg.sprite.Sprite.__init__(self, self.groups)</span><br><span class="line">        self.game = game</span><br><span class="line">        <span class="comment"># 加载不同状态的图片</span></span><br><span class="line">        self.image_up = self.game.spritesheet.get_image(<span class="number">566</span>, <span class="number">510</span>, <span class="number">122</span>, <span class="number">139</span>)</span><br><span class="line">        self.image_up.set_colorkey(BLACK)</span><br><span class="line">        self.image_down = self.game.spritesheet.get_image(<span class="number">568</span>, <span class="number">1534</span>, <span class="number">122</span>, <span class="number">135</span>)</span><br><span class="line">        self.image_down.set_colorkey(BLACK)</span><br><span class="line">        self.image = self.image_up <span class="comment"># 默认为向上的图片</span></span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        <span class="comment"># x轴中心位置随机选择</span></span><br><span class="line">        self.rect.centerx = random.choice([<span class="number">-100</span>, WIDTH + <span class="number">100</span>])</span><br><span class="line">        <span class="comment"># 随机x轴速度</span></span><br><span class="line">        self.vx = random.randrange(<span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">        <span class="keyword">if</span> self.rect.centerx &gt; WIDTH:</span><br><span class="line">            self.vx *= <span class="number">-1</span></span><br><span class="line">        <span class="comment"># 随机敌人y轴位置</span></span><br><span class="line">        self.rect.y = random.randrange(HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.vy = <span class="number">0</span> <span class="comment"># y轴速度默认为0</span></span><br><span class="line">        self.dy = <span class="number">0.5</span></span><br></pre></td></tr></table></figure>
+<p>__init__()方法中，为敌人添加了不同状态的两种图片并随机敌人初始centerx、x轴速度与y轴位置。</p>
+<p>接着实现敌人移动效果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mob</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        <span class="comment"># ... 省略</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.rect.x += self.vx <span class="comment"># x轴位置移动</span></span><br><span class="line">        self.vy += self.dy</span><br><span class="line">        <span class="comment"># 实现上下抖动移动的效果</span></span><br><span class="line">        <span class="keyword">if</span> self.vy &gt; <span class="number">3</span> <span class="keyword">or</span> self.vy &lt; <span class="number">-3</span>: </span><br><span class="line">            self.dy *= <span class="number">-1</span></span><br><span class="line">        center = self.rect.center</span><br><span class="line">        <span class="comment"># 上下移动方向不同，使用不同的图片</span></span><br><span class="line">        <span class="keyword">if</span> self.dy &lt; <span class="number">0</span>:</span><br><span class="line">            self.image = self.image_up</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.image = self.image_down</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        self.rect.center = center</span><br><span class="line">        <span class="comment"># y轴具体的移动</span></span><br><span class="line">        self.rect.y += self.vy</span><br><span class="line">        <span class="comment"># 超过屏幕范围，删除敌人</span></span><br><span class="line">        <span class="keyword">if</span> self.rect.left &gt; WIDTH + <span class="number">100</span> <span class="keyword">or</span> self.rect.right &lt; <span class="number">-100</span>:</span><br><span class="line">            self.kill()</span><br></pre></td></tr></table></figure>
+<p>看注释就可明白代码的含义，不再详细分析。</p>
+<p>接着实现产生敌人与碰撞检测相关逻辑，代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.score = <span class="number">0</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        self.powerups = pg.sprite.Group() <span class="comment"># 急速飞跃道具</span></span><br><span class="line">        self.mobs = pg.sprite.Group() <span class="comment"># 敌人对象</span></span><br><span class="line">        <span class="comment"># ... 省略无关代码</span></span><br><span class="line">        self.mob_timer = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.all_sprites.update()</span><br><span class="line">        <span class="comment"># 产生敌人</span></span><br><span class="line">        now = pg.time.get_ticks()</span><br><span class="line">        <span class="comment"># 通过时间间隔来判断是否要产生敌人</span></span><br><span class="line">        <span class="keyword">if</span> now - self.mob_timer &gt; <span class="number">5000</span> + random.choice([<span class="number">-1000</span>, <span class="number">-500</span>, <span class="number">0</span>, <span class="number">500</span>, <span class="number">1000</span>]):</span><br><span class="line">            self.mob_timer = now</span><br><span class="line">            Mob(self)</span><br><span class="line">        <span class="comment"># 碰撞检测 - 如果碰撞到了敌人，游戏结束</span></span><br><span class="line">        mob_hits = pg.sprite.spritecollide(self.player, self.mobs, <span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> mob_hits:</span><br><span class="line">            self.playing = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>通过时间间隔的形式随机产生敌人，至于碰撞检测…一样的逻辑。</p>
+<p>最后，为了避免敌人元素跟随跳跳兔一同移动，需要添加如下逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 玩家到达游戏框 1/4 处时（注意，游戏框，头部为0，底部为游戏框长度，到到游戏框的1/4处，表示已经到达了顶部一部分了）</span></span><br><span class="line">    <span class="keyword">if</span> self.player.rect.top &lt;= HEIGHT / <span class="number">4</span>:</span><br><span class="line">        <span class="comment"># 玩家位置移动（往下移动）</span></span><br><span class="line">        self.player.pos.y += abs(self.player.vel.y)</span><br><span class="line">        <span class="comment"># 平台在游戏框外时，将其注销，避免资源浪费</span></span><br><span class="line">        <span class="keyword">for</span> plat <span class="keyword">in</span> self.platforms:</span><br><span class="line">            <span class="comment"># 平台移动位置（往下移动，移动的距离与玩家相同，这样玩家才能依旧站立在原本的平台上）</span></span><br><span class="line">            plat.rect.y += abs(self.player.vel.y)</span><br><span class="line">            <span class="keyword">if</span> plat.rect.top &gt;= HEIGHT: </span><br><span class="line">                plat.kill()</span><br><span class="line">                <span class="comment"># 分数增加 - 平台销毁，分数相加</span></span><br><span class="line">                self.score += <span class="number">10</span></span><br><span class="line">        <span class="comment"># 敌人位置同步往下移动</span></span><br><span class="line">        <span class="keyword">for</span> mob <span class="keyword">in</span> self.mobs:</span><br><span class="line">            mob.rect.y += max(abs(self.player.vel.y), <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>最终效果如下。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191114105226.png" alt="" /></p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>在本节中，我们对「跳跳兔」做了道具与敌人的添加，增加了「跳跳兔游戏的趣味性」。</p>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github，图片资源与音乐资源也在github上。</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%85%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%85%AB/" class="post-title-link" itemprop="url">利用pygame开发一款游戏:「跳跳兔」(八)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:54 / 修改时间：10:02:24" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:54+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>处理私事，拖更许久，抱歉抱歉。</p>
+<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>在第七节中，实现了玩家对象的动画效果以及平台的图片化。</p>
+<p>本节将细节优化一下，然后加上相应的配音。</p>
+<h2 id="细节优化"><a class="markdownIt-Anchor" href="#细节优化"></a> 细节优化</h2>
+<p>如果你有仔细的试玩第七节实现的跳跳兔，会发现一些瑕疵，这里简单修改一下。</p>
+<p>瑕疵1：跳跳兔会平移。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191113223629.png" alt="" /></p>
+<p>造成该现象的代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.all_sprites.update()</span><br><span class="line">        <span class="comment"># # 玩家在界面中时(y&gt;0)，进行碰撞检测，检测玩家是否碰撞到平台</span></span><br><span class="line">        <span class="keyword">if</span> self.player.vel.y &gt; <span class="number">0</span>:</span><br><span class="line">            hits = pg.sprite.spritecollide(self.player, self.platforms, <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 会产生平移效果</span></span><br><span class="line">            <span class="keyword">if</span> hits:</span><br><span class="line">                self.player.pos.y = hits[<span class="number">0</span>].rect.top</span><br><span class="line">                self.player.vel.y = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">...<span class="comment"># 省略其他无关代码</span></span><br></pre></td></tr></table></figure>
+<p>在update()方法检查碰撞检测时，如果发生了碰撞，就直接将hits列表中第一个元素赋值给player玩家对象，从而造成了跳跳兔本身没有跳跃，只是碰到了平台周围，就瞬移到上一个平台的效果。</p>
+<p>代码进行如下修改。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.all_sprites.update()</span><br><span class="line">        <span class="comment"># # 玩家在界面中时(y&gt;0)，进行碰撞检测，检测玩家是否碰撞到平台</span></span><br><span class="line">        <span class="keyword">if</span> self.player.vel.y &gt; <span class="number">0</span>:</span><br><span class="line">            hits = pg.sprite.spritecollide(self.player, self.platforms, <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> hits:</span><br><span class="line">                lowest = hits[<span class="number">0</span>]</span><br><span class="line">                <span class="keyword">for</span> hit <span class="keyword">in</span> hits:</span><br><span class="line">                    <span class="keyword">if</span> hit.rect.bottom &gt; lowest.rect.bottom:</span><br><span class="line">                        lowest = hit <span class="comment"># 保存最小的值</span></span><br><span class="line">                    <span class="comment"># 避免平移效果 - 兔子最底部没有小于碰撞检测中的最小值，则不算跳跃到平台上</span></span><br><span class="line">                    <span class="keyword">if</span> self.player.pos.y &lt; lowest.rect.centery:</span><br><span class="line">                        self.player.pos.y = lowest.rect.top</span><br><span class="line">                        self.player.vel.y = <span class="number">0</span></span><br><span class="line">                        self.player.jumping = <span class="literal">False</span></span><br><span class="line">                        </span><br><span class="line">...<span class="comment"># 省略其他无关代码</span></span><br></pre></td></tr></table></figure>
+<p>发送碰撞时，要进一步判断，先获得碰撞时，碰撞对象hit底部的最小值，然后判断此时玩家对象的位置y轴坐标是否要小于lowest对象的中心位置，如果小于，则说明玩家对象在lowest之上，此时才移动玩家对象。</p>
+<p>瑕疵2：跳跃太高，可玩性低</p>
+<p>简单点击空格，跳跳兔就可以跳很高，让游戏变得简单无趣，这里加多些逻辑，实现短跳与长跳。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py/Player</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 短跳</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">jump_cut</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.jumping:</span><br><span class="line">            <span class="keyword">if</span> self.vel.y &lt; <span class="number">-3</span>:</span><br><span class="line">                self.vel.y = <span class="number">-3</span></span><br><span class="line">                </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">jump</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 跳跃到其他平台 - 玩家对象x加减1，为了做碰撞检测，只有站立在平台上，才能实现跳跃</span></span><br><span class="line">        self.rect.y += <span class="number">2</span></span><br><span class="line">        hits = pg.sprite.spritecollide(self, self.game.platforms, <span class="literal">False</span>)</span><br><span class="line">        self.rect.y -= <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> hits <span class="keyword">and</span> <span class="keyword">not</span> self.jumping:</span><br><span class="line">            self.jumping = <span class="literal">True</span></span><br><span class="line">            self.vel.y = <span class="number">-20</span></span><br></pre></td></tr></table></figure>
+<p>通过self.jumping判断当前是否在跳跃状态，如果在跳跃状态，就将y轴速度砍到3。此外jump()方法也做了修改，通过y轴来判断是否产生碰撞检测，如果发生了碰撞而且又是没有跳跃的状态，这说明跳跳兔在平台上，可以进行跳跃，将self.jumping跳跃标志设为True。</p>
+<p>你可能会疑惑，不慌，结合下面代码一起看。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 事件处理</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">events</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> event <span class="keyword">in</span> pg.event.get():</span><br><span class="line">            <span class="comment"># 关闭</span></span><br><span class="line">            <span class="keyword">if</span> event.type == pg.QUIT:</span><br><span class="line">                <span class="keyword">if</span> self.playing:</span><br><span class="line">                    self.playing = <span class="literal">False</span></span><br><span class="line">                self.running = <span class="literal">False</span></span><br><span class="line">            <span class="comment"># 跳跃</span></span><br><span class="line">            <span class="keyword">if</span> event.type == pg.KEYDOWN:</span><br><span class="line">                <span class="keyword">if</span> event.key == pg.K_SPACE:</span><br><span class="line">                    self.player.jump()</span><br><span class="line">            <span class="comment"># 按钮抬起，减小跳跃速度，从而实现，快速点击，短跳，长按，长跳的效果</span></span><br><span class="line">            <span class="keyword">if</span> event.type == pg.KEYUP:</span><br><span class="line">                <span class="keyword">if</span> event.key == pg.K_SPACE:</span><br><span class="line">                    self.player.jump_cut()</span><br></pre></td></tr></table></figure>
+<p>简单而言，如果长按空格键进行跳跃，就只会有jump()方法的效果，跳跃快结束时，才松开空格，此时jump_cut()方法已经没有明显的作用了。</p>
+<p>如果简单快击空格键，此时跳跃还未完成，jump_cut()又被调用，跳跳兔y轴速度会被减弱，从而实现短跳的效果。</p>
+<h2 id="增加背景音乐"><a class="markdownIt-Anchor" href="#增加背景音乐"></a> 增加背景音乐</h2>
+<p>在pygame中，操作音乐是非常简单的，无论多大的音乐文件都可以被pygame以流的形式读入并播放。</p>
+<p>跳跳兔游戏在不同的状态要播放不同状态的音乐。</p>
+<p>在Game/load_data()方法中加载音频文件夹。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">(self)</span>:</span> <span class="comment"># 加载数据</span></span><br><span class="line">        ...</span><br><span class="line">        <span class="comment"># 加载精灵图片</span></span><br><span class="line">        self.spritesheet = Spritesheet(os.path.join(img_dir, SPRITESHEET))</span><br><span class="line">        <span class="comment"># 加载音乐</span></span><br><span class="line">        self.snd_dir = os.path.join(self.dir, <span class="string">'snd'</span>)</span><br><span class="line">        self.jump_sound = pg.mixer.Sound(os.path.join(self.snd_dir, <span class="string">'Jump33.wav'</span>)) <span class="comment"># 玩家对象跳跃时的音乐</span></span><br></pre></td></tr></table></figure>
+<p>新建游戏时，加载游戏初始音乐，此外游戏结束时，也使用同样的音乐，逻辑如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始游戏的钩子函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_start_screen</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 加载音乐</span></span><br><span class="line">        pg.mixer.music.load(os.path.join(self.snd_dir, <span class="string">'Yippee.ogg'</span>))</span><br><span class="line">        <span class="comment"># 重复播放</span></span><br><span class="line">        pg.mixer.music.play(loops=<span class="number">-1</span>)</span><br><span class="line">        ... <span class="comment"># 其他逻辑，省略</span></span><br><span class="line">        <span class="comment"># 退出音乐</span></span><br><span class="line">        pg.mixer.music.fadeout(<span class="number">500</span>)</span><br></pre></td></tr></table></figure>
+<p>通过pygame.mixer.music.load()方法可以将音乐加载到磁盘中，然后调用play()方法播放，其中loops参数用于指定循环播放次数，-1表示一直循环播放，当需要退出音乐时，滴啊用fadeout()方法，退出音乐，fadeout(time)设置音乐淡出的时间，该方法会阻塞到音乐消失。</p>
+<p>游戏结束方法逻辑与show_start_screen()一致，不再展示代码分析。</p>
+<p>游戏的过程中以同样的方式加载音乐作为游戏的背景音乐</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">       ...</span><br><span class="line">        <span class="comment"># 游戏初始时音乐</span></span><br><span class="line">        pg.mixer.music.load(os.path.join(self.snd_dir, <span class="string">'Happy Tune.ogg'</span>))</span><br><span class="line">        self.run()</span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># loops表示循环次数，-1表示音乐将无限播放下去</span></span><br><span class="line">        pg.mixer.music.play(loops=<span class="number">-1</span>)</span><br><span class="line">        self.playing = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">while</span> self.playing:</span><br><span class="line">            self.clock.tick(FPS)</span><br><span class="line">            self.events()</span><br><span class="line">            self.update()</span><br><span class="line">            self.draw()</span><br><span class="line">        <span class="comment"># 退出后停止音乐，fadeout(time)设置音乐淡出的时间，该方法会阻塞到音乐消失</span></span><br><span class="line">        pg.mixer.music.fadeout(<span class="number">500</span>)</span><br></pre></td></tr></table></figure>
+<p>最后，为跳跃动作加上相应的音乐。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py/Player</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jump</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 跳跃到其他平台 - 玩家对象x加减1，为了做碰撞检测，只有站立在平台上，才能实现跳跃</span></span><br><span class="line">        self.rect.y += <span class="number">2</span></span><br><span class="line">        hits = pg.sprite.spritecollide(self, self.game.platforms, <span class="literal">False</span>)</span><br><span class="line">        self.rect.y -= <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> hits <span class="keyword">and</span> <span class="keyword">not</span> self.jumping:</span><br><span class="line">            self.game.jump_sound.play() <span class="comment"># 播放跳跃的声音</span></span><br><span class="line">            self.jumping = <span class="literal">True</span></span><br><span class="line">            self.vel.y = <span class="number">-20</span></span><br></pre></td></tr></table></figure>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>在本节中，我们对「跳跳兔」进行了简单的优化，然后为游戏中不同的状态添加不同的音乐。</p>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github，图片资源与音乐资源也在github上。</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%83/" class="post-title-link" itemprop="url">利用pygame开发一款游戏:「跳跳兔」(七)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:41 / 修改时间：10:02:27" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:41+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>在第6节内容中，实现了游戏结束逻辑与玩家图片化，但跳跳兔只是一张简单的图片，显得比较呆板，本节会为跳跳兔添加上相应的动画效果，并将平台替换成相应的图片。</p>
+<h2 id="添加动画"><a class="markdownIt-Anchor" href="#添加动画"></a> 添加动画</h2>
+<p>跳跳兔在站立时，希望有上下蹲的动画，在走动时，希望有左右走动的动画，在跳跃时，希望有跳跃动画。</p>
+<p>动画的本质就是不同图片间的切换，在pygame中要实现动画，只需要在不同帧使用不同的图片则可。</p>
+<p>在Player的__init__()方法中定义多个变量用于记录不同的状态，代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        pg.sprite.Sprite.__init__(self)</span><br><span class="line">        self.game = game</span><br><span class="line">        <span class="comment"># 不同的状态</span></span><br><span class="line">        self.walking = <span class="literal">False</span></span><br><span class="line">        self.jumping = <span class="literal">False</span></span><br><span class="line">        <span class="comment"># 当前帧(用于判断当前要执行哪个动画)</span></span><br><span class="line">        self.current_frame = <span class="number">0</span></span><br><span class="line">        self.last_update = <span class="number">0</span></span><br><span class="line">        self.load_images() <span class="comment"># 加载图片</span></span><br><span class="line">        self.image = self.standing_frames[<span class="number">0</span>]</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        self.rect.center = (WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.pos = vec(WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.vel = vec(<span class="number">0</span>, <span class="number">0</span>) <span class="comment"># 速度</span></span><br><span class="line">        self.acc = vec(<span class="number">0</span>, <span class="number">0</span>) <span class="comment"># 加速度</span></span><br></pre></td></tr></table></figure>
+<p>在__init__()方法中，定义了self.walking与self.jumping状态，用于表示玩家对象是在行走状态还是跳跃状态，接着定义了self.current_frame用于表示当前帧，定义了self.last_update用于记录上一次的时间点，随后，编调用了load_images()方法来载入图片，该方法代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py/Player</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_images</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 站立状态</span></span><br><span class="line">        self.standing_frames = [self.game.spritesheet.get_image(<span class="number">614</span>, <span class="number">1063</span>, <span class="number">120</span>, <span class="number">191</span>),</span><br><span class="line">                                self.game.spritesheet.get_image(<span class="number">690</span>, <span class="number">406</span>, <span class="number">120</span>, <span class="number">201</span>)]</span><br><span class="line">        <span class="keyword">for</span> frame <span class="keyword">in</span> self.standing_frames:</span><br><span class="line">            frame.set_colorkey(BLACK) <span class="comment"># 将图像矩阵中除图像外周围的元素都设置为透明的</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 走动状态</span></span><br><span class="line">        self.walk_frames_r = [self.game.spritesheet.get_image(<span class="number">678</span>, <span class="number">860</span>, <span class="number">120</span>, <span class="number">201</span>),</span><br><span class="line">                              self.game.spritesheet.get_image(<span class="number">692</span>, <span class="number">1458</span>, <span class="number">120</span>, <span class="number">207</span>)]</span><br><span class="line">        self.walk_frames_l = []</span><br><span class="line">        <span class="keyword">for</span> frame <span class="keyword">in</span> self.walk_frames_r:</span><br><span class="line">            frame.set_colorkey(BLACK)</span><br><span class="line">            <span class="comment"># 水平翻转</span></span><br><span class="line">            self.walk_frames_l.append(pg.transform.flip(frame, <span class="literal">True</span>, <span class="literal">False</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 跳跃状态</span></span><br><span class="line">        self.jump_frame = self.game.spritesheet.get_image(<span class="number">382</span>, <span class="number">763</span>, <span class="number">150</span>, <span class="number">181</span>)</span><br><span class="line">        self.jump_frame.set_colorkey(BLACK)</span><br></pre></td></tr></table></figure>
+<p>在load_images()方法中，为不同的状态载入了不同的图片，其中，走动状态的图片还做了水平翻转处理，这是因为原始的大图中，走动的图片只有一个方向的，而走动可以往左走也可以往右走，所以需要将图片水平翻转一下。</p>
+<p>调用pygame.transform.flip(Surface, xbool, ybool)用于翻转，xbool =&gt; True 为水平翻转，ybool =&gt; True 为垂直翻转。</p>
+<p>图片准备好后，动画效果的基本素材就准备好了，在Player类的update()方法中调用动画方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py/Player</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 动画</span></span><br><span class="line">    self.animate()</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">animate</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 获得当前过了多少毫秒</span></span><br><span class="line">        now = pg.time.get_ticks()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.vel.x != <span class="number">0</span>: <span class="comment"># 判断速度在x轴方向是否为0，从而判断玩家对象是否移动</span></span><br><span class="line">            self.walking = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.walking = <span class="literal">False</span></span><br><span class="line">        <span class="comment"># 走动状态下的动画</span></span><br><span class="line">        <span class="keyword">if</span> self.walking:</span><br><span class="line">            <span class="comment"># 当前时间 - 上次时间 大于 180，即间隔时间大于180时</span></span><br><span class="line">            <span class="keyword">if</span> now - self.last_update &gt; <span class="number">180</span>:</span><br><span class="line">                self.last_update = now</span><br><span class="line">                <span class="comment"># 当前帧 加一 与 walk_frames_l 长度取余，从而得到当前要做哪个东西</span></span><br><span class="line">                self.current_frame = (self.current_frame + <span class="number">1</span>) % len(self.walk_frames_l)</span><br><span class="line">                bottom = self.rect.bottom</span><br><span class="line">                <span class="comment"># 向左走还是向右走</span></span><br><span class="line">                <span class="keyword">if</span> self.vel.x &gt; <span class="number">0</span>:</span><br><span class="line">                    <span class="comment"># 当前帧要做的动作</span></span><br><span class="line">                    self.image = self.walk_frames_r[self.current_frame]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    self.image = self.walk_frames_l[self.current_frame]</span><br><span class="line">                self.rect = self.image.get_rect()</span><br><span class="line">                self.rect.bottom = bottom</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 站立状态下的动画</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.jumping <span class="keyword">and</span> <span class="keyword">not</span> self.walking:</span><br><span class="line">            <span class="keyword">if</span> now - self.last_update &gt; <span class="number">350</span>:</span><br><span class="line">                self.last_update = now</span><br><span class="line">                self.current_frame = (self.current_frame + <span class="number">1</span>) % len(self.standing_frames)</span><br><span class="line">                bottom = self.rect.bottom</span><br><span class="line">                self.image = self.standing_frames[self.current_frame]</span><br><span class="line">                self.rect = self.image.get_rect()</span><br><span class="line">                self.rect.bottom = bottom</span><br></pre></td></tr></table></figure>
+<p>在pygame 中的时间是以毫秒（千分之一秒）表示的，通过 pygame.time.get_ticks 函数可以获得 pygame.init 后经过的时间的毫秒数。</p>
+<p>随后的逻辑通过注释可以比较简单的理解。判断当前时间与上一层记录时间的间隔，如果满足条件，则只需图片的切换逻辑，注意，时间都是毫秒级的。</p>
+<p>切换图片的核心逻辑就是当前帧与图片列表长度取余，获得下标，通过下标去取列表中的图片。</p>
+<p>走动时效果如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191108181503.png" alt="" /></p>
+<p>有个细节需要注意，在判断玩家对象是否是走动状态时，利用了速度变量的x轴是否为0来判断</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> self.vel.x != <span class="number">0</span>: <span class="comment"># 判断速度在x轴方向是否为0，从而判断玩家对象是否移动</span></span><br><span class="line">    self.walking = <span class="literal">True</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    self.walking = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>但self.vel.x通常不会为0，所以需要处理一下，修改一下update()方法中的逻辑，代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 动画</span></span><br><span class="line">    self.animate()</span><br><span class="line">    self.acc = vec(<span class="number">0</span>, PLAYER_GRAV)</span><br><span class="line">    keys = pg.key.get_pressed()</span><br><span class="line">    <span class="keyword">if</span> keys[pg.K_LEFT]:</span><br><span class="line">        self.acc.x = -PLAYER_ACC</span><br><span class="line">    <span class="keyword">if</span> keys[pg.K_RIGHT]:</span><br><span class="line">        self.acc.x = PLAYER_ACC</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获得加速度</span></span><br><span class="line">    self.acc.x += self.vel.x * PLAYER_FRICTION</span><br><span class="line">    <span class="comment"># 速度与加速度</span></span><br><span class="line">    self.vel += self.acc</span><br><span class="line">    <span class="comment"># 如果速度小于0.1，则速度为0（比如这样设置，不然速度永远无法0）</span></span><br><span class="line">    <span class="keyword">if</span> abs(self.vel.x) &lt; <span class="number">0.1</span>:</span><br><span class="line">        self.vel.x = <span class="number">0</span></span><br><span class="line">    self.pos += self.vel + <span class="number">0.5</span> * self.acc</span><br><span class="line">    <span class="comment"># wrap around the sides of the screen</span></span><br><span class="line">    <span class="keyword">if</span> self.pos.x &gt; WIDTH:</span><br><span class="line">        self.pos.x = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> self.pos.x &lt; <span class="number">0</span>:</span><br><span class="line">        self.pos.x = WIDTH</span><br><span class="line"></span><br><span class="line">    self.rect.midbottom = self.pos</span><br></pre></td></tr></table></figure>
+<p>如果self.vel.x的绝对值小于0.1，则让self.vel.x为0。</p>
+<h2 id="平台图片化"><a class="markdownIt-Anchor" href="#平台图片化"></a> 平台图片化</h2>
+<p>跳跳兔要跳跃到相应的平台上，现在平依旧是方块，这里以相同的方式将平台替换成相应的图片。</p>
+<p>在Platform的__init__()中，实现载入图片的逻辑，代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Platform</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game, x, y)</span>:</span></span><br><span class="line">        pg.sprite.Sprite.__init__(self)</span><br><span class="line">        self.game = game</span><br><span class="line">        <span class="comment"># 载入图片</span></span><br><span class="line">        images = [self.game.spritesheet.get_image(<span class="number">0</span>, <span class="number">288</span>, <span class="number">380</span>, <span class="number">94</span>),</span><br><span class="line">                  self.game.spritesheet.get_image(<span class="number">213</span>, <span class="number">1662</span>, <span class="number">201</span>, <span class="number">100</span>)]</span><br><span class="line">        <span class="comment"># 随机选择一种</span></span><br><span class="line">        self.image = random.choice(images)</span><br><span class="line">        self.image.set_colorkey(BLACK)</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        self.rect.x = x</span><br><span class="line">        self.rect.y = y</span><br></pre></td></tr></table></figure>
+<p>载入完图片，随机选择一个图片作为样式，需要注意，我们修改了__init__()的参数，此时该方法只需要获得(x,y)坐标以及game实例则可。</p>
+<p>因为__init__()被修改了，所以实例化逻辑也要修改一下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#setting.py</span></span><br><span class="line"><span class="comment"># 起始平台</span></span><br><span class="line">PLATFORM_LIST = [(<span class="number">0</span>, HEIGHT - <span class="number">60</span>),</span><br><span class="line">                 (WIDTH / <span class="number">2</span> - <span class="number">50</span>, HEIGHT * <span class="number">3</span> / <span class="number">4</span> - <span class="number">50</span>),</span><br><span class="line">                 (<span class="number">125</span>, HEIGHT - <span class="number">350</span>),</span><br><span class="line">                 (<span class="number">350</span>, <span class="number">200</span>),</span><br><span class="line">                 (<span class="number">175</span>, <span class="number">100</span>)]</span><br><span class="line">                 </span><br><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.score = <span class="number">0</span></span><br><span class="line">    self.all_sprites = pg.sprite.Group()</span><br><span class="line">    self.platforms = pg.sprite.Group()</span><br><span class="line">    self.player = Player(self)</span><br><span class="line">    self.all_sprites.add(self.player)</span><br><span class="line">    <span class="keyword">for</span> plat <span class="keyword">in</span> PLATFORM_LIST:</span><br><span class="line">     p = Platform(self, *plat)</span><br><span class="line">     self.all_sprites.add(p)</span><br><span class="line">     self.platforms.add(p)</span><br><span class="line">    self.run()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="comment"># 判断平台数，产生新的平台</span></span><br><span class="line">    <span class="keyword">while</span> len(self.platforms) &lt; <span class="number">6</span>:</span><br><span class="line">        width = random.randrange(<span class="number">50</span>, <span class="number">100</span>)</span><br><span class="line">        <span class="comment"># 平台虽然是随机生成的，但会生成在某一个范围内</span></span><br><span class="line">        p = Platform(self, random.randrange(<span class="number">0</span>, WIDTH - width),</span><br><span class="line">                  random.randrange(<span class="number">-75</span>, <span class="number">-30</span>))</span><br><span class="line">        self.platforms.add(p)</span><br><span class="line">        self.all_sprites.add(p)</span><br></pre></td></tr></table></figure>
+<p>最终效果如下</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191108183414.png" alt="" /></p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>在本节中，我们实现了玩家对象的动画效果以及平台的图片化。</p>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%85%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%85%AD/" class="post-title-link" itemprop="url">利用pygame开发一款游戏:「跳跳兔」(六)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:33 / 修改时间：10:02:26" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:33+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>HackPython改名为「懒编程」，纯粹是因为我有另外一个写杂文的号叫「懒写作」，此外，感觉「懒编程」比HackPython好记。</p>
+<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>在第5节内容中，实现了积分机制、玩家死亡逻辑以及游戏开始界面逻辑，本节继续完善游戏，来实现游戏结束逻辑与玩家图片化，不再使用方块。</p>
+<h2 id="游戏结束逻辑"><a class="markdownIt-Anchor" href="#游戏结束逻辑"></a> 游戏结束逻辑</h2>
+<p>回忆一下整体逻辑：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">g = Game()</span><br><span class="line">g.show_start_screen()</span><br><span class="line"><span class="keyword">while</span> g.running:</span><br><span class="line">    g.new()</span><br><span class="line">    g.show_go_screen()</span><br><span class="line"></span><br><span class="line">pg.quit()</span><br></pre></td></tr></table></figure>
+<p>可以通过show_go_screen()方法实现游戏结束逻辑，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 每轮游戏结束后，都会调用该方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_go_screen</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># game over/continue</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.running: <span class="comment"># 是否在运行</span></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.screen.fill(BGCOLOR) <span class="comment"># 游戏框背景颜色填充</span></span><br><span class="line">        <span class="comment"># 绘制文字</span></span><br><span class="line">        self.draw_text(<span class="string">"GAME OVER"</span>, <span class="number">48</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">4</span>)</span><br><span class="line">        self.draw_text(<span class="string">"Score: "</span> + str(self.score), <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.draw_text(<span class="string">"Press a key to play again"</span>, <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT * <span class="number">3</span> / <span class="number">4</span>)</span><br><span class="line">        <span class="comment"># 判断分数</span></span><br><span class="line">        <span class="keyword">if</span> self.score &gt; self.highscore:</span><br><span class="line">            self.highscore = self.score</span><br><span class="line">            self.draw_text(<span class="string">"NEW HIGH SCORE!"</span>, <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span> + <span class="number">40</span>)</span><br><span class="line">            <span class="comment"># 记录新的最高分到文件中 - 持久化</span></span><br><span class="line">            <span class="keyword">with</span> open(os.path.join(self.dir, HS_FILE), <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(str(self.score))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.draw_text(<span class="string">"High Score: "</span> + str(self.highscore), <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span> + <span class="number">40</span>)</span><br><span class="line">        <span class="comment"># 翻转</span></span><br><span class="line">        pg.display.flip()</span><br><span class="line">        <span class="comment"># 等待敲击任意键，重新开始新的一轮游戏</span></span><br><span class="line">        self.wait_for_key()</span><br></pre></td></tr></table></figure>
+<p>show_go_screen()方法逻辑可以阅读详细的注释，不再赘述。</p>
+<p>show_go_screen()通过文件的方式来记录最高的分数，所以在游戏一开始，就需要从文件中读取此前的分数，好为这部分逻辑做判断，逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        <span class="comment"># 加载最高分数</span></span><br><span class="line">        self.load_data()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.dir = os.path.dirname(__file__)</span><br><span class="line">        filepath = os.path.join(self.dir, HS_FILE)</span><br><span class="line">        <span class="keyword">with</span> open(filepath, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self.highscore = int(f.read())</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                self.highscore = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h2 id="玩家图片化"><a class="markdownIt-Anchor" href="#玩家图片化"></a> 玩家图片化</h2>
+<p>一个正常的游戏，肯定要有相应的图片素材的，图片素材是否精美也是影响他人是否要玩你游戏的重要因素。</p>
+<p>通常，一个游戏，会有多张大图，多个同类元素都放在这张大的png图片中，而不是每个元素都是一个png元素，通过这种方式，让整个游戏包更小。</p>
+<p>如下，一张完整的图</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191106180439.png" alt="" /></p>
+<p>与其对应的就是图中不同元素其坐标位置(x,y)以及元素图片大小</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191106180501.png" alt="" /></p>
+<p>写一段从完整图片中获取对应元素的逻辑，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载与解析精灵图片</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Spritesheet</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filename)</span>:</span></span><br><span class="line">        <span class="comment"># 主要要使用convert()进行优化， convert()方法会 改变图片的像素格式</span></span><br><span class="line">        <span class="comment"># 这里加载了整张图片</span></span><br><span class="line">        self.spritesheet = pg.image.load(filename).convert()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从比较大的精灵表中，通过相应的xml位置，抓取中出需要的元素</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_image</span><span class="params">(self, x, y, width, height)</span>:</span></span><br><span class="line">        <span class="comment"># 创建Surface对象(画板对象)</span></span><br><span class="line">        image = pg.Surface((width, height))</span><br><span class="line">        <span class="comment"># blit — 画一个图像到另一个</span></span><br><span class="line">        <span class="comment"># 将整张图片中，对应位置(x,y)对应大小(width,height)中的图片画到画板中</span></span><br><span class="line">        image.blit(self.spritesheet, (<span class="number">0</span>, <span class="number">0</span>), (x, y, width, height))</span><br><span class="line">        <span class="comment">#  pygame.transform.scale 缩放的大小</span></span><br><span class="line">        <span class="comment"># 这里将图片缩放为原来的一半</span></span><br><span class="line">        image = pg.transform.scale(image, (width // <span class="number">2</span>, height // <span class="number">2</span>))</span><br><span class="line">        <span class="keyword">return</span> image</span><br></pre></td></tr></table></figure>
+<p>在__init__()中，通过pygame.image.load()方法加载完整的图片，记得使用convert()方法进行优化，随后定义了get_image()方法，该方法的逻辑也很直接，先实例化Surface类，获得与图片大小相同的面板对象，然后，通过blit()方法将完整图片中对应位置与大小的元素剥离出来。</p>
+<p>经过实践，原本图片元素太大，所以通过pygame.transform.scale()方法将图片元素缩小2倍。</p>
+<p>编写完Spritesheet类后，在Game类的load_data()方法中实例化一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">(self)</span>:</span> <span class="comment"># 加载数据</span></span><br><span class="line">        self.dir = os.path.dirname(__file__)</span><br><span class="line">        filepath = os.path.join(self.dir, HS_FILE)</span><br><span class="line">        <span class="keyword">with</span> open(filepath, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self.highscore = int(f.read())</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                self.highscore = <span class="number">0</span></span><br><span class="line">        img_dir = os.path.join(self.dir, <span class="string">'img'</span>)</span><br><span class="line">        <span class="comment"># 加载精灵图片</span></span><br><span class="line">        self.spritesheet = Spritesheet(os.path.join(img_dir, SPRITESHEET))</span><br></pre></td></tr></table></figure>
+<p>做完这些后，在Player类初始化时调用其中的get_image()方法就大功告成了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, game)</span>:</span></span><br><span class="line">        pg.sprite.Sprite.__init__(self)</span><br><span class="line">        self.game = game</span><br><span class="line">        <span class="comment"># 加载 bunny1_ready状态的兔子图片， xml文件中给出的(x,y)与(width,height)</span></span><br><span class="line">        self.image = self.game.spritesheet.get_image(<span class="number">614</span>, <span class="number">1063</span>, <span class="number">120</span>, <span class="number">191</span>)</span><br><span class="line">        self.image.set_colorkey(BLACK)</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        self.rect.center = (WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.pos = vec(WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.vel = vec(<span class="number">0</span>, <span class="number">0</span>) <span class="comment"># 速度</span></span><br><span class="line">        self.acc = vec(<span class="number">0</span>, <span class="number">0</span>) <span class="comment"># 加速度</span></span><br></pre></td></tr></table></figure>
+<p>为了整体美观，修改了一下，游戏框整体的背景颜色，具体通过self.screen.fill(BGCOLOR)方法。</p>
+<p>最后，效果如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191106182337.png" alt="" /></p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>在本节中，我们实现了游戏结束界面以及使用了玩家元素，后面，会进一步优化玩家元素，让玩家在左右移动时，是不同的图片，从而让整个游戏显得更加灵动。</p>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%BA%94/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%BA%94/" class="post-title-link" itemprop="url">利用pygame开发一款游戏:「跳跳兔」(五)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:20 / 修改时间：10:02:28" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:20+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>本节会增加计分机制，即跳跃了多少个平台，有多少积分，此外如果玩家掉落在游戏框外，玩家死亡，开始新的一局游戏。</p>
+<h2 id="增加积分机制"><a class="markdownIt-Anchor" href="#增加积分机制"></a> 增加积分机制</h2>
+<p>积分机制的原理其实很简单，通过pygame在游戏框中绘制相应的文字，当玩家跳跃到新平台时，积分发生相应的变更，en…逻辑太简单了，直接看代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始新游戏时</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 初始化积分</span></span><br><span class="line">        self.score = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 玩家到达游戏框 1/4 处时（注意，游戏框，头部为0，底部为游戏框长度，到到游戏框的1/4处，表示已经到达了顶部一部分了）</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.top &lt;= HEIGHT / <span class="number">4</span>:</span><br><span class="line">            <span class="comment"># 玩家位置移动（往下移动）</span></span><br><span class="line">            self.player.pos.y += abs(self.player.vel.y)</span><br><span class="line">            <span class="comment"># 平台在游戏框外时，将其注销，避免资源浪费</span></span><br><span class="line">            <span class="keyword">for</span> plat <span class="keyword">in</span> self.platforms:</span><br><span class="line">                <span class="comment"># 平台移动位置（往下移动，移动的距离与玩家相同，这样玩家才能依旧站立在原本的平台上）</span></span><br><span class="line">                plat.rect.y += abs(self.player.vel.y)</span><br><span class="line">                <span class="keyword">if</span> plat.rect.top &gt;= HEIGHT: </span><br><span class="line">                    plat.kill()</span><br><span class="line">                    <span class="comment"># 分数增加 - 平台销毁，分数相加</span></span><br><span class="line">                    self.score += <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>在new()方法中，初始化了积分对象，然后在update()方法中更新。这里的计分方式不是玩家跳跃到一个新的平台就积分，而是旧的平台被销毁后，再计分。这就能避免玩家不向上跳跃，而一直在原地跳跃就能获得积分的情况。</p>
+<p>接着就是绘制积分文字的逻辑，将其放置在draw()方法中实现.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(self)</span>:</span></span><br><span class="line">   <span class="comment"># 绘制</span></span><br><span class="line">   self.screen.fill(BLACK)</span><br><span class="line">   self.all_sprites.draw(self.screen)</span><br><span class="line">   <span class="comment"># 绘制文字 - 具体的分数</span></span><br><span class="line">   self.draw_text(str(self.score), <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, <span class="number">15</span>)</span><br><span class="line">   <span class="comment"># 翻转</span></span><br><span class="line">   pg.display.flip()</span><br></pre></td></tr></table></figure>
+<p>在draw()方法中，调用了self.draw_text()方法进行文字的显示，该方法代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        <span class="comment"># 设置绘制时使用的字体，你也可以直接使用系统本身的字体</span></span><br><span class="line">        self.font_name = pg.font.match_font(FONT_NAME)</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 绘制文字</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">draw_text</span><span class="params">(self, text, size, color, x, y)</span>:</span></span><br><span class="line">        font = pg.font.Font(self.font_name, size) <span class="comment"># 设置字体与大小</span></span><br><span class="line">        text_surface = font.render(text, <span class="literal">True</span>, color) <span class="comment"># 设置颜色</span></span><br><span class="line">        text_rect = text_surface.get_rect() <span class="comment"># 获得字体对象</span></span><br><span class="line">        text_rect.midtop = (x, y) <span class="comment"># 定义位置</span></span><br><span class="line">        self.screen.blit(text_surface, text_rect) <span class="comment"># 在屏幕中绘制字体</span></span><br></pre></td></tr></table></figure>
+<p>代码中给出了详细的注释，不再赘述。</p>
+<p>增加了上面的代码，运行游戏，就会有相应的积分效果</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191105123441.png" alt="" /></p>
+<h2 id="玩家死亡"><a class="markdownIt-Anchor" href="#玩家死亡"></a> 玩家死亡</h2>
+<p>如果玩家这个方块位于游戏框范围外，该玩家就死亡了，将这个逻辑实现到Game类的update()方法中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 死亡 - 玩家底部大于游戏框高度</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.bottom &gt; HEIGHT:</span><br><span class="line">            <span class="keyword">for</span> sprite <span class="keyword">in</span> self.all_sprites:</span><br><span class="line">                sprite.rect.y -= max(self.player.vel.y, <span class="number">10</span>)</span><br><span class="line">                <span class="comment"># 元素底部小于0 - 说明在游戏框外面，将其删除</span></span><br><span class="line">                <span class="keyword">if</span> sprite.rect.bottom &lt; <span class="number">0</span>:</span><br><span class="line">                    sprite.kill()</span><br></pre></td></tr></table></figure>
+<p>一开始判断玩家对象方块的底部是否大于游戏框高度了，如果大于，说明玩家已经在游戏框最底部了，而且有一部分已经在游戏框外了，此时玩家死亡，游戏结束。</p>
+<h2 id="绘制游戏开始界面"><a class="markdownIt-Anchor" href="#绘制游戏开始界面"></a> 绘制游戏开始界面</h2>
+<p>你是否还记得第二节中给出的整体结构，其中包括了show_start_screen()方法与show_go_screen()方法，因为整体的运行逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">g = Game()</span><br><span class="line">g.show_start_screen() <span class="comment"># 游戏开始前会执行的逻辑</span></span><br><span class="line"><span class="keyword">while</span> g.running:</span><br><span class="line">    g.new()</span><br><span class="line">    g.show_go_screen() <span class="comment"># 一轮游戏结束后会执行的逻辑</span></span><br><span class="line"></span><br><span class="line">pg.quit()</span><br></pre></td></tr></table></figure>
+<p>可以将游戏开始界面的绘制逻辑写到show_start_screen()方法中，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始游戏的钩子函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_start_screen</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.screen.fill(BGCOLOR) <span class="comment"># 填充颜色</span></span><br><span class="line">        self.draw_text(TITLE, <span class="number">48</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">4</span>)</span><br><span class="line">        <span class="comment"># 绘制文字</span></span><br><span class="line">        self.draw_text(<span class="string">"Left and right button move, space bar jump"</span>, <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.draw_text(<span class="string">"Press any key to start the game"</span>, <span class="number">22</span>, WHITE, WIDTH / <span class="number">2</span>, HEIGHT * <span class="number">3</span> / <span class="number">4</span>)</span><br><span class="line">        <span class="comment"># 画布翻转</span></span><br><span class="line">        pg.display.flip()</span><br><span class="line">        self.wait_for_key() <span class="comment"># 等待用户敲击键盘中的仍以位置</span></span><br></pre></td></tr></table></figure>
+<p>在show_start_screen()方法中，一开会先填充了整个背景颜色，然后调用了draw_text()方法绘制文字，这里如果使用中文是无法显示的，pygame中要显示中文，需要指定对应的系统字体，如系统中的「宋体」、「黑体」等，最后调用了wait_for_key()方法进行等待，该方法逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wait_for_key</span><span class="params">(self)</span>:</span></span><br><span class="line">        waiting = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">while</span> waiting:</span><br><span class="line">            self.clock.tick(FPS)</span><br><span class="line">            <span class="keyword">for</span> event <span class="keyword">in</span> pg.event.get():</span><br><span class="line">                <span class="keyword">if</span> event.type == pg.QUIT: <span class="comment"># 点击退出，结束等待循环</span></span><br><span class="line">                    waiting = <span class="literal">False</span></span><br><span class="line">                    self.running = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">if</span> event.type == pg.KEYUP: <span class="comment"># 按下键盘，结束等待循环</span></span><br><span class="line">                    waiting = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>wait_for_key()方法的逻辑就是一个无限循环，只有用户点击关闭按钮或敲击键盘中的任意键才能退出这个循环。</p>
+<p>退出循环后，才能进入真正的游戏循环开始游戏。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191105124405.png" alt="" /></p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>在本节中，我们实现了计分逻辑、死亡逻辑以及游戏启动时简单欢迎界面逻辑。</p>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F%EF%BC%9A%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%9B%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F%EF%BC%9A%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E5%9B%9B/" class="post-title-link" itemprop="url">利用pygame开发一款游戏：「跳跳兔」(四)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:11 / 修改时间：10:02:29" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:11+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>「跳跳兔」小游戏中的玩家当然要有跳跃能力，本节就来实现玩家类的跳跃以及整个游戏框界面的更新，当玩家跳跃时，游戏背景要往后移动，要有新的平台产生，让玩家可以继续跳跃，本节就来实现这样的功能。</p>
+<h2 id="赋予玩家跳跃功能"><a class="markdownIt-Anchor" href="#赋予玩家跳跃功能"></a> 赋予玩家跳跃功能</h2>
+<p>为了让界面有多个元素，在一开始初始化游戏框时，就初始化多个平台元素，效果如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191104201221.png" alt="" /></p>
+<p>代码如下，为了方便理解，没有展示无关代码，将多个文件的代码一同显示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 平台列表</span></span><br><span class="line">PLATFORM_LIST = [(<span class="number">0</span>, HEIGHT - <span class="number">40</span>, WIDTH, <span class="number">40</span>),</span><br><span class="line">                 (WIDTH / <span class="number">2</span> - <span class="number">50</span>, HEIGHT * <span class="number">3</span> / <span class="number">4</span>, <span class="number">100</span>, <span class="number">20</span>),</span><br><span class="line">                 (<span class="number">125</span>, HEIGHT - <span class="number">350</span>, <span class="number">100</span>, <span class="number">20</span>),</span><br><span class="line">                 (<span class="number">350</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">20</span>),</span><br><span class="line">                 (<span class="number">175</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">20</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># start a new game</span></span><br><span class="line">        self.all_sprites = pg.sprite.Group()</span><br><span class="line">        self.platforms = pg.sprite.Group()</span><br><span class="line">        self.player = Player(self)</span><br><span class="line">        self.all_sprites.add(self.player)</span><br><span class="line">        <span class="comment"># 实例化一系列平台，并添加到所有元素组与平台元素组中</span></span><br><span class="line">        <span class="keyword">for</span> plat <span class="keyword">in</span> PLATFORM_LIST:</span><br><span class="line">            p = Platform(*plat)</span><br><span class="line">            self.all_sprites.add(p)</span><br><span class="line">            self.platforms.add(p)</span><br><span class="line">        self.run()</span><br></pre></td></tr></table></figure>
+<p>上述逻辑就是在开始新游戏时，for迭代创建PLATFORM_LIST列表中给定位位置与大小的平台。</p>
+<p>接着就来实现跳跃逻辑。</p>
+<p>为了代码直观，将监控跳跃相关的逻辑写到events()方法中(该方法负责事件处理)，我们希望点击空格键，玩家元素跳跃，其具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">events</span><span class="params">(self)</span>:</span></span><br><span class="line">   <span class="keyword">for</span> event <span class="keyword">in</span> pg.event.get():</span><br><span class="line">       <span class="keyword">if</span> event.type == pg.QUIT:</span><br><span class="line">           <span class="keyword">if</span> self.playing:</span><br><span class="line">               self.playing = <span class="literal">False</span></span><br><span class="line">           self.running = <span class="literal">False</span></span><br><span class="line">       <span class="comment"># 玩家跳跃</span></span><br><span class="line">       <span class="keyword">if</span> event.type == pg.KEYDOWN:</span><br><span class="line">           <span class="keyword">if</span> event.key == pg.K_SPACE:</span><br><span class="line">               self.player.jump() <span class="comment"># 调用玩家跳跃方法</span></span><br></pre></td></tr></table></figure>
+<p>简单而言，就是监控键盘敲击事件，然后判断敲击的按键为空格键(K_SPACE)，最后调用玩家对象的jump()方法实现跳跃。</p>
+<p>看一下jump()方法的具体逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#sprites.py/Player</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 跳跃</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jump</span><span class="params">(self)</span>:</span></span><br><span class="line">   <span class="comment"># 对x轴进行加一减一操作，玩家只有站立在平台上，才能跳跃成功。</span></span><br><span class="line">   self.rect.x += <span class="number">1</span></span><br><span class="line">   hits = pg.sprite.spritecollide(self, self.game.platforms, <span class="literal">False</span>)</span><br><span class="line">   self.rect.x -= <span class="number">1</span></span><br><span class="line">   <span class="keyword">if</span> hits: <span class="comment"># 碰撞检测成功，站立在了平台上</span></span><br><span class="line">       self.vel.y = <span class="number">-20</span> <span class="comment"># 跳跃</span></span><br></pre></td></tr></table></figure>
+<p>对player玩家对象的x走了加一减一并进行碰撞检测的操作，通过这种方式，就可以判断当前玩家对象是否站立与平台上，只有在平台上，才能让其跳跃，在空中是不允许玩家跳跃的(无法二段跳).</p>
+<p>跳跃的本质是让玩家对象向上移动，这里就是-20，之所以是负数，是因为最上传y轴坐标为0，最下方y轴坐标为游戏框的高度，-20就是让玩家对象向上移动，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191104214402.png" alt="" /></p>
+<p>但这里跟新的只是self.vel速度属性，真正移动玩家对象的方法依旧是update()方法，其逻辑如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#sprites.py/Player</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 有初始的加速度 - 玩家没有在平台上就会掉落</span></span><br><span class="line">        self.acc = vec(<span class="number">0</span>, PLAYER_GRAV)</span><br><span class="line">        keys = pg.key.get_pressed()</span><br><span class="line">        <span class="keyword">if</span> keys[pg.K_LEFT]:</span><br><span class="line">            self.acc.x = -PLAYER_ACC</span><br><span class="line">        <span class="keyword">if</span> keys[pg.K_RIGHT]:</span><br><span class="line">            self.acc.x = PLAYER_ACC</span><br><span class="line"></span><br><span class="line">        self.acc.x += self.vel.x * PLAYER_FRICTION</span><br><span class="line">        self.vel += self.acc</span><br><span class="line">        self.pos += self.vel + <span class="number">0.5</span> * self.acc</span><br><span class="line">        <span class="keyword">if</span> self.pos.x &gt; WIDTH:</span><br><span class="line">            self.pos.x = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> self.pos.x &lt; <span class="number">0</span>:</span><br><span class="line">            self.pos.x = WIDTH</span><br><span class="line">        <span class="comment"># 赋值给底部 - 碰撞检测相关</span></span><br><span class="line">        self.rect.midbottom = self.pos</span><br></pre></td></tr></table></figure>
+<p>update()方法逻辑与上节内容相同，不再赘述。</p>
+<p>至此，就完成了玩家的跳跃。</p>
+<h2 id="背景移动效果"><a class="markdownIt-Anchor" href="#背景移动效果"></a> 背景移动效果</h2>
+<p>但玩家对象光跳跃是不够的，整个游戏界面不移动，玩家跳两下就没有平台可以跳跃了，所以接着来实现游戏界面整体移动的效果。</p>
+<p>在开始写之前，需要理清一个概念，要实现移动效果，并不是游戏界面整体向下移动了，而是游戏框中的元素整体向后移动的，具体而言就是玩家类向下移动了一部分具体，对应的平台元素也向下移动了一段距离。</p>
+<p>要实现这个效果，可以通过Game游戏类的update()方法来实现，该方法主要用于更新游戏的整体状态，其具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.all_sprites.update()</span><br><span class="line">        <span class="comment"># # 玩家在界面中时(y&gt;0)，进行碰撞检测，检测玩家是否碰撞到平台</span></span><br><span class="line">        <span class="keyword">if</span> self.player.vel.y &gt; <span class="number">0</span>:</span><br><span class="line">            hits = pg.sprite.spritecollide(self.player, self.platforms, <span class="literal">False</span>)</span><br><span class="line">            <span class="keyword">if</span> hits:</span><br><span class="line">                self.player.pos.y = hits[<span class="number">0</span>].rect.top</span><br><span class="line">                self.player.vel.y = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 玩家到达游戏框 1/4 处时（注意，游戏框，头部为0，底部为游戏框长度，到到游戏框的1/4处，表示已经到达了顶部一部分了）</span></span><br><span class="line">        <span class="keyword">if</span> self.player.rect.top &lt;= HEIGHT / <span class="number">4</span>:</span><br><span class="line">            <span class="comment"># 玩家位置移动（往下移动）</span></span><br><span class="line">            self.player.pos.y += abs(self.player.vel.y)</span><br><span class="line">            <span class="comment"># 平台在游戏框外时，将其注销，避免资源浪费</span></span><br><span class="line">            <span class="keyword">for</span> plat <span class="keyword">in</span> self.platforms:</span><br><span class="line">                <span class="comment"># 平台移动位置（往下移动，移动的距离与玩家相同，这样玩家才能依旧站立在原本的平台上）</span></span><br><span class="line">                plat.rect.y += abs(self.player.vel.y)</span><br><span class="line">                <span class="keyword">if</span> plat.rect.top &gt;= HEIGHT: </span><br><span class="line">                    plat.kill()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 判断平台数，产生新的平台</span></span><br><span class="line">        <span class="keyword">while</span> len(self.platforms) &lt; <span class="number">6</span>:</span><br><span class="line">            width = random.randrange(<span class="number">50</span>, <span class="number">100</span>)</span><br><span class="line">            <span class="comment"># 随机生成平台</span></span><br><span class="line">            p = Platform(random.randrange(<span class="number">0</span>, WIDTH - width),</span><br><span class="line">                         random.randrange(<span class="number">-75</span>, <span class="number">-30</span>),</span><br><span class="line">                         width, <span class="number">20</span>)</span><br><span class="line">            self.platforms.add(p)</span><br><span class="line">            self.all_sprites.add(p)</span><br></pre></td></tr></table></figure>
+<p>Game类的update()方法中，主要新增了两段逻辑。</p>
+<p>当玩家到达游戏框的1/4时，此时玩家对象已经在高位，此时要做的就是移动玩家对象以及通过for迭代移动所有的平台对象，让玩家对象与平台对象向下移动相同的距离实现整个游戏框界面向下移动的效果。此外还会判断平台对象的顶部是否大于游戏框高度，如果大于，说明当前的平台对象依旧完全在游戏框外了，调用kill()方法将其注销，避免占用额外的内存。</p>
+<p>接着通过while循环当前平台对象的个数，通过此前的逻辑，我们消除了在游戏框外的平台对象，为了让平台对象个数总是为6，这里会随机创建相应个数的平台对象作为补充，通过random来实现平台位置的随机，让游戏不至于太过无聊。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>因为考虑到篇幅，文中没有给出完整的代码，但为了方便大家理解，我将相应的代码上传到了github</p>
+<p><a href="https://github.com/ayuLiao/jumprabbit" target="_blank" rel="noopener">https://github.com/ayuLiao/jumprabbit</a></p>
+<p>如果文章对你有帮助或你觉得有点意思，点击「在看」支持作者一波。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%89/" class="post-title-link" itemprop="url">利用pygame开发一款游戏:「跳跳兔」(三)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 09:47:00 / 修改时间：10:02:27" itemprop="dateCreated datePublished" datetime="2019-11-18T09:47:00+08:00">2019-11-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>pygame如何通过键盘来控制游戏中的元素呢？元素之间是如何进行碰撞检测的呢？</p>
+<p>阅读完本节你就很清晰了，此外本文还会整理出pygame开发游戏的通用整体结构，该系列后续的内容都以这个结构来编写。</p>
+<h2 id="整体结构"><a class="markdownIt-Anchor" href="#整体结构"></a> 整体结构</h2>
+<p>随着游戏项目的复杂化，有必要整理一下代码，形成一个统一的风格。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame <span class="keyword">as</span> pg</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span>:</span></span><br><span class="line">    <span class="comment"># 初始化窗口、计数器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 开启新的游戏</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 游戏中的大循环</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 事件</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">events</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 绘制界面</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 游戏启动 / 开始画面的钩子函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_start_screen</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># game splash/start screen</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 游戏结束 / 继续的钩子函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_go_screen</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 入口逻辑       </span></span><br><span class="line">g = Game()</span><br><span class="line">g.show_start_screen()</span><br><span class="line"><span class="keyword">while</span> g.running:</span><br><span class="line">    g.new()</span><br><span class="line">    g.show_go_screen()</span><br><span class="line"></span><br><span class="line">pg.quit()</span><br></pre></td></tr></table></figure>
+<p>将不同的步骤封成不同的方法，这样让Game类会简单直观很多，不同方法的细节如下</p>
+<p>在<code>__init__</code>中，初始化各种基本对象，如pygame对象、计数器对象等待</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 初始化窗口、计数器</span></span><br><span class="line">    pg.init()</span><br><span class="line">    pg.mixer.init()</span><br><span class="line">    self.screen = pg.display.set_mode((WIDTH, HEIGHT))</span><br><span class="line">    pg.display.set_caption(TITLE)</span><br><span class="line">    self.clock = pg.time.Clock()</span><br><span class="line">    self.running = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>在new()方法中，新游戏开始时，进行元素的初始化，并调用run()方法，运行游戏的主循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启新的游戏</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">   self.all_sprites = pg.sprite.Group()</span><br><span class="line">   self.player = Player()</span><br><span class="line">   self.all_sprites.add(self.player)</span><br><span class="line">   self.run()</span><br></pre></td></tr></table></figure>
+<p>run()方法就很简单了，主要就是调用相应的方法设置帧率、处理事件输入、更新状态与绘制渲染游戏等，代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 游戏中的大循环</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">   self.playing = <span class="literal">True</span></span><br><span class="line">   <span class="keyword">while</span> self.playing:</span><br><span class="line">       self.clock.tick(FPS) <span class="comment"># 设置帧率</span></span><br><span class="line">       self.events() <span class="comment"># 事件输入处理</span></span><br><span class="line">       self.update() <span class="comment"># 状态更新</span></span><br><span class="line">       self.draw() <span class="comment"># 绘制</span></span><br></pre></td></tr></table></figure>
+<p>对应方法代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 更新所有元素的状态</span></span><br><span class="line">        self.all_sprites.update()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">events</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 获得事件输入</span></span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pg.event.get():</span><br><span class="line">         <span class="comment"># 判断是否是退出事件</span></span><br><span class="line">         <span class="keyword">if</span> event.type == pg.QUIT:</span><br><span class="line">               <span class="keyword">if</span> self.playing:</span><br><span class="line">                   self.playing = <span class="literal">False</span></span><br><span class="line">               self.running = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 绘制与渲染游戏背景</span></span><br><span class="line">    self.screen.fill(BLACK)</span><br><span class="line">    self.all_sprites.draw(self.screen) <span class="comment"># 绘制所有元素到界面中</span></span><br><span class="line">    pg.display.flip()</span><br></pre></td></tr></table></figure>
+<p>代码内容在前面文章中介绍过，不再赘述。</p>
+<h2 id="控制玩家元素"><a class="markdownIt-Anchor" href="#控制玩家元素"></a> 控制玩家元素</h2>
+<p>控制玩家元素其实非常简单，核心就是利用<code>pg.key.get_pressed()</code>方法获得键盘的输入，然后判断敲击的键位是不是需要的键位，如果是，则移动元素。</p>
+<p>但还需要考虑的是如何移动元素？想此前简单的对元素x轴或y轴方向添加位移距离是不适合的，比如我就敲了一下左键，元素就一直往左移动，不会停下来，这不符合常规，应该要实现，只有一直按着左键，元素才能一直向左移动。</p>
+<p>为了实现上述的效果，就需要引入摩擦系数，模仿现实世界，我们之所以走一步不会一直滑下去就是因为存在摩擦力，这里我们使用摩擦系数来模拟这个过程。</p>
+<p>下面通过代码来实现一下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame <span class="keyword">as</span> pg</span><br><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> *</span><br><span class="line">vec = pg.math.Vector2 <span class="comment"># 二维变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在settings.py中，为了方便理解，贴一下</span></span><br><span class="line"><span class="comment"># PLAYER_ACC = 0.5 # 加速度 </span></span><br><span class="line"><span class="comment"># PLAYER_FRICTION = -0.12 # 摩擦系数</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        pg.sprite.Sprite.__init__(self)</span><br><span class="line">        <span class="comment"># 创建一个黄色方块作为玩家元素</span></span><br><span class="line">        self.image = pg.Surface((<span class="number">30</span>, <span class="number">40</span>))</span><br><span class="line">        self.image.fill(YELLOW)</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        <span class="comment"># 初始化在游戏框中心</span></span><br><span class="line">        self.rect.center = (WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>)</span><br><span class="line">        self.pos = vec(WIDTH / <span class="number">2</span>, HEIGHT / <span class="number">2</span>) <span class="comment"># 创建一个二维变量并将其初始化为游戏框的中心位置</span></span><br><span class="line">        self.vel = vec(<span class="number">0</span>, <span class="number">0</span>) <span class="comment"># 记录速度</span></span><br><span class="line">        self.acc = vec(<span class="number">0</span>, <span class="number">0</span>) <span class="comment"># 记录加速度</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.acc = vec(<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        keys = pg.key.get_pressed() <span class="comment"># 获得键盘输入</span></span><br><span class="line">        <span class="keyword">if</span> keys[pg.K_LEFT]: <span class="comment"># 按左</span></span><br><span class="line">            self.acc.x = -PLAYER_ACC <span class="comment"># 加速度，正负号表示方向</span></span><br><span class="line">        <span class="keyword">if</span> keys[pg.K_RIGHT]: <span class="comment"># 按右</span></span><br><span class="line">            self.acc.x = PLAYER_ACC</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算加速度 </span></span><br><span class="line">        <span class="comment"># 当前加速度 = (上一帧的速度 * 摩擦系数) + 上一帧加速度</span></span><br><span class="line">        self.acc += self.vel * PLAYER_FRICTION</span><br><span class="line">        <span class="comment"># 当前速度 = 当前加速度 + 上一帧的速度</span></span><br><span class="line">        self.vel += self.acc</span><br><span class="line">        <span class="comment"># 有了当前速度与加速度，就可以计算移动距离了</span></span><br><span class="line">        self.pos += self.vel + <span class="number">0.5</span> * self.acc</span><br><span class="line">        <span class="comment"># 跑马灯效果</span></span><br><span class="line">        <span class="keyword">if</span> self.pos.x &gt; WIDTH:</span><br><span class="line">            self.pos.x = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> self.pos.x &lt; <span class="number">0</span>:</span><br><span class="line">            self.pos.x = WIDTH</span><br><span class="line">        <span class="comment"># 移动玩家元素</span></span><br><span class="line">        self.rect.center = self.pos</span><br></pre></td></tr></table></figure>
+<p><code>__init__()</code>方法中，除了初始化玩家元素为一个黄色长方形外，还利用pg.math.Vector2初始化了多个二维变量，pygame的math模块还支持三维变量的初始化。</p>
+<p>初始化多个二维变量的目的在于计算当前帧的移动距离，其基本物理公式可以参考下图。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191103094304.png" alt="" /></p>
+<p>再看到update()方法，计算移动距离其实就是套用了上图红色框中的公式，只是时间t为1。时间t之所以可以为1，是因为我们每一帧都在这部分逻辑，将每一帧时间作为1则可。</p>
+<p>其余的具体逻辑，请阅读详细的注释，注释比文字好理解。</p>
+<p>最后，将计算出来的新位置self.pos赋值给玩家元素的中心点，从而实现玩家元素的移动，玩家中心点的理解可以参考下图。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191103094654.png" alt="" /></p>
+<h2 id="碰撞检测"><a class="markdownIt-Anchor" href="#碰撞检测"></a> 碰撞检测</h2>
+<p>通过上两节的代码，已经可以实现通过键盘空中游戏框中黄色方块的效果，但感觉有点单调，是否可以让元素在某个平台上运行呢？</p>
+<p>具体而言就是实现下面的效果，黄色的玩家元素在绿色的平台上站立移动，如果超出绿色小平台的范围，会自动的落下到下面的绿色大平台。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191103100017.png" alt="" /></p>
+<p>wow，跟「跳跳兔」游戏有点关系了。</p>
+<p>首先，绿色平台本身也是一个元素，所以在开始新游戏时，需要初始化好这个元素，具体逻辑写到new()方法中则可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始新的游戏</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new</span><span class="params">(self)</span>:</span></span><br><span class="line">   self.all_sprites = pg.sprite.Group() <span class="comment"># 所有元素组</span></span><br><span class="line">   self.platforms = pg.sprite.Group() <span class="comment"># 平台元素组</span></span><br><span class="line">   self.player = Player() <span class="comment"># 实例化玩家对象</span></span><br><span class="line">   self.all_sprites.add(self.player) <span class="comment"># 添加到所有元素组</span></span><br><span class="line">   p1 = Platform(<span class="number">0</span>, HEIGHT - <span class="number">40</span>, WIDTH, <span class="number">40</span>) <span class="comment"># 实例化平台元素， 绿色小平台</span></span><br><span class="line">   self.all_sprites.add(p1) <span class="comment"># 添加到所有元素组</span></span><br><span class="line">   self.platforms.add(p1) <span class="comment"># 添加到平台元素组</span></span><br><span class="line">   p2 = Platform(WIDTH / <span class="number">2</span> - <span class="number">50</span>, HEIGHT * <span class="number">3</span> / <span class="number">4</span>, <span class="number">100</span>, <span class="number">20</span>) <span class="comment"># 绿色大平台</span></span><br><span class="line">   self.all_sprites.add(p2)</span><br><span class="line">   self.platforms.add(p2)</span><br><span class="line">   self.run() <span class="comment"># 运行</span></span><br><span class="line">   </span><br><span class="line"><span class="comment"># 为了方便，展示一下Platform类对应的代码</span></span><br><span class="line"><span class="comment"># sprites.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Platform</span><span class="params">(pg.sprite.Sprite)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y, w, h)</span>:</span></span><br><span class="line">        pg.sprite.Sprite.__init__(self)</span><br><span class="line">        self.image = pg.Surface((w, h))</span><br><span class="line">        self.image.fill(GREEN)</span><br><span class="line">        self.rect = self.image.get_rect()</span><br><span class="line">        self.rect.x = x</span><br><span class="line">        self.rect.y = y</span><br></pre></td></tr></table></figure>
+<p>代码中有详细的注释，你可能对创建一个平台元素组的做法带有疑惑，平台对象为什么既要添加到所有元素组中又有添加到平台元素组中？</p>
+<p>这是为了方便做碰撞检测。</p>
+<p>通常，碰撞检测的逻辑会写到游戏中元素状态更新后，判断更新后的状态是否发生了碰撞，所谓碰撞就是不同的两个元素某部分接触到了，在pygame中使用pg.sprite.spritecollide()方法就可以判断出来了。</p>
+<p>看一下具体的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py/Game</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">   self.all_sprites.update()</span><br><span class="line">   <span class="comment"># 碰撞检测，检测玩家对象self.player 与 平台元素组中的所有平台对象是否发生碰撞</span></span><br><span class="line">   hits = pg.sprite.spritecollide(self.player, self.platforms, <span class="literal">False</span>)</span><br><span class="line">   <span class="keyword">if</span> hits: <span class="comment"># 发生碰撞</span></span><br><span class="line">       <span class="comment"># 玩家对象的y轴位置等于碰撞对象的顶部</span></span><br><span class="line">       self.player.pos.y = hits[<span class="number">0</span>].rect.top</span><br><span class="line">       <span class="comment"># 玩家对象y轴速度为0，即不再移动</span></span><br><span class="line">       self.player.vel.y = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>看到碰撞检测的相关逻辑，玩家对象要与所有的平台对象进行碰撞检测，利用平台元素组就可以轻松搞定，这也是new()中平台对象既要添加到所有元素组中又有添加到平台元素组中的原因。</p>
+<p>如果发生了碰撞，则玩家对象的y轴位置等于碰撞对象的顶部，玩家对象y轴速度为0，即不再移动。</p>
+<p>为了让效果正常，我们还需要修改一下玩家类的update()方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spirtes.py/Player</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self)</span>:</span></span><br><span class="line">   self.acc = vec(<span class="number">0</span>, <span class="number">0.5</span>) <span class="comment"># x轴没有加速度，而y轴有初始加速度，让物体可以自由落下</span></span><br><span class="line">   keys = pg.key.get_pressed()</span><br><span class="line">   <span class="keyword">if</span> keys[pg.K_LEFT]:</span><br><span class="line">       self.acc.x = -PLAYER_ACC</span><br><span class="line">   <span class="keyword">if</span> keys[pg.K_RIGHT]:</span><br><span class="line">       self.acc.x = PLAYER_ACC</span><br><span class="line"></span><br><span class="line">   self.acc.x += self.vel.x * PLAYER_FRICTION</span><br><span class="line">   self.vel += self.acc</span><br><span class="line">   self.pos += self.vel + <span class="number">0.5</span> * self.acc</span><br><span class="line">   <span class="keyword">if</span> self.pos.x &gt; WIDTH:</span><br><span class="line">       self.pos.x = <span class="number">0</span></span><br><span class="line">   <span class="keyword">if</span> self.pos.x &lt; <span class="number">0</span>:</span><br><span class="line">       self.pos.x = WIDTH</span><br><span class="line">   <span class="comment"># 移动时，以元素底部为基准 - 与碰撞检测那里相互呼应</span></span><br><span class="line">   self.rect.midbottom = self.pos</span><br></pre></td></tr></table></figure>
+<p>通过下面的图来辅助理解。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191103101102.png" alt="" /></p>
+<p>速度分为x轴方向与y轴方向，因为y轴方向需要做碰撞检测，如果self.pos赋值给玩家元素的中心，即center，那么就会出现穿透现象。(在碰撞检测时，操作的是pos与val属性，而此时又将pos赋值给玩家元素的center，必然会出现穿透现象。)</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191103102634.png" alt="" /></p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>本节给出了比较多的内容，讨论元素的控制，基本运动的实现逻辑以及碰撞检测等，至此已经构建出了「跳跳兔」最基本的原型。</p>
+<p>如果你觉得文章还不错，点击「在看」支持一下作者。</p>
+<p>今天一日一题不弄了，花点时间准备录「动态规划」的视频。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/blog/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/4/">4</a><a class="extend next" rel="next" href="/blog/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

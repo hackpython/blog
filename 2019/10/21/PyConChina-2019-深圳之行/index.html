@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="重要提示，本文只会提供关键名词，不会涉及太多技术细节，技术细节自己去深挖吧。  在 Python 中加快文件传输和文件复制 - Giampaolo Rodola 第一位上台的是来自意大利的Giampaolo Rodola，一位Python核心开发者，本来想上去尬聊的，但限于自己的英语水平，就作罢了，在这场会议上并不是每个单词都懂，但就是大致知道他在分享什么。 他的分享分为两大块。 第一部分讲了Py">
+<meta name="keywords" content="Python,随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyConChina 2019 深圳之行">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;PyConChina-2019-%E6%B7%B1%E5%9C%B3%E4%B9%8B%E8%A1%8C&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="重要提示，本文只会提供关键名词，不会涉及太多技术细节，技术细节自己去深挖吧。  在 Python 中加快文件传输和文件复制 - Giampaolo Rodola 第一位上台的是来自意大利的Giampaolo Rodola，一位Python核心开发者，本来想上去尬聊的，但限于自己的英语水平，就作罢了，在这场会议上并不是每个单词都懂，但就是大致知道他在分享什么。 他的分享分为两大块。 第一部分讲了Py">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191021153506.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191021153451.png">
+<meta property="og:updated_time" content="2019-10-21T08:48:27.661Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191021153506.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/PyConChina-2019-%E6%B7%B1%E5%9C%B3%E4%B9%8B%E8%A1%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>PyConChina 2019 深圳之行 | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/PyConChina-2019-%E6%B7%B1%E5%9C%B3%E4%B9%8B%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyConChina 2019 深圳之行
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:48:15 / 修改时间：16:48:27" itemprop="dateCreated datePublished" datetime="2019-10-21T16:48:15+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>重要提示，本文只会提供关键名词，不会涉及太多技术细节，技术细节自己去深挖吧。</p>
+<h3 id="在-python-中加快文件传输和文件复制-giampaolo-rodola"><a class="markdownIt-Anchor" href="#在-python-中加快文件传输和文件复制-giampaolo-rodola"></a> 在 Python 中加快文件传输和文件复制 - Giampaolo Rodola</h3>
+<p>第一位上台的是来自意大利的Giampaolo Rodola，一位Python核心开发者，本来想上去尬聊的，但限于自己的英语水平，就作罢了，在这场会议上并不是每个单词都懂，但就是大致知道他在分享什么。</p>
+<p>他的分享分为两大块。</p>
+<p>第一部分讲了Python3.8中拷贝的底层使用了os.sendfile()或socket.sendfile()方法实现文件的拷贝，相比于旧的拷贝方式，这种方式会更快。</p>
+<p>操作系统分为用户态与内核态，旧的复制文件方式会多次在用户态与内核态之间切换执行，而os.sendfile()会在内核态完成所有的操作，所以更快。</p>
+<p>第二部分主要介绍了psutil，通过psutil可以实现对计算机大部分状态的监控，如cpu、内存、磁盘、进程、网络等各种状态，利用psutil其实就可以构建出一个计算机状态监控器了。</p>
+<h3 id="google-sre-体系核心基础解读-刘征"><a class="markdownIt-Anchor" href="#google-sre-体系核心基础解读-刘征"></a> Google SRE 体系核心基础解读 —— 刘征</h3>
+<p>第二位上台的是刘征老师(Elastic的广告)，主要讲了Google的SRE(网站可靠性工程)，SRE主要有3个东西，分别是SLA、SLO、SLI，在边听会议的时候，简单查了一下，个人感觉，这种东西更偏向于一种工作方式，感兴趣的可以搜索了解一下</p>
+<h3 id="从-python-开始钱赚钱-邝泽徽"><a class="markdownIt-Anchor" href="#从-python-开始钱赚钱-邝泽徽"></a> 从 Python 开始钱赚钱 —— 邝泽徽</h3>
+<p>邝泽徽老师主要分享他个人的业余项目，如何利用Python抄虚拟货币赚钱，对于做过一段时间量化的我来说，这个分享没有特别强的逻辑支持，主要使用网格策略，这种策略理论上在大波动的市场中会有比较好的效果，而虚拟货币就是一个大波动的市场，网格策略的核心逻辑就是利用波动做买入与卖出，下跌时买入，上涨是卖出，做到多次下跌买入时的平均价格小于多次上涨卖出的平均价格减去交易手续费的平均价格则可。</p>
+<p>这位老师分享的项目比较随意，感觉有一些点是逻辑非自洽的，但这个分享的关键其实并不是项目本身，而是知行合一的理念，知行合一出自王阳明的阳明心学，王阳明受挫后在龙场悟道，提出了知行合一这种心学。(王阳明的书籍值得一看，我被之前棋盘公司技术经理拉坑看完了)。</p>
+<h3 id="一行代码加速科学计算-解超"><a class="markdownIt-Anchor" href="#一行代码加速科学计算-解超"></a> 一行代码加速科学计算 —— 解超</h3>
+<p>解超老师是位年轻人，声音洪亮的分享了Modin这个库，它可以通过一行代码加速pandas，怎么个一行法？</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">改为</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> modin.pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+<p>Modin以及实现了70%的Pandas API，使用方式与Pandas完全相同。</p>
+<p>Pandas之所以慢，是因为Pandas只能使用CPU的单核，Pandas不是C实现的吗？没错，但人家没有实现支持多核使用的逻辑，Modin的主要改进就是可以利用设备中所有的CPU资源，从而实现速度上的极大提升。</p>
+<p>但Modin的社区是否完善？社区不完善遇到坑可是非常非常痛苦的。</p>
+<p>感兴趣的可以看一下，Modin 项目仓库地址：</p>
+<p><a href="https://github.com/modin-project/modin" target="_blank" rel="noopener">https://github.com/modin-project/modin</a></p>
+<h3 id="数字货币交易系统架构和-python-实现-黄毅"><a class="markdownIt-Anchor" href="#数字货币交易系统架构和-python-实现-黄毅"></a> 数字货币交易系统架构和 Python 实现 —— 黄毅</h3>
+<p>黄毅老师功力深厚，会议结束后，我特意找他尬聊了一会，因为没有深入研究过Redis，所以很多东西都是知识范围外的。</p>
+<p>黄毅老师分享了自己构建的数字货币交易系统的架构，与传统Web系统架构不同的是，交易系统撮合的功能必须在全局顺序执行，所谓撮合就是找到卖方的最低价与买方最高价，让双方进行交易。</p>
+<p>这就需要找到整个系统中的买方，然后找到整个系统的卖方，然后按顺序进行交易，这部分是无法实现并发的，即没办法多笔交易同时进行，因为每一笔交易都会影响到下一笔交易。</p>
+<p>这让系统存在理论上的承载上限，无法以增加机器构建集群的方式来扩展系统。(我非常好奇A股交易系统、美股交易系统是怎么解决这问题的？)</p>
+<p>黄毅老师的解决方式是使用Redis Module实现新的Redis数据类型，来满足业务逻辑，让业务逻辑全部在内存中完成。当然，数据会持久化的记录于关系型数据库中(Ticks：拼接成批量操作的SQL，增加插入数据速度)。</p>
+<p>交易系统依托于Redis Module与Redis Stream(Redis 5.0以上才支持，类似与Kafka)，可以实现单核每秒十万笔交易的程度(大喊666)。</p>
+<p>大佬分享了他们的流计算开源作品：<a href="https://github.com/cryptorelay/redis-aggregation" target="_blank" rel="noopener">https://github.com/cryptorelay/redis-aggregation</a></p>
+<p>他们公司 Crypto 还有招聘，薪资不是一般的高，Python开发：50k-100k(经验：5-10年)。</p>
+<h3 id="python-的人工智能开发在微软云中的应用-卢建晖"><a class="markdownIt-Anchor" href="#python-的人工智能开发在微软云中的应用-卢建晖"></a> Python 的人工智能开发在微软云中的应用 —— 卢建晖</h3>
+<p>卢建晖老师-微软最有价值专家</p>
+<p>可能是老师深藏不漏，我没有Get到演讲的神韵，虽然分享题目是人工智能这块的内容，而且大部分介绍Azure，即广告。</p>
+<p>因为我做过一段时间的NLP，大致知道情况，深度学习目前对个人玩家并不友好，目前知名模型训练需要耗费巨大的算力，算力等于钱，需要上集群，这种云上免费训练，只能做一些简单模型。</p>
+<p>当然我们可以利用迁移学习来使用他人已经训练好的模型，但这与分享的东西就没啥联系了。</p>
+<p>此外，一个比较有意思的就是VS Code支持了Jupyter插件，可以直接在VS Code中使用Jupyter，而且更加智能方便。</p>
+<p>VS Code使用Electron开发，本身又开源，其代码很值得学习，推荐一个来自淘宝前端大佬的博客，他此前一段时间的工作就是魔改VS Code，形成淘宝自己的开发工具，名为Editor，其博客如下：</p>
+<p><a href="https://www.barretlee.com/blog/2019/08/03/vscode-source-code-reading-notes/" target="_blank" rel="noopener">https://www.barretlee.com/blog/2019/08/03/vscode-source-code-reading-notes/</a></p>
+<h3 id="fpga-助力-python-加速计算-陈志勇"><a class="markdownIt-Anchor" href="#fpga-助力-python-加速计算-陈志勇"></a> FPGA 助力 Python 加速计算 —— 陈志勇</h3>
+<p>陈志勇老师主要分享了FPGA这种可以半定制的电路，利用FPGA+编程可以实现一些有趣的效果。</p>
+<p>一开始主要介绍FPGA硬件上的知识，硬件上的并行就是利用多个电子元件实现的，而单个电子元件只能实现并发的效果。</p>
+<p>此外还提了函数式编程语言，陈志勇老师说在硬件上编写程序一定要有函数式编程思维，因为我只用过Erlang这一种函数式编程语言做游戏开发，所以并不太理解这句话。</p>
+<p>这个分享唯一与Python相关的地方就是PYNQ库，利用PYNQ的API可以编写在该公司硬件上使用的程序，运行速度很快，原因在于PYNQ会将相应的Python语言映射为硬件设备上RTL代码，从而实现极快的运算速度。</p>
+<p>除了可以使用Python编写外，还可以使用C来编写，利用Vivado HLS这个工具，可以将C语言转为RTL代码，转换的过程应该是利用了编译原理相关的知识，但转换效果没有利用PYNQ这种映射成RTL的方式好，原因在于编写的C语言没有使用硬件开发的思路来写代码，此时转为的RTL代码其实写的不好，导致效率不高，而PYNQ这种方式，以丧失灵活性的方式来实现映射后RTL代码的规范性。</p>
+<p>其实很多工具代码转换的方式都会有各种各样的问题，如Unity开发游戏转为H5，H5确实可以运行，但卡的不行，手机上完全不能玩，此外Debug等各种问题也是坑。</p>
+<h3 id="pipenv-和-python-包管理-明希"><a class="markdownIt-Anchor" href="#pipenv-和-python-包管理-明希"></a> Pipenv 和 Python 包管理 —— 明希</h3>
+<p>明希老师主要分享了Python虚拟环境以及包管理的一些内容，内容很细，一开始主要分享了安装包的正确方法以及各种各样的坑。</p>
+<p>随后介绍了Pipenv，简单说了依赖解析问题与相应的解决方法。</p>
+<p>最后说了一下为了Python包管理未来可能出现的方式，涉及了PEP517、PEP518草案，说的其实就是Node.js利用npm管理包那套，像npm那样，你可以选择将依赖库安装全局也可以安装到当前项目的目录下，安装在当前项目目录，只会被当前项目使用，利用这种方式就不用理会虚拟环境的问题了。</p>
+<p>然后介绍了PyFlow这一个工具，可以实现PEP517、PEP518草案的效果，地址为：</p>
+<p><a href="https://github.com/David-OConnor/pyflow" target="_blank" rel="noopener">https://github.com/David-OConnor/pyflow</a></p>
+<p>但npm本身也有各种问题，在2019的JSconfEU上提出了Tink下一代包管理器技术，意在取代npm。</p>
+<h3 id="闪电演讲"><a class="markdownIt-Anchor" href="#闪电演讲"></a> 闪电演讲</h3>
+<p>每个演讲大概10分钟</p>
+<h4 id="python-c-拓展在各平台的打包与发布-赵丰"><a class="markdownIt-Anchor" href="#python-c-拓展在各平台的打包与发布-赵丰"></a> Python C 拓展在各平台的打包与发布 —— 赵丰</h4>
+<p>赵丰老师介绍了在CI(Continuous Integration，持续集成)环境自动打包Python C拓展库的方法。</p>
+<p>构建Python C拓展包与构建纯Python包不同，需要涉及到编译的流程。在Linux中，随便编译的C拓展库是无法上传到官方的，这里Python官方给出了一个centos6.1环境的Docker，必须在这个Docker的Linux下打的包才能上传。</p>
+<h4 id="为-python-function-自动生成-web-ui-彭未康"><a class="markdownIt-Anchor" href="#为-python-function-自动生成-web-ui-彭未康"></a> 为 Python Function 自动生成 Web UI —— 彭未康</h4>
+<p>彭未康老师介绍了自己开发的工具Touch-Callable，构建于Flask之上，可以快速的通过一个方法构建出一个web界面，方便测试人员使用，比较简单，效果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># examply.py</span></span><br><span class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> 开关<span class="params">(Enum)</span>:</span></span><br><span class="line">  开 = <span class="string">'开'</span></span><br><span class="line">  关 = <span class="string">'关'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> 饮水机<span class="params">(口令: str, 制热: 开关=None, 制冷: 开关=开关<span class="params">(<span class="string">'开'</span>)</span>)</span>:</span></span><br><span class="line">  <span class="string">"""这是 20618 的！"""</span></span><br><span class="line">  <span class="keyword">if</span> 口令 != <span class="string">'多喝热水'</span>:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">'你是谁，我不认识你'</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 省略具体逻辑</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191021153506.png" alt="" /></p>
+<p>github：<a href="https://github.com/pengwk/touch-callable" target="_blank" rel="noopener">https://github.com/pengwk/touch-callable</a></p>
+<h4 id="数字货币交易系统-python-实践-代少飞"><a class="markdownIt-Anchor" href="#数字货币交易系统-python-实践-代少飞"></a> 数字货币交易系统 Python 实践 —— 代少飞</h4>
+<p>介绍了开发交易系统时会遇到的问题以及给出的解决方法，这些解决方法出乎意料的朴素简单，并没有涉及什么高深技术。</p>
+<p>此外还介绍了APScheduler这一个定时任务库(因为他们的系统中使用了)，这个库有比较多的概念，有兴趣可以看一下：</p>
+<p><a href="https://github.com/agronholm/apscheduler" target="_blank" rel="noopener">https://github.com/agronholm/apscheduler</a></p>
+<p>但如果只是单纯的定时任务，其实并不建议使用apscheduler，它会增大系统的复杂度，直接使用crontab简单粗暴。</p>
+<h4 id="django-实现后端低代码开发平台-jeff"><a class="markdownIt-Anchor" href="#django-实现后端低代码开发平台-jeff"></a> Django 实现后端低代码开发平台 —— Jeff</h4>
+<p>low-code(低代码)，简单而言就是通过不写或少写代码的方式来构建一个系统，jeff老师将其分为3个阶段，第一个就是像 Django Admin那样，写少量代码，实现web功能，第二个阶段就是通过配置文件来构建web系统，例如通过JSON文件构建一个web系统，第三个阶段，就是通过界面配置来构建一个web系统。</p>
+<p>但我个人觉得，第三阶段应该是以可拖动式的方式来构建一个web系统。因为通过界面配置其实本质依旧是生成一个JSON文件，如果逻辑要变动，还是需要手写逻辑，不够灵活，而目前我知道的商用low-code平台是利用类似逻辑图的结构来构建无代码构建web平台的目的(很多量化平台其实也有类似的东西，如bigquant)。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191021153451.png" alt="" /></p>
+<p>通过界面拖动的方式，会更加灵活，可以自己构建各种逻辑，但操作复杂度也变大，很多时候构建一个web，如构建后台，通过配置来构建更佳，因为大多数时候都是增删改查，没有什么特别的逻辑。</p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>这其实是我第一次参数这种会议，因为此前自己粗浅的认为，会议没有什么意义，一天能学什么？所以都没有怎么参加，但这次参加感觉很不错，认识了几位新朋友，开阔了一下眼界，这就是会议的意义。</p>
+<p>最后，感谢你的阅读，如果内容对你有点帮助，麻烦点一下「好看」，那是可以点击的，谢谢。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python-%E9%9A%8F%E7%AC%94/" rel="tag"># Python,随笔</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E5%A6%82%E6%9E%9C%E6%88%91%E6%9D%A5%E5%81%9A%E4%B8%AA%E3%80%8CZAO%E3%80%8D%E6%8D%A2%E8%84%B8app%EF%BC%8C%E5%85%A8%E7%BD%91%E6%9C%80%E7%A1%AC%E6%A0%B8%E6%8D%A2%E8%84%B8%E6%8A%80%E6%9C%AF%E7%AE%80%E6%9E%90-%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87/" rel="prev" title="如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)">
+      <i class="fa fa-chevron-left"></i> 如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/11/18/%E5%88%A9%E7%94%A8pygame%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E6%B8%B8%E6%88%8F-%E3%80%8C%E8%B7%B3%E8%B7%B3%E5%85%94%E3%80%8D-%E4%B8%80/" rel="next" title="利用pygame开发一款游戏:「跳跳兔」(一)">
+      利用pygame开发一款游戏:「跳跳兔」(一) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#在-python-中加快文件传输和文件复制-giampaolo-rodola"><span class="nav-number">1.</span> <span class="nav-text"> 在 Python 中加快文件传输和文件复制 - Giampaolo Rodola</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#google-sre-体系核心基础解读-刘征"><span class="nav-number">2.</span> <span class="nav-text"> Google SRE 体系核心基础解读 —— 刘征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从-python-开始钱赚钱-邝泽徽"><span class="nav-number">3.</span> <span class="nav-text"> 从 Python 开始钱赚钱 —— 邝泽徽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一行代码加速科学计算-解超"><span class="nav-number">4.</span> <span class="nav-text"> 一行代码加速科学计算 —— 解超</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字货币交易系统架构和-python-实现-黄毅"><span class="nav-number">5.</span> <span class="nav-text"> 数字货币交易系统架构和 Python 实现 —— 黄毅</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-的人工智能开发在微软云中的应用-卢建晖"><span class="nav-number">6.</span> <span class="nav-text"> Python 的人工智能开发在微软云中的应用 —— 卢建晖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fpga-助力-python-加速计算-陈志勇"><span class="nav-number">7.</span> <span class="nav-text"> FPGA 助力 Python 加速计算 —— 陈志勇</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pipenv-和-python-包管理-明希"><span class="nav-number">8.</span> <span class="nav-text"> Pipenv 和 Python 包管理 —— 明希</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闪电演讲"><span class="nav-number">9.</span> <span class="nav-text"> 闪电演讲</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python-c-拓展在各平台的打包与发布-赵丰"><span class="nav-number">9.1.</span> <span class="nav-text"> Python C 拓展在各平台的打包与发布 —— 赵丰</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为-python-function-自动生成-web-ui-彭未康"><span class="nav-number">9.2.</span> <span class="nav-text"> 为 Python Function 自动生成 Web UI —— 彭未康</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字货币交易系统-python-实践-代少飞"><span class="nav-number">9.3.</span> <span class="nav-text"> 数字货币交易系统 Python 实践 —— 代少飞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#django-实现后端低代码开发平台-jeff"><span class="nav-number">9.4.</span> <span class="nav-text"> Django 实现后端低代码开发平台 —— Jeff</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾"><span class="nav-number"></span> <span class="nav-text"> 尾</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

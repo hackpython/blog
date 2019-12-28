@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="译自：https:&#x2F;&#x2F;broadcast.listennotes.com&#x2F;the-boring-technology-behind-listen-notes-56697c2e347b 看作者如何轻松利用「Django+其他技术」构建一个商业网站。  简介  Listen Note 是一个播客搜索引擎和数据库。Listen Note背后的技术其实非常简单无聊，没有使用什么人工智能、深度学习或区块链（">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一人利用无聊的技术构建商业网站">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;%E4%B8%80%E4%BA%BA%E5%88%A9%E7%94%A8%E6%97%A0%E8%81%8A%E7%9A%84%E6%8A%80%E6%9C%AF%E6%9E%84%E5%BB%BA%E5%95%86%E4%B8%9A%E7%BD%91%E7%AB%99&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="译自：https:&#x2F;&#x2F;broadcast.listennotes.com&#x2F;the-boring-technology-behind-listen-notes-56697c2e347b 看作者如何轻松利用「Django+其他技术」构建一个商业网站。  简介  Listen Note 是一个播客搜索引擎和数据库。Listen Note背后的技术其实非常简单无聊，没有使用什么人工智能、深度学习或区块链（">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018110459.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018111835.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018114800.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018114954.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018115219.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018121137.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018123014.png">
+<meta property="og:updated_time" content="2019-10-21T08:46:55.781Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20191018110459.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/%E4%B8%80%E4%BA%BA%E5%88%A9%E7%94%A8%E6%97%A0%E8%81%8A%E7%9A%84%E6%8A%80%E6%9C%AF%E6%9E%84%E5%BB%BA%E5%95%86%E4%B8%9A%E7%BD%91%E7%AB%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>一人利用无聊的技术构建商业网站 | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/%E4%B8%80%E4%BA%BA%E5%88%A9%E7%94%A8%E6%97%A0%E8%81%8A%E7%9A%84%E6%8A%80%E6%9C%AF%E6%9E%84%E5%BB%BA%E5%95%86%E4%B8%9A%E7%BD%91%E7%AB%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一人利用无聊的技术构建商业网站
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:40:32 / 修改时间：16:46:55" itemprop="dateCreated datePublished" datetime="2019-10-21T16:40:32+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>译自：<a href="https://broadcast.listennotes.com/the-boring-technology-behind-listen-notes-56697c2e347b" target="_blank" rel="noopener">https://broadcast.listennotes.com/the-boring-technology-behind-listen-notes-56697c2e347b</a></p>
+<p>看作者如何轻松利用「Django+其他技术」构建一个商业网站。</p>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191018110459.png" alt="" /></p>
+<p>Listen Note 是一个播客搜索引擎和数据库。Listen Note背后的技术其实非常简单无聊，没有使用什么人工智能、深度学习或区块链（任何人说自己使用了人工智能技术，他使用的都不是真正的人工智能）。</p>
+<blockquote>
+<p>播客，也称PodCast，是一种数字媒体，指一系列的音频、影片、电子电台或文字档以列表形式经互联网发布，然后听众经由电子设备订阅该列表以下载或流当中的电子文件，从而接收内容。</p>
+</blockquote>
+<p>读完这篇文章后，你应该也可以构建一个Listen Notes或者很轻松的做一些类似的事情。</p>
+<p>你不需要雇很多员工，还记得Instagram被FaceBook以10亿美元收购的事情吗？当时Instagram才13个员工，而且并非全部都是工程师。</p>
+<p>现在比以往任何时候都可能通过一个小型团队(甚至一个人)来构建一些有价值有意义的东西。</p>
+<h2 id="listten-notes概览"><a class="markdownIt-Anchor" href="#listten-notes概览"></a> Listten Notes概览</h2>
+<p>Listen Notes为用户提供了两样东西。</p>
+<ul>
+<li>1.一个网站，地址为：<a href="http://listennotes.com" target="_blank" rel="noopener">listennotes.com</a>，它提供了一个搜索引擎、一个播客数据库，还提供了稍后再听、播放列表、听播客片段(它允许你剪辑任何播客界面的一个片段，然后收听)以及播客监听提醒(互联网上的新播客中提到了你指定的关键字，它就会通知你)等功能</li>
+<li>2.为开发者提供了播客搜索与目录的API，通过API可以了解用户的使用情况。</li>
+</ul>
+<p>我在AWS上运行了ListenNotes的所有东西，总共用了20台生产服务器(2019年5月5日为止)</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191018111835.png" alt="" /></p>
+<p>从主机名就可以猜出，每个服务器是做什么的</p>
+<ul>
+<li>1.production-web(生产网服务器)：主要用于提供listennotes.com网络流量服务。</li>
+<li>2.production-api(生产api服务器)：主要用于提供API服务，目前我运行了两个版本的API(v1api遗留版api与v2api新版api）</li>
+<li>3.production-db(生产数据库)：使用PostgreSQL构建主从数据库</li>
+<li>4.production-es(Elasticsearch集群)：主要负责搜索</li>
+<li>5.production-worker(工作者)：主要用于运行各种离线任务(爬取最新的播客)，以保持播客数据库始终是最新的，并提供一些其他的小功能。</li>
+<li>6.production-lb(负载均衡器)：使用了Redis与RabbitMQ这种简单方式构建（这不是一个理想的方案，但我从来不是一个完美的人)</li>
+<li>7.production-pangu(盘古)用于运行一些一次性脚本以及进行测试的机器(这里的盘古就是盘古开天地的盘古，中国文化在国外还是很有吸引力的:))</li>
+</ul>
+<h2 id="后端"><a class="markdownIt-Anchor" href="#后端"></a> 后端</h2>
+<p>整个后端使用 Django/Python3 编写，操作系统是Ubuntu。</p>
+<p>使用uWSGI+Nginx来部署Django，Nginx也用来充当负载均衡器(这其实就是常见的Ubuntu+uWSGI+Nginx+Django的部署方案，不了解的，可以搜索一下，可以找到一大堆具体的操作)。</p>
+<p>数据库主要使用PostgreSQL，我对PostgreSQL有多年的开发与运营经验，使用的比较好。</p>
+<p>Redis用于不同目的，如用于缓存、统计等等</p>
+<p>Elasticsearch负责整个网站的搜索，我使用Elasticsearch索引了网站中的播客与剧集，使用方式跟很多无聊的公司一样，没什么可说的。</p>
+<p>我使用Celery来调度离线任务，用Supervisord来对服务器上进程进行管理。</p>
+<p>为什么不用Docker/Kubernetes/Serverless这些技术？</p>
+<p>没有必要，对于中小型公司而言，过度工程化是不好的。实际上，早在2014年，我就为我的雇主做过一些Docker早期的工作，这对于一个规模达到十亿美元的中型创业公司是一件好事，但对我这种一个人的创业公司，可能就有些过了。</p>
+<h2 id="前端"><a class="markdownIt-Anchor" href="#前端"></a> 前端</h2>
+<p>网站的前端主要使用 React+Redux+WebPack+ES构建，这是现在的标准做法。</p>
+<p>当部署到生产环境时，我将JS包导出到Amazon S3上，并通过CloudFront提供CDN服务</p>
+<blockquote>
+<p>Amazon CloudFront 是由亚马逊网络服务系统提供基础服务的一个内容分发网络（CDN）。其在欧洲、亚洲、北美、澳洲、南美、美国多个主要大城市多地拥有自己的数据中心，共 107 个网络边际服务点提供服务。</p>
+</blockquote>
+<p>在listennotes.com这个网站上，大多数网页一半使用了Django模块一半使用了React程序。服务器渲染部分提供了web页面的样板，而客户端(浏览器端)部分基本上就是一个交互式web应用程序。</p>
+<p>但有一些网页是完全同Django模板渲染呈现的，因为我懒得将事情做得太完美，而且这可能对SEO有一些好处。</p>
+<h2 id="音乐播放器"><a class="markdownIt-Anchor" href="#音乐播放器"></a> 音乐播放器</h2>
+<p>在listennotes网站上，我使用一个进过大量修改的开源音乐播放器react-media-player，这个播放器我使用在了多个地方，通过iframe简单嵌入在需要的页面就好了，非常简单。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191018114800.png" alt="" /></p>
+<blockquote>
+<p>react-media-player开源地址：<a href="https://github.com/souporserious/react-media-player" target="_blank" rel="noopener">https://github.com/souporserious/react-media-player</a></p>
+</blockquote>
+<h2 id="播客api"><a class="markdownIt-Anchor" href="#播客api"></a> 播客API</h2>
+<p>listennotes为开发者提供了简单可靠的播客API，构建API类似于构建网站，后端使用了Django/Python来构建，前端使用了ReactJS，效果如下。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191018114954.png" alt="" /></p>
+<p>对于API，我们需要跟踪记录使用API的用户在当前计费周期中使用了多少次请求，并在计费周期结束时收取相应的费用。</p>
+<h2 id="devops"><a class="markdownIt-Anchor" href="#devops"></a> DevOps</h2>
+<h3 id="机器配置与代码部署"><a class="markdownIt-Anchor" href="#机器配置与代码部署"></a> 机器配置与代码部署</h3>
+<p>我使用Ansible进行服务器的部署，简单来说就写了一堆yaml文件来指定什么类型的服务器需要声明什么配置文件以及什么软件，下面是这些Ansible yaml文件的目录结构。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191018115219.png" alt="" /></p>
+<p>我还使用Ansible将代码部署到生产环境汇总，基本上，我就在MacOS中运行一个部署脚本deploy.sh就可以了。</p>
+<blockquote>
+<p>Ansible：做Python运维必须知道的一个第三方库，简单而言，Ansible是一个简便的IT自动化引擎，有兴趣可以自行搜索了解一下，其生态丰富，有很多文档可以参考。</p>
+</blockquote>
+<p>deploy.sh接收3个参数，使用方式如下：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./deploy.sh</span> production HEAD web</span><br></pre></td></tr></table></figure>
+<ul>
+<li>1.Envireonment：用于区分你要部署的是生产环境还是staging环境</li>
+<li>2.listennotes repo版本：HEAD是只部署最新的版本，如果指定的是git commite中的SHA，那么它就会部署一个特定的版本，这在我需要从一个错误部署中回滚到某个版本的代码来说非常有用。</li>
+<li>3.Server kind服务器类型：有web、woker、api等不同服务器类型选择，我不需要同时部署所有的服务器，有时我对JavaScript代码进行了修改，我就只需要将其部署到web上，而不需要改动api与worker类型服务器</li>
+</ul>
+<blockquote>
+<p>staging环境：通常一个web项目都需要一个staging环境，一来给客户做演示，二来可以作为 production server的一个 “预演”，正式发布新功能前能及早发现问题。</p>
+</blockquote>
+<p>部署的大部分过程由Ansible yaml配置文件精心安排，Ansible会自动去执行完这个流程，当然，这非常简单：</p>
+<ul>
+<li>1.在我的MacBook Pro上：如果要部署到web服务器上，就自动构建JavaScript包，并上传到Amazon S3上</li>
+<li>2.在目标服务器上：通git，将对应的listennotes repo克隆到一个以时间戳命名的文件夹中，检查特定的版本，并通过pip安装新的Python依赖</li>
+<li>3.在目标服务器上：将软连接(通过ln命令构建软连接)指向新的时间戳文件夹，并通过supervisorctl重启服务器</li>
+</ul>
+<p>整个工作我没有使用任何复杂的技术，只是利用了一些简单且实际的技术来实现这样的流程。</p>
+<h3 id="监控与报警"><a class="markdownIt-Anchor" href="#监控与报警"></a> 监控与报警</h3>
+<p>我使用DataDog服务进行监控与报警，它是一个SaaS服务，所以我并不需要做什么复杂的事情就可以得到一个简单仪表盘，并从中看都我服务器的各种指标。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191018121137.png" alt="" /></p>
+<p>我将DataDog链接到PagerDuty，如果出了什么问题，PagerDuty会通过电话与短信的形式提醒我。</p>
+<p>此外，我还使用Rollbar来关注Django代码的状况，它会捕捉代码意外产生的异常并通过email或Slack(Slack基于云的专有即时消息传递平台)来通知为通知我。</p>
+<blockquote>
+<p>Datadog 是云服务应用程序的监控服务，通过基于SaaS的数据分析平台提供对服务器，数据库，工具和服务的监控。<br />
+PagerDuty 是一家美国云计算公司为IT部门提供SaaS事件的响应平台。<br />
+Rollbar 可以自动化错误监视和筛选，开发人员可以在几分钟内修复重要的错误，并且可以快速、轻松地构建软件。<br />
+这些都是SaaS服务，都是要花钱的:(</p>
+</blockquote>
+<p>我个人经常使用Slack，但公司只有我一个人，所以我不使用Slack与他人交流，而是通过Slack来监控有趣的应用程序级事件。</p>
+<p>除了将DataDog和Rollbar与Slack集成，我还在Listen Notes后端代码中使用了Slack传入webhooks(网页钩子)，当用户注册或执行一些操作时，Slack就可以通知到我。</p>
+<p>在2017年初推出ListeNote以来，只在2018年4月22日停电事故宕机了一次，那一次ListenNote网站关闭了4个小时，我损失了10个小时的生产数据，是一次重大的打击。此外ListeNote就没有出现过任何中断。</p>
+<h2 id="发展"><a class="markdownIt-Anchor" href="#发展"></a> 发展</h2>
+<p>我在旧金山的WeWork共享空间工作。</p>
+<p>为什么不在家里?</p>
+<p>我非常重视生产力，我愿意在生产力上投资，我不认为在家里摸鱼有助于软件开发(或任何类型的知识/创造性工作)。我很少一天工作超过8小时，我珍惜每一分钟。</p>
+<p>因此，我需要一个漂亮且相对昂贵的私人办公室，我不愿花更多时间来节省这些钱，而更愿意花费一些钱利用更少的时间来赚钱。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20191018123014.png" alt="" /></p>
+<p>我使用MacBook Pro进行开发工作，我在Vagrant+VirtualBox中运行了几乎与线上相同的环境，我同样使用Anserable yaml文件来部署Vagrant内部开发环境。</p>
+<p>我将listennote的代码都托管到Github的私有repo中，我在主分支上做所有的开发工作，我很少使用功能分支。</p>
+<p>我使用PyCharm编写并运行dev服务(Django runserver 和 webpack dev server)，这很无聊…我没有使用VS Code或Atom或其他很酷的IDE。</p>
+<h2 id="保持冷静持续行动"><a class="markdownIt-Anchor" href="#保持冷静持续行动"></a> 保持冷静，持续行动</h2>
+<p>正如你所见，我们生活在可以轻松创办公司的美好时代，有那么多现成的工具与服务，可以节省我们的时间和金钱，并提高我们的生产力，现在比以往任何时候都更能让一个小团队或一个人利用一些简单且无聊的技术来构建一些对世界有用的东西。</p>
+<p>随着时间的推移，公司会越变越小，你不需要雇佣全职员工，你完全可以通过SaaS以及Upwork上找承包商来完成工作。</p>
+<p>大多数时候，阻碍我们行动的就是过度思考，你会想，如果这个…如果那个…，其实你一点都不重要，每个人都在忙于自己的生活，没人关注你创建的东西，除非你证明你值得被别人关注。即使你完全搞砸了最初的产品发布，也很少有人会注意到。</p>
+<p>Think big, start small, act fast.</p>
+<p>使用一下无聊的技术开始做一些简单的事情是完全可以的，只要你能真正解决问题。</p>
+<h2 id="尾"><a class="markdownIt-Anchor" href="#尾"></a> 尾</h2>
+<p>国内很多文章都将做个东西描绘的复杂难懂，细节很多，而国外很多文章一上来就会说，这是个简单且无聊的东西，我更喜欢国外文章的氛围，不是说，技术一定都很简单，而是给人树立信息，对自己可以做的事情有信心是很好的事情。</p>
+<p>如果我的文章对你有所帮助，请点一下「好看」，这对我这个小号而言非常重要，叩谢豪恩。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/07/18/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8B%E7%AF%87/" rel="prev" title="Python进阶：浅析「垃圾回收机制」(下篇)">
+      <i class="fa fa-chevron-left"></i> Python进阶：浅析「垃圾回收机制」(下篇)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E4%B8%80%E8%87%B4%E6%80%A7Hash%E7%AE%97%E6%B3%95/" rel="next" title="一致性Hash算法">
+      一致性Hash算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listten-notes概览"><span class="nav-number">2.</span> <span class="nav-text"> Listten Notes概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后端"><span class="nav-number">3.</span> <span class="nav-text"> 后端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端"><span class="nav-number">4.</span> <span class="nav-text"> 前端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音乐播放器"><span class="nav-number">5.</span> <span class="nav-text"> 音乐播放器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#播客api"><span class="nav-number">6.</span> <span class="nav-text"> 播客API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#devops"><span class="nav-number">7.</span> <span class="nav-text"> DevOps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#机器配置与代码部署"><span class="nav-number">7.1.</span> <span class="nav-text"> 机器配置与代码部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控与报警"><span class="nav-number">7.2.</span> <span class="nav-text"> 监控与报警</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发展"><span class="nav-number">8.</span> <span class="nav-text"> 发展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保持冷静持续行动"><span class="nav-number">9.</span> <span class="nav-text"> 保持冷静，持续行动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾"><span class="nav-number">10.</span> <span class="nav-text"> 尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

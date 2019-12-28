@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="HackPython致力于有趣有价值的编程教学   简介 Python垃圾回收机制本质就是对内存的操作机制，当程序需要长时间运行时，其内存的变化就变得关键，如果没有及时释放内存，即Python自动垃圾回收机制因为我们某些代码逻辑上的错误而导致某些内存一直不能被回收，从而造成程序的内存泄露。 Python为GC提供了扩展模块gc，利用gc模块提供的接口，可以查看到垃圾收集器的状态，垃圾收集器收集的">
+<meta name="keywords" content="Python,进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python进阶：浅析「垃圾回收机制」(下篇)">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;07&#x2F;18&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8B%E7%AF%87&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="HackPython致力于有趣有价值的编程教学   简介 Python垃圾回收机制本质就是对内存的操作机制，当程序需要长时间运行时，其内存的变化就变得关键，如果没有及时释放内存，即Python自动垃圾回收机制因为我们某些代码逻辑上的错误而导致某些内存一直不能被回收，从而造成程序的内存泄露。 Python为GC提供了扩展模块gc，利用gc模块提供的接口，可以查看到垃圾收集器的状态，垃圾收集器收集的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-18T06:15:00.529Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/07/18/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8B%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Python进阶：浅析「垃圾回收机制」(下篇) | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/07/18/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8B%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python进阶：浅析「垃圾回收机制」(下篇)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-07-18 14:13:59 / 修改时间：14:15:00" itemprop="dateCreated datePublished" datetime="2019-07-18T14:13:59+08:00">2019-07-18</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>Python垃圾回收机制本质就是对内存的操作机制，当程序需要长时间运行时，其内存的变化就变得关键，如果没有及时释放内存，即Python自动垃圾回收机制因为我们某些代码逻辑上的错误而导致某些内存一直不能被回收，从而造成程序的内存泄露。</p>
+<p>Python为GC提供了扩展模块gc，利用gc模块提供的接口，可以查看到垃圾收集器的状态，垃圾收集器收集的对象、被收集对象的详细信息等。</p>
+<p>在上篇中，我们简要的讨论了「垃圾回收机制」的原理，本篇则来讨论一下操作层面的内容。</p>
+<h2 id="gc模块概况"><a class="markdownIt-Anchor" href="#gc模块概况"></a> gc模块概况</h2>
+<p>虽说Python垃圾回收是自动的，不需要人为的干预，但人为干预的情况并不少见，如在游戏公司，为了提高Python运行的效率，Python GC被开发人员手动关闭，再在某些情况下打开，但默认情况下，Python GC通常只会在下面3种情况触发：</p>
+<p>😯1.人为手动调用了 gc.coolect()<br />
+😯2.GC的计数器到达阈值时<br />
+😯3.Python程序退出时</p>
+<p>我们可以利用gc模块来操作Python的GC，在具体操作前，先理解其提供方法的大致功能。</p>
+<p>😗gc.isenabled() 判断Python程序在当前的状态的下是否已经打开自动垃圾回收机制，如果已经打开，该方法返回True。</p>
+<p>😗gc.disable() 该方法用于关闭自动垃圾收集器，关闭自动垃圾收集器后，程序产生的垃圾对象(不可访问的对象)不会被自动回收，会持续的占用内存。</p>
+<p>😗gc.collect([generation]) 显式进行垃圾回收，可以输入参数，0 代表只检查第一代的对象，1 代表检查一，二代的对象，2 代表检查一，二，三代的对象，如果不传参数，则启动完全的垃圾回收，也就是等于传 2。该方法会返回不可达对象的个数。</p>
+<p>😗gc.set_debug(flags) 将垃圾收集器设置为调试状态，在该状态下，垃圾收集器会打印出收集到的所有对象信息并将不可访问的垃圾对象保存到 gc.garbage 列表中。</p>
+<p>😗gc.set_threshold(threshold0[, threshold1[, threshold2])<br />
+设置自动执行垃圾回收的频率。</p>
+<p>😗gc.garbage列表，列表内部存放着垃圾收回器找到的不可达并且无法被释放的对象，通常这些对象会一直存在到程序结束，如果程序要长时间运行，如果gc.garbage列表中的对象一直在增多，容易造成内存泄露。</p>
+<p>😗gc.is_tracked(obj) 该方法用于判断某个变量是否被垃圾回收器监控，如果是，则返回True，否则返回False，通常只有非原子类（如容器、用户自定义对象）会被监控，这是为了避免循环引用的情况出现。</p>
+<p>😗gc.get_count() 获取当前自动执行垃圾回收的计数器，返回一个长度为 3 的列表</p>
+<p>常用于set_debug()的flags:</p>
+<p>🤓gc.DEBUG_STATS<br />
+表示打印垃圾回收器回收完后的统计信息，当回收频率较高时，这些信息比较有利。</p>
+<p>🤓gc.DEBUG_COLLECTABLE<br />
+发现可回收对象时打印信息</p>
+<p>🤓gc.DEBUG_UNCOLLECTABLE<br />
+打印找到的不可回收对象的信息（指不能被回收器回收的不可达对象）。这些对象会被添加到 gc.garbage 列表中，即不可达又不能被释放的对象</p>
+<p>🤓gc.DEBUG_SAVEALL<br />
+设置后，所有垃圾回收器找到的不可达对象会被添加进 garbage 而不是直接被释放。这在调试一个内存泄漏的程序时会很有用。</p>
+<p>🤓gc.DEBUG_LEAK<br />
+调试内存泄漏的程序时，使回收器打印信息的调试标识位。（等价于 DEBUG_COLLECTABLE | DEBUG_UNCOLLECTABLE | DEBUG_SAVEALL ）</p>
+<p>更多功能，可以参考官方文档：<a href="https://docs.python.org/zh-cn/3.8/library/gc.html" target="_blank" rel="noopener">gc — 垃圾回收器接口 — Python 3.8.0b2 文档</a></p>
+<h2 id="内存泄露"><a class="markdownIt-Anchor" href="#内存泄露"></a> 内存泄露</h2>
+<p>我们已经知道Python利用「标记-清除」算法来解决循环引用的情况，但在Python2.7中要依赖于对象的<code>__del__</code>方法，如果该方法被用户自定义了，则「标记-清除」就无法打破循环引用，从而出现不可达且不可释放的垃圾对象，一个具体的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></span><br><span class="line">		print(<span class="string">'A del'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_leak</span><span class="params">()</span>:</span></span><br><span class="line">	c1 = A()</span><br><span class="line">	c2 = A()</span><br><span class="line">	<span class="comment"># 循环引用</span></span><br><span class="line">	c1.t = c2</span><br><span class="line">	c2.t = c1</span><br><span class="line">	<span class="comment"># 删去</span></span><br><span class="line">	<span class="keyword">del</span> c1</span><br><span class="line">	<span class="keyword">del</span> c2</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	test_leak()</span><br><span class="line">	<span class="comment"># collect() 显示触发垃圾回收，并获得不可达对象个数</span></span><br><span class="line">	print(gc.collect())</span><br><span class="line">	<span class="comment"># 不可释放的个数</span></span><br><span class="line">	print(len(gc.garbage))</span><br><span class="line">	print(gc.garbage)</span><br></pre></td></tr></table></figure>
+<p>如果在Python2.7下运行上述代码，输出如下内容：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">2</span><br><span class="line">[&lt;__main__.A<span class="built_in"> instance </span>at 0x103faea70&gt;, &lt;__main__.A<span class="built_in"> instance </span>at 0x103faeab8&gt;]</span><br></pre></td></tr></table></figure>
+<p>可以看出有2个变量是不可释放的，如果这类对象随着程序运行的时长而增加，就容易造成程序的内存泄露，从打印也可以知道，这两个对象是A类实例，而且观察A类中的<code>__del__</code>方法，其中的内容并</p>
+<p>但这类问题在Python3.5及以上版本的Python中没有出现(没有测试Python3.5以下版本的Python)，在Python3.7下运行上面程序的结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A del</span><br><span class="line">A del</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+<p>从结果可以看出，Python3.7中已经将这一的问题修复了。</p>
+<h2 id="python-gc-分代回收使用"><a class="markdownIt-Anchor" href="#python-gc-分代回收使用"></a> Python GC 分代回收使用</h2>
+<p>Python为了保证GC的速度，使用了分代回收的策略，即不对变量立刻进行回收，在上篇中提及了其中的原理，在一轮 gc 扫描中存活下来的变量存到对应「代」的列表中，其分为第0代、第1代与第2代，存活到最后，gc扫描的频率就越低，直到触发对应的阈值。</p>
+<p>gc 模快有一个自动垃圾回收的阀值，即通过 gc.get_threshold 函数获取到的长度为 3 的元组，其默认值为 (700,10,10)。每一次计数器的增加，gc 模块就会检查增加后的计数是否达到阀值的数目，如果是，就会执行对应的代数的垃圾检查，然后重置计数器<br />
+例如，假设阀值是 (700,10,10)：</p>
+<p>😳1.当计数器从 (699,8,0) 增加到 (700,8,0)，gc 模块就会执行 gc.collect(0), 即检查 0 代对象的垃圾，并重置计数器为 (0,9,0)</p>
+<p>😳2.当计数器从 (699,9,0) 增加到 (700,9,0)，gc 模块就会执行 gc.collect(1), 即检查 1、2 代对象的垃圾，并重置计数器为 (0,0,1)</p>
+<p>😳3.当计数器从 (699,9,9) 增加到 (700,9,9)，gc 模块就会执行 gc.collect(2), 即检查 0、1、2 代对象的垃圾，并重置计数器为 (0,0,0)</p>
+<p>可以通过set_threshold()函数来设置不同代之间的阈值，从而实现控制gc扫描频率的目的，简单代码如下：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="title">threshold</span> = int(sys.argv[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="type">A</span>(<span class="title">object</span>):</span></span><br><span class="line"><span class="class">	def __init__(<span class="title">self</span>, <span class="title">name</span>):</span></span><br><span class="line"><span class="class">		self.name = name</span></span><br><span class="line"><span class="class">		print('<span class="type">Create</span>', <span class="title">self</span>.<span class="title">name</span>)</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 打印垃圾回收器回收完后的统计信息</span></span><br><span class="line"><span class="class">gc.set_debug(<span class="title">gc</span>.<span class="type">DEBUG_STATS</span>)</span></span><br><span class="line"><span class="class"># 设置分代回收阀值</span></span><br><span class="line"><span class="class">gc.set_threshold(<span class="title">threshold</span>, 1, 1)</span></span><br><span class="line"><span class="class">print('<span class="type">Thresholds</span>:', <span class="title">gc</span>.<span class="title">get_threshold</span>())</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">print('<span class="type">Clear</span> <span class="title">the</span> <span class="title">collector</span> <span class="title">by</span> <span class="title">forcing</span> <span class="title">a</span> <span class="title">run'</span>)</span></span><br><span class="line"><span class="class">gc.collect()</span></span><br><span class="line"><span class="class">print()</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">print('<span class="type">Creating</span> <span class="title">objects'</span>)</span></span><br><span class="line"><span class="class">alist = []</span></span><br><span class="line"><span class="class">for i in range(10):</span></span><br><span class="line"><span class="class">    alist.append(<span class="type">A</span>('<span class="type">A</span>'+<span class="title">str</span>(<span class="title">i</span>)))</span></span><br></pre></td></tr></table></figure>
+<p>上述代码中，使用 set_debug()设置gc模块为debug模式，方便查看信息，再利用set_threshold()方法设置分代回收的阀值，从而控制Python GC的频率</p>
+<p>简单使用一下，首先将分代回收阈值设置为 (100,1,1)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">python</span> <span class="string">-u</span> <span class="string">test4.py</span> <span class="number">100</span></span><br><span class="line"><span class="attr">Thresholds:</span> <span class="string">(100,</span> <span class="number">1</span><span class="string">,</span> <span class="number">1</span><span class="string">)</span></span><br><span class="line"><span class="string">Clear</span> <span class="string">the</span> <span class="string">collector</span> <span class="string">by</span> <span class="string">forcing</span> <span class="string">a</span> <span class="string">run</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">574</span> <span class="number">3814</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0004s</span> <span class="string">elapsed</span></span><br><span class="line"></span><br><span class="line"><span class="string">Creating</span> <span class="string">objects</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A0</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A1</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A2</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A3</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A4</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A5</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A6</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A7</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A8</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A9</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">11</span> <span class="number">0</span> <span class="number">4260</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0004s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">66</span> <span class="number">0</span> <span class="number">4177</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">589</span> <span class="string">unreachable,</span> <span class="number">0</span> <span class="string">uncollectable,</span> <span class="number">0.</span><span class="string">0005s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">0</span> <span class="number">0</span> <span class="number">3029</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">151</span> <span class="string">unreachable,</span> <span class="number">0</span> <span class="string">uncollectable,</span> <span class="number">0.</span><span class="string">0002s</span> <span class="string">elapsed</span></span><br></pre></td></tr></table></figure>
+<p>接着将其设置小一些</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">python</span> <span class="string">-u</span> <span class="string">test4.py</span> <span class="number">2</span></span><br><span class="line"><span class="attr">Thresholds:</span> <span class="string">(2,</span> <span class="number">1</span><span class="string">,</span> <span class="number">1</span><span class="string">)</span></span><br><span class="line"><span class="string">Clear</span> <span class="string">the</span> <span class="string">collector</span> <span class="string">by</span> <span class="string">forcing</span> <span class="string">a</span> <span class="string">run</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">574</span> <span class="number">3814</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0004s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">1</span> <span class="number">0</span> <span class="number">4261</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"></span><br><span class="line"><span class="string">Creating</span> <span class="string">objects</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">3</span> <span class="number">0</span> <span class="number">4261</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">1</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">2</span> <span class="number">2</span> <span class="number">4261</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A1</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A2</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">2</span> <span class="number">0</span> <span class="number">4264</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A3</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">3</span> <span class="number">1</span> <span class="number">4264</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A4</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A5</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">1</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4264</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A6</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">3</span> <span class="number">0</span> <span class="number">4268</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A7</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A8</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">2</span> <span class="number">2</span> <span class="number">4268</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="string">Create</span> <span class="string">A9</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">1</span> <span class="number">3</span> <span class="number">4267</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0003s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">5</span> <span class="number">0</span> <span class="number">4216</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">6</span> <span class="number">5</span> <span class="number">4216</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">1</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">6</span> <span class="number">11</span> <span class="number">4216</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">6</span> <span class="number">0</span> <span class="number">4233</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">8</span> <span class="number">6</span> <span class="number">4232</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">1</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">6</span> <span class="number">14</span> <span class="number">4232</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">10</span> <span class="number">0</span> <span class="number">4245</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">4</span> <span class="number">10</span> <span class="number">4244</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">1</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">3</span> <span class="number">14</span> <span class="number">4244</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">3</span> <span class="number">0</span> <span class="number">4261</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">0</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">3</span> <span class="number">3</span> <span class="number">4261</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">1</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">4</span> <span class="number">6</span> <span class="number">4260</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">0.</span><span class="string">0000s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">2</span> <span class="number">0</span> <span class="number">4241</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">589</span> <span class="string">unreachable,</span> <span class="number">0</span> <span class="string">uncollectable,</span> <span class="number">0.</span><span class="string">0004s</span> <span class="string">elapsed</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">collecting</span> <span class="string">generation</span> <span class="number">2</span><span class="string">...</span></span><br><span class="line"><span class="attr">gc: objects in each generation:</span> <span class="number">0</span> <span class="number">0</span> <span class="number">3029</span></span><br><span class="line"><span class="attr">gc: objects in permanent generation:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">gc:</span> <span class="string">done,</span> <span class="number">151</span> <span class="string">unreachable,</span> <span class="number">0</span> <span class="string">uncollectable,</span> <span class="number">0.</span><span class="string">0002s</span> <span class="string">elapsed</span></span><br></pre></td></tr></table></figure>
+<p>从打印可以看出，将分代回收阈值设置为(2,1,1)后，Python GC执行的频率明显更频繁，但这会在一定程度上影响程序的效率。</p>
+<h2 id="禁用gc调高速度"><a class="markdownIt-Anchor" href="#禁用gc调高速度"></a> 禁用GC调高速度</h2>
+<p>从前面的介绍可知，Python的引用计数会在每个内存对象中都存在一个计数变量，当有大量的对象新建或删除时，就会涉及到该变量的大量修改，从而影响程序的性能，为了避免这种情况，在程序进行大量对象新建或删除前，可以先将GC禁用，等这些操作结束后，再开启GC，例子如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import gc</span><br><span class="line"><span class="comment"># 关闭GC</span></span><br><span class="line">gc.<span class="builtin-name">disable</span>()</span><br><span class="line"><span class="comment"># do something</span></span><br><span class="line"><span class="comment"># 开启GC</span></span><br><span class="line">gc.<span class="builtin-name">enable</span>()</span><br><span class="line"><span class="comment"># 手动执行GC</span></span><br><span class="line">gc.collect()</span><br></pre></td></tr></table></figure>
+<p>此时就会在批量操作后，对这些变量进行批量的回收。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>本节主要讨论了Python中的gc模块并简单的使用了该模块，</p>
+<p>本节中简单的讨论了Python中的垃圾回收机制，那是否有某些手段可以比较直观的看出当前项目中Python GC的使用情况，从而可以直观的判断项目对内存的使用是否合理呢？这些内容会尝试在浅析「垃圾回收机制」下篇中讨论😏，最后欢迎学习 HackPython 的教学课程并感觉您的阅读与支持。</p>
+<p>👋👋</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python-%E8%BF%9B%E9%98%B6/" rel="tag"># Python,进阶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E6%B5%85%E6%9E%90%E3%80%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E3%80%8D-%E4%B8%8A%E7%AF%87/" rel="prev" title="Python进阶：浅析「垃圾回收机制」(上篇)">
+      <i class="fa fa-chevron-left"></i> Python进阶：浅析「垃圾回收机制」(上篇)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/%E4%B8%80%E4%BA%BA%E5%88%A9%E7%94%A8%E6%97%A0%E8%81%8A%E7%9A%84%E6%8A%80%E6%9C%AF%E6%9E%84%E5%BB%BA%E5%95%86%E4%B8%9A%E7%BD%91%E7%AB%99/" rel="next" title="一人利用无聊的技术构建商业网站">
+      一人利用无聊的技术构建商业网站 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gc模块概况"><span class="nav-number">2.</span> <span class="nav-text"> gc模块概况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存泄露"><span class="nav-number">3.</span> <span class="nav-text"> 内存泄露</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-gc-分代回收使用"><span class="nav-number">4.</span> <span class="nav-text"> Python GC 分代回收使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#禁用gc调高速度"><span class="nav-number">5.</span> <span class="nav-text"> 禁用GC调高速度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">6.</span> <span class="nav-text"> 结尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

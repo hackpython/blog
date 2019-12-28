@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)  简介 最近，一款名为「ZAO」的AI换脸应用火爆了起来，在各大网站和朋友圈都看见它的身影，它可以通过用户上传的一张带有人脸的照片替换到视频的人脸中，效果非常逼真，引起轰动。  因为「ZAO」团队并没有公开该软件使用的技术，所以我无法确切的判断「ZAO」使用了什么具体的技术，而本篇文章的重点不是剖析「ZAO」应用的技术，而是介">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;%E5%A6%82%E6%9E%9C%E6%88%91%E6%9D%A5%E5%81%9A%E4%B8%AA%E3%80%8CZAO%E3%80%8D%E6%8D%A2%E8%84%B8app%EF%BC%8C%E5%85%A8%E7%BD%91%E6%9C%80%E7%A1%AC%E6%A0%B8%E6%8D%A2%E8%84%B8%E6%8A%80%E6%9C%AF%E7%AE%80%E6%9E%90-%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)  简介 最近，一款名为「ZAO」的AI换脸应用火爆了起来，在各大网站和朋友圈都看见它的身影，它可以通过用户上传的一张带有人脸的照片替换到视频的人脸中，效果非常逼真，引起轰动。  因为「ZAO」团队并没有公开该软件使用的技术，所以我无法确切的判断「ZAO」使用了什么具体的技术，而本篇文章的重点不是剖析「ZAO」应用的技术，而是介">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902162753.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901212730.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901214156.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901215558.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901215558.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901230104.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901235119.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901235818.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190901235830.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902000404.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902000543.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902000634.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902000709.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902000827.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902095153.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902111637.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902103043.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902104910.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902132140.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902133904.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902134719.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902134834.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902160546.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902161809.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902204659.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902204910.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902205348.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902205511.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902095943.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902100035.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902162611.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902215800.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902220357.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902212821.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902221313.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902230125.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903113538.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902224017.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902224402.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902224708.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902224625.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902225023.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902225406.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902211950.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903114934.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903120010.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903121633.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903101723.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903165652.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903165742.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903171655.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902151252.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903172241.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903104047.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903105019.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903180853.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903181531.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190903123843.png">
+<meta property="og:updated_time" content="2019-10-21T08:48:44.788Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190902162753.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/%E5%A6%82%E6%9E%9C%E6%88%91%E6%9D%A5%E5%81%9A%E4%B8%AA%E3%80%8CZAO%E3%80%8D%E6%8D%A2%E8%84%B8app%EF%BC%8C%E5%85%A8%E7%BD%91%E6%9C%80%E7%A1%AC%E6%A0%B8%E6%8D%A2%E8%84%B8%E6%8A%80%E6%9C%AF%E7%AE%80%E6%9E%90-%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文) | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/%E5%A6%82%E6%9E%9C%E6%88%91%E6%9D%A5%E5%81%9A%E4%B8%AA%E3%80%8CZAO%E3%80%8D%E6%8D%A2%E8%84%B8app%EF%BC%8C%E5%85%A8%E7%BD%91%E6%9C%80%E7%A1%AC%E6%A0%B8%E6%8D%A2%E8%84%B8%E6%8A%80%E6%9C%AF%E7%AE%80%E6%9E%90-%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:48:10 / 修改时间：16:48:44" itemprop="dateCreated datePublished" datetime="2019-10-21T16:48:10+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如果我来做个zao换脸app全网最硬核换脸技术简析万字长文"><a class="markdownIt-Anchor" href="#如果我来做个zao换脸app全网最硬核换脸技术简析万字长文"></a> 如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)</h1>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>最近，一款名为「ZAO」的AI换脸应用火爆了起来，在各大网站和朋友圈都看见它的身影，它可以通过用户上传的一张带有人脸的照片替换到视频的人脸中，效果非常逼真，引起轰动。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902162753.png" alt="" /></p>
+<p>因为「ZAO」团队并没有公开该软件使用的技术，所以我无法确切的判断「ZAO」使用了什么具体的技术，而本篇文章的重点不是剖析「ZAO」应用的技术，而是介绍如何通过已知的技术实现一个自己的「ZAO」，简而言之，就是分析当前的换脸技术。</p>
+<p>本篇文章会尝试使用最简单的语句让大家理解其中的关键概念，会从最基本的神经网络开始介绍，让没有任何概念的朋友可以轻易食用。</p>
+<p>大致内容：</p>
+<ul>
+<li>(1)什么是神经网络？</li>
+<li>(2)怎么训练神经网络？</li>
+<li>(3)使用卷积神经网络识别图像</li>
+<li>(4)MTCNN人脸检测技术</li>
+<li>(5)VAE与GAN简介
+<ul>
+<li>变分自动编码器VAE简介</li>
+<li>生成对抗网络GAN简介</li>
+</ul>
+</li>
+<li>(6)Pix2Pix替换人脸</li>
+<li>(7)CycleGAN替换人脸</li>
+<li>(8)Faceswap-GAN换脸应用</li>
+<li>(9)一张图像实现视频换脸</li>
+<li>(10)这种技术带来的威胁</li>
+<li>(11)AI对AI，识破假视频
+<ul>
+<li>使用循环神经网络识别视频</li>
+<li>通过眨眼生理信号识别视频</li>
+<li>通过肖像中的生物信息识别视频</li>
+</ul>
+</li>
+<li>(12)结尾</li>
+<li>(13)参考</li>
+</ul>
+<p>别慌，你是可以懂的。</p>
+<p>文章前半部分的内容都是用于铺垫，从而让你有背景知识可以明白换脸究竟是怎么回事。</p>
+<p>注意文章标题，使用「简析」，即只能简单的分析，因为细节之多，一文难以全部叙述完，这里尽量不涉及太多细节与公式推导，但这也会带来一定的「知识失真」。</p>
+<p>文章的图像、训练数据、代码、Paper等，都会在最后一节参考中给出。</p>
+<h2 id="1什么是神经网络"><a class="markdownIt-Anchor" href="#1什么是神经网络"></a> 1.什么是神经网络？</h2>
+<p>神经网络(Neural Network,NN)是一种数据模型，更具体而言，就是一个函数。</p>
+<p>在20世纪，心理学家McCulloch和数学家Pitts受生物神经元结构的启发提出了MP模型。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901212730.png" alt="" /></p>
+<p>MP模型抽象简化了生物神经元结构的细节，它的出现为神经网络打下了一个基础。</p>
+<p>生物神经元会接收到其他神经元的电信号输入，在进行简单的处理后，会将处理后的信息传递给其他生物神经元，而MP模型也一样，它会接受到其他模型的信号<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">x_1,...,x_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，然后与权重相乘，并通过某个函数运算后获得新的信号<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">O_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>，最后将其传递给下一个神经元，公式如下：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>o</mi><mi>j</mi></msub><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover><mo stretchy="false">(</mo><msub><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">o_j = f(\sum_{i=0}^n(w_{ij}x_i)) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">o</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
+<p>MP模型可以算是最初的开始，但与现在的神经网络有非常大的差异，现在的神经网络中通常会涉及神经元、层与权重的概念，一个简单神经网络模型如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901214156.png" alt="" /></p>
+<p>图中的每个圆，可以看做是一个「神经元」，每个神经元本身可以看做是一个函数，神经元被多个带箭头的线连接，这些线表示着数据流向，即函数的输入数据与输出数据的流向。</p>
+<p>从图中也可以看出，多个神经元会组成列，每一列中的神经元是没有被带箭头的线相连接的，这其实就构成了「层」。</p>
+<p>通常，不同的「层」会因功能不同而叫法不同，如神经网络的第一层，通常称为「输入层」，因为第一层要负责接收外面数据的输入，而神经网络中的最后一层，通常称为「输出层」，因为会将整个神经网络处理后的数据输出，而「输入层」与「输出层」之间的层，就称为「隐藏层」。</p>
+<p>权重，就是带箭头线上的值，某个神经元输出的内容会与对应的权重做运算，运算的结果会作为下一层中某个神经元的输入。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901215558.png" alt="" /></p>
+<h2 id="2怎么训练神经网络"><a class="markdownIt-Anchor" href="#2怎么训练神经网络"></a> 2.怎么训练神经网络？</h2>
+<p>简单明白了神经网络的结构后，接着要思考的问题是，人们常说的训练神经网络是什么？要怎么才能训练神经网络？</p>
+<p>训练神经网络分为大体可以分为2大阶段，第一个阶段，称为「前向传播」，第二阶段称为「反向传播」。</p>
+<p>在前向传播阶段中，数据会从输入层一直向下一层传递，直到传递到输出层，然后输出一个结果，前向传播的本质就是矩阵运算，依旧是该图。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901215558.png" alt="" /></p>
+<p>从图中可以看出，该神经网络具有一个输入层，由3个神经元组成，有一个隐藏层，由4个神经元组成，最后就是输出层，由2个神经元组成。</p>
+<p>首先输入层会接收到要输入神经网络的数据，输入层会对其进行预处理，使输入数据成为3维的列向量，因为输入层只有3个神经元。</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>0</mn></msub><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O_0 = f(x) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span>为输入层的数据预处理函数，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">O_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为输入层预处理后得到的3维列向量。</p>
+<p>随后，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">O_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>会与权重矩阵相乘，其结果传递给相应的激活函数，获得结果。</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>1</mn></msub><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>W</mi><mn>1</mn></msub><mo>∗</mo><msub><mi>O</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O_1 = f(W_1 * O_0) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>这里的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>函数表示的是隐藏层的激活函数，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">O_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是输入层的输出数据，这里作为隐藏层的输入数据传入，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>W</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">W_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是隐藏层的权重矩阵，公式运算的结果<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">O_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>就是隐藏层的输出。从上面的神经网络结构图可以看出权重矩阵<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>W</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">W_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是一个4*3的矩阵。</p>
+<p>最后，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">O_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>会作为输出层的输入，经过类似的运算获得该神经网络的最终输出结果<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">O_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mn>2</mn></msub><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>W</mi><mn>2</mn></msub><mo>∗</mo><msub><mi>O</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O_2 = f(W_2 * O_1 + b_2) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>W</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">W_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为输出层的权重矩阵，从上图可以看出它是一个2*4的矩阵。</p>
+<p>可以总结出前向传播算法普遍公式：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>O</mi><mi>i</mi></msub><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>W</mi><mi>i</mi></msub><mo>∗</mo><msub><mi>O</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>b</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O_i = f(W_i * O_{i-1} + b_i) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>当前向传播阶段的矩阵计算完成后，神经网络会输出一个结果，这个结果并不一定是正确的结果，这是当前神经网络输出的结果，比如，输入的数据是一张人手写的数字1时，我们希望神经网络可以输出数字1作为结果，但神经网络并不一定会按我们的期望输出1，它更大的概率是输出其他的内容。</p>
+<p>为了让神经网络输出正确结果，就要量化的表示出当前的输出结果与正确结果之间的差距，这种差距通常称为损失，比如，正确结果是数字1，而神经网络输出的数字9，此时数字1与数字9之间就有一个损失，定义损失的方式有很多种，会涉及不同的损失函数，比较常见的有均方差损失(MSE)、交叉熵损失等。</p>
+<p>有了损失后，就需要进行反向传播，所谓反向传播其实就是损失反向传递到神经网络的神经元中，调整带线箭头中的权重，这样的调整最终会影响到神经网络的输出。</p>
+<p>在反向传播的过程中，有分为2大步骤，第一步是利用反向传播算法去计算每个神经元对最终损失的贡献度，这个贡献度通常被称为「梯度」，第二步就是通过梯度下降算法将「梯度」运用到不同神经元上，从而实现对其权重的修改。</p>
+<p>这里需要强调一下，反向传播算法仅指计算梯度的方法，而随机梯度下降才是使用梯度进行学习的，这点很多博客与书籍都混淆了。如有疑问，请阅读Lan Goodfellow等人著的经典书籍《Deep Learning》的「6.5 反向传播和其他的微分算法」章节内容。</p>
+<p>因为反向传播过程涉及较多微积分(偏导数、方向导数等)概念，本文不再深究。</p>
+<p>简单总结，神经网络的输入层会接收到输入的数据，然后通过「前向传播」的过程获得一个输出值，将输出值与标准答案进行「损失」的计算，接着将计算出的损失通过「反向传播」的过程作用到神经网络的神经元上，改变神经网络中的结构，我们可以将神经网络整体看成一个函数f，改变其中神经元的权重，相当于改变了函数f的参数，一个函数的参数被改变了，其输出的结果当然也会跟着改变，而这种改变是有方向性的，每次的改变是为了让神经网络输出的值更接近与正确值，通过成千上万次的训练，每次都会通过相同的方式去修正神经网络的参数，最终获得一个可以输出正确值的神经网络模型，这个过程就是完整的训练过程。</p>
+<p>需注意，文中的「反向传播」指的是一个过程，包含使用「反向传播算法」与「梯度下降算法」的过程，而不是指「反向传播算法」。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901230104.png" alt="" /></p>
+<p>注意，本节谈及的「训练」只指有监督学习中的训练。</p>
+<h2 id="3使用卷积神经网络识别图像"><a class="markdownIt-Anchor" href="#3使用卷积神经网络识别图像"></a> 3.使用卷积神经网络识别图像</h2>
+<p>卷积神经网络(Convolutional Neural Network, CNN)是一种擅长处理图形数据的神经网络结构，深度学习中很多图像识别、图像处理相关的应用都有CNN的影子。</p>
+<p>对于一张图像，我们人类可以很快的识别出图像中的东西，但对于于计算机来说，它们看到的只是一堆数字，根本不能直观的理解这些数学背后表示的图像。要让计算机可以识别图像，第一步要做的就是让计算机可以理解代表图像的这些数字，如下图，我们可以很快的看出图中有三只短腿小狗，而计算机却不能。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901235119.png" alt="" /></p>
+<p>解决这个问题的灵感也来自于生物本身，生物是怎么「理解」看见世界的？对生物而言，它们看到的只是光线照射到某个物体上带来的像素信息，这些信息并没有告诉我们图中有3只小狗。</p>
+<p>其中的关键在于，生物可以很轻松的通过很底层的基础信息获得这些信息背后的抽象认知，如人类看见小狗的图像其实就是对大量像素信息这一类底层信息抽象得到图中小狗的。</p>
+<p>而卷积神经网络(CNN)原理其实也是这样，将信息抽象成更高的信息，然后更高的信息再进一步抽象。</p>
+<p>简单而言就是通过一种叫做过滤器的矩阵(本质就是一个二维数组)与图像中的数据进行运算，获得抽象层，抽象层中的信息就是更高一层的信息，然后以同样的方式再通过过滤器与当前抽象层进行运算，获得下一个更高信息维度的抽象层。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901235818.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190901235830.png" alt="" /></p>
+<p>这样，一层层的将信息抽取出来，最终获得可以判断当前物体是什么的信息。</p>
+<p>例如，要「看见」图像中的建筑，一开始输入的建筑图像对计算机而言只是一堆看似无用的数字，然后通过一层层的抽象，如第一层抽象，从无用的数字中过滤出了线条，然后再抽象，从线条这个抽象层中抽象出了矩形，然后再抽象，获得长方体，最终获得建筑的轮廓。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902000404.png" alt="" /></p>
+<p>具体怎么做到的？</p>
+<p>比如要判断图中是否存在老鼠，首先定义出一个过滤器矩阵，它可以从原始图像数据中判断出曲线。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902000543.png" alt="" /></p>
+<p>接着让过滤器扫描老鼠图像。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902000634.png" alt="" /></p>
+<p>如果曲线过滤器在图像中遇到了曲线，则进行矩阵点积运算时，会获得一个比较大的值，作为下一层中某个神经元的输入。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902000709.png" alt="" /></p>
+<p>如果曲线过滤器遇到其他形状，此时矩阵点积运算时，会获得一个较小的值。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902000827.png" alt="" /></p>
+<p>通过曲线过滤器完整扫描完老鼠图像后，就获得曲线的抽象层了，上面只演示了一种过滤器的情况，一般会有多个基本的过滤器去扫描图像，从而获得不同的特征(卷积层的深度就是过滤器的个数x过滤器的深度)。</p>
+<p>这里只是提及了卷积神经网络的大致原理，要深入理解，还需要理解卷积层、池化层/采样层、步数、填充等概念。</p>
+<h2 id="4mtcnn人脸检测技术"><a class="markdownIt-Anchor" href="#4mtcnn人脸检测技术"></a> 4.MTCNN人脸检测技术</h2>
+<p>要实现换脸，通常第一步就要检测出图像中人脸的位置，而视频中人脸的检测与在图像中检测的原理是相同的，只是视频需要逐帧去检测。</p>
+<p>人脸检测的方式有多种，这里主要介绍MTCNN，主要是因为Faceswap-GAN这款开源的换脸应用使用了MTCNN，其基础就是CNN识别图像中的数据。</p>
+<p>MTCNN(Multi-task Cascaded Convolutional Networks)是2016年提出的人脸检测模型，它由3个CNN构成，3个不同的CNN负责不同的功能，实现对图像中的人脸进行检测和特征点的识别。</p>
+<p>这3个CNN在MTCNN的论文中分别被称为P-Net、R-Net与O-Net。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902095153.png" alt="" /></p>
+<p>上图表明了MTCNN的大致流程：</p>
+<p>(1)构成图像金字塔(Image Pyramid):重塑输入的图像，获得不同尺寸的图像，将不同尺寸的图像从大到小的堆叠在一起，类似于金子塔形状，这一步相当于数据的预处理，将原始的图像数据处理成图像金字塔，再使用该数据进行训练。</p>
+<p>(2)第一步：使用提案网络(Proposal NetWork, P-Net)获取图像中所有可能含有人脸的部分，即绘制出候选边界框(Proposal Bounding boxes，直译为提案边界框，为了方便理解，这里使用候选边界框，两者含义相同)，这些边界框由相应的算法完整扫描完图像后产生，通常会产生非常多的边界框，这是为了避免图像中人脸很小或者人脸没有完全显示等各种情况以及这样可以增强神经网络的鲁棒性，接着使用了NMS(非极大值抑制算法)或Bounding-box regression(边框回归)去除多余的框，从而得到初步的人脸检测候选边界框。这一步是MTCNN中最耗时的，也是MTCNN慢的原因。</p>
+<p>(3)第二步：将P-Net获得的人脸图像输入到精细网络(Refinement NetWork, R-Net)中，R-Net会进一步去除多余的框，从而得到更加精细准确而且冗余更少的候选框。</p>
+<p>(4)第三步：将R-Net获得的人脸图像输入到输出网络(Output Network, O-Net)中，O-Net进一步对人脸候选框进行细化，并且绘制出人脸中的5个关键点(左眼、右眼、鼻子、左嘴角、右嘴角)对应的坐标。</p>
+<p>MTCNN训练时，第一步会消耗大约整个训练过程中3/4的时间，是非常耗时的，其原因在于：</p>
+<ul>
+<li>1.要生产图像金字塔，这需要扫描完整的图像，然后逐个运算生产；</li>
+<li>2.生产图像金子塔后，每种不同尺寸的图像都要输入模型进行训练，这相当于一张原始图像要进行多次模型的推断；</li>
+</ul>
+<p>已经有一些方法被提出，尝试改善训练的耗时。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902111637.png" alt="" /></p>
+<p>上图总结了几种多尺度对象提案网络(Multi-scale Object Proposal Network)的方式，MTCNN第一步使用的就是其中的(a)。</p>
+<p>目标检测的本质其实就是图像目标区域内容的特征与学习模板权重这两个矩阵之间的点积运算，如果学习模板的尺寸与目标区域的尺寸匹配，就会有比较高的识别率。</p>
+<p>而上图中的(a)，构成图像金字塔，目的是通过图像的多次缩放，实现训练单个分类器可以匹配所有不同尺寸大小的图像，这种策略需要在多个图像尺寸间进行特征计算，运算量大，导致运行慢。</p>
+<p>所以就有另一种方法，即使用多个分类器应用于单个输入的图像，如上图中的(b)，这种方式避免了重复的特征计算，但检测效果并不好。</p>
+<p>随后就有综合(a)、(b)两种方法的©，即减少图像缩放的次数以及增加分类器的个数。</p>
+<p>更进一步，如上图中的(d)，先进行少量的缩放，然后自行插入缺失的特征映射，这种方式相当大程度的加快了运行速度并且也可以获得适度的精确度。</p>
+<p>上图中还有多种方法，感兴趣可以阅读参考小结中的「论文2」。</p>
+<p>MTCNN的训练方式与第二节中介绍的训练方式一样，MTCNN人脸检测网络主要使用了WIDERFace开源人脸检查数据，该数据提供了不同类别的人脸图像数据，这些图像中的人脸都被标注出了正确位置，这并不是指，图像中存在绿色人脸标记框，而是每张图像有对应标签，标签中包含了当前图像中，人脸标记框的左上角坐标以及标记框的宽与高，通过标签中的这些数据可以绘制出标记框。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902103043.png" alt="" /></p>
+<p>MTCNN训练时，会获取WIDERFace中的人脸图像数据，然后尝试给出图像中人脸的标记框，接着计算这个标记框的位置与当前输入图像对应标签中真实标记框的位置的损失，通过损失来完善MTCNN模型，直到MTCNN可以标记出人脸的位置。</p>
+<p>MTCNN除了可以标记人脸，还可以获得人脸中的5个关键点，它使用了CNN_FacePoint数据集中的人脸数据。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902104910.png" alt="" /></p>
+<p>训练原理是相同的。</p>
+<p>3个CNN的大致结构如下(有相关经验的人可以明白其大致网络结构，不明白的跳过则可)</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902132140.png" alt="" /></p>
+<h2 id="5vae与gan的简介"><a class="markdownIt-Anchor" href="#5vae与gan的简介"></a> 5.VAE与GAN的简介</h2>
+<p>了解了人脸检测后，接着就是人脸生成了，更广义的说，其实就是图像生成，而变分自编码器(Variational Auto-Encoder，VAE)与生成对抗网络(Generative Adversarial Network，GAN)是这一领域的好手。</p>
+<h3 id="变分自编码器vae简介"><a class="markdownIt-Anchor" href="#变分自编码器vae简介"></a> 变分自编码器VAE简介</h3>
+<p>先从VAE开始，要理解VAE，有必要理解AE(Auto-Encoder，自编码器)，所谓Auto-Encoder其实很好理解，它的本质依旧是一个神经网络，只是这个神经网络有编码器(Encoder)、Bottleneck(瓶口)与解码器(Decoder)构成。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902133904.png" alt="" /></p>
+<p>输入真实的图像数据给编码器Encoder进行编码操作，所谓编码操作可以理解成抽取图像数据中的特征信息，相当于做了一个压缩的过程，这些特征信息的数据量会明显少于原始图像的数据量，抽取出的特征数据会放在Bottleneck中。</p>
+<p>Bootleneck并不会做什么处理，只是用于存储特征数据的网络结构，它会将数据直接传递给解码器Decoder，解码器就会尝试利用这些特征信息还原会图像数据，即从少量关键数据中还原出原始的图像(这个过程也被称为重构)。</p>
+<p>自编码器的训练过程也很好理解，一开始整个自编码器网络还原出的数据会与原本传入的真实数据存在较大的差距，这就是损失，通过「反向传播过程」去优化整个网络结构，让损失最小则可(但通常难以获得全局最优值，只是获得局部最优)。</p>
+<p>这种神经网络能干什么？</p>
+<p>将一个图像编码后又解码，似乎没什么作用？</p>
+<p>非也，Google就尝试使用这种简单的技术来提升自己的服务质量。</p>
+<p>比如，现在要看一张高清大图，服务器直接将大图数据传递过去会耗费大量的带宽，用户也需要较长时间去等待图像的加载。</p>
+<p>此时就可以训练好一个自编码器，将自编码器的结构简单拆分，服务器上用编码器对原始图像进行编码获得特征信息，服务器只需要将少量的特征信息传递给用户的客户端，而客户端就可以使用解码器，通过少量的特征数据运算还原出高清大图了，虽然此图非彼图，通过这种方式，就可以减少宽带的使用。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902134719.png" alt="" /></p>
+<p>其实稍微调整一下思路，就可以获得一个可以去除图像杂质或马赛克的网络，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902134834.png" alt="" /></p>
+<p>上图中，并没有直接向编码器中传入原始的正常图像数据，而是传入添加了噪音的数据，然后再通过自编码器还原数据，而还原数据直接与原始的正常图像数据做损失运算，这样训练出来的自编码器就具有去除噪音的能力了，而去除马赛克的思路是完成相同的。</p>
+<p>但现实是残酷的，这种方式虽然简单，但模型的泛化能力并不好，还原后的图像还是有较大的瑕疵。</p>
+<p>自编码器无法「创造」逼真的图像数据，我们训练的时候，都是给出一张图像，然后它会还原出一张图像，但是它无法「创造」，所以出现了变分自编码器。</p>
+<p>变分自编码器与自编码器不同之处仅在于Bottleneck向量处，它相比自编码多了均值向量(mean vector)与标准差向量(standard deviation vector)。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902160546.png" alt="" /></p>
+<p>VAE经过一定的训练后，就可以向均值向量与标准差向量定义出的样本空间进行采样，将采样获得的数据传入解码器，此时解码器就会通过解码还原数据，此时还原出的数据是真实世界中不存在的，这是因为我们传入给解码器的特性信息是从采样空间随机采样的，并不是某张真实图像的特征信息。</p>
+<p>通常，在训练VAE时会约束均值向量与标准差向量构成的样本空间分布，使其服从正态分布，即均值向量为0，标准差向量为1。这一点从它的损失函数也可以看出(神经网络输出的值与真实值的损失通过某个函数来定义，这个函数被称为损失函数)。</p>
+<p>VAE损失函数如下：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="script">L</mi><mo stretchy="false">(</mo><mi>θ</mi><mo separator="true">,</mo><mi>ϕ</mi><mo separator="true">;</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>E</mi><msub><mi>q</mi><mi>ϕ</mi></msub></msub><mo stretchy="false">[</mo><mi>l</mi><mi>o</mi><mi>g</mi><msub><mi>p</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>−</mo><msub><mi>D</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub><mo stretchy="false">(</mo><msub><mi>q</mi><mi>ϕ</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><msub><mi>p</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{L}(\theta,\phi;x) = E_{q_{\phi}}[log p_{\theta}(x|z)] - D_{KL}(q_{\phi}(z|x) || p_{\theta}(z))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal">L</span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">ϕ</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.1030799999999998em;vertical-align:-0.35307999999999995em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139199999999997em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3487714285714287em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">ϕ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29011428571428566em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35307999999999995em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.07153em;">K</span><span class="mord mathdefault mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">ϕ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mord">∣</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mord">∣</span><span class="mord">∣</span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
+<p>如果有信息论基础的朋友可以看出，VAE的损失函数由一个期望值与KL散度这两部分构成，其中KL散度的目的就是约束样本空间，使其服从正态分布。</p>
+<p>对于VAE的很多细节，这里展示不去讨论。</p>
+<p>有了上面的概念，就可以来讨论如何使用自编码器(AE)来替换人脸了。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902161809.png" alt="" /></p>
+<p>从图中可以看出，我们需要通过两堆不同的数据训练两个AE，一个AE用于自动编码女孩照片数据，第二个AE用于自动编码尼古拉斯·凯奇(那个男孩)的照片数据，但需要注意的是，两个AE的编码器共享的部分参数，这样做会让编码器找出两堆不同数据的共同特征。</p>
+<p>完成训练流程后，使用编码器对女孩的数据进行编码，获得对应的编码器特征，因为训练时，共享了部分参数，所以这些特征中包含了一些共同的特征，此时再用解码器去解码这些特征，就会获得一个换脸后的人了。</p>
+<p>这样之所以可行是因为人脸有很多潜在的相同特征，如眼睛的数量位置、鼻子的数量位置等等，通过共享参数的方式，让两个AE的编码器中的部分参数共享，让其可以找到人脸图像中共同的特征数据，此时使用不同的解码器就实现了人脸的替换。</p>
+<p>但AE或VAE有一个致命的缺陷就是生成的图像会比较模糊，下面来讨论一下生成对抗网络GAN。</p>
+<h3 id="生成对抗网络gan简介"><a class="markdownIt-Anchor" href="#生成对抗网络gan简介"></a> 生成对抗网络GAN简介</h3>
+<p>生成对抗网络(Generative Adversarial NetWork，GAN)的核心思想很简单，传统的GAN其神经网络主要有生成网络(Generator Network)与判别网络(Discriminator Network)构成，两者相互对抗、博弈，最终让生成器(生成网络的别名)可以生成逼真的图像。</p>
+<p>举个具体的例子，明白其原理。</p>
+<p>小吕是艺术学院的学生，廖老师是学校的老师。</p>
+<p>小吕虽然考入的艺术学院，但绘画能力还比较差劲，而廖老师看过很多优秀的画作，知道优秀的画作应该具有什么特点。</p>
+<p>小吕每天画一副画交个廖老师看，廖老师会更具自己的经验给出其改进意见，小吕会吸取这些经验，在明天将画画的更好，就这样，小吕一天天的进步，直到一天画出的画与廖老师印象中的名画没有明显的差异时，小吕就算出师了。</p>
+<p>GAN也就是这样，其中生成器就是小吕，而判别器就是廖老师，一开始，生成器获取一堆噪音数据(即无用的随机生成的数据)去生成一张图像，生成的图像会交给判别器判别真假，即判别器会根据自己的经验判断传入的这张图像是真实存在的图像还是生成的图像。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902204659.png" alt="" /></p>
+<p>一开始，判别器自己并没有「真实图像」的概念，它同样是通过训练来获得这样的概念的，具体而言就是将真实图像作为判别器的输入，让判别器输出1，通过一轮训练后，判别器此时就有了「真实图像」的简单概念了。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902204910.png" alt="" /></p>
+<p>生成器的目标其实就是让自己生成的图像与真实图像相似，从而让判别器无法判别出自己生成的图像是真实图像还是生成图像。</p>
+<p>GAN大致训练流程如下，以训练GAN生成图片为例</p>
+<p>第一步：初始化生成器和判别器，模型结构中的参数随机生成则可<br />
+第二步：在每一轮训练中，执行如下步骤：</p>
+<ul>
+<li>1.固定生成器的参数，训练判别器的参数，让判别器有「真实图像」的概念，具体而言
+<ul>
+<li>1.1 因为生成器的参数被固定了，此时生成器的参数没有收敛，生成器通过未收敛参数生成的图片就不会特别真实</li>
+<li>1.2 从准备好的图片数据库中选择一组真实图片数据</li>
+<li>1.3 通过上面两步操作，此时就有了两组数据，一组是生成器生成的图片数据，另一组是真实图片数据，通过这两组数据训练判别器，让其对真实图片赋予高分，给生成图片赋予低分</li>
+</ul>
+</li>
+<li>2.固定判别器，训练生成器，让生成器在判别器的指导下优化自己，具体而言
+<ul>
+<li>2.1 随机生成一组噪声喂养给生成器，让生成器生成一张图片</li>
+<li>2.2 将生成的图片传入判别器中，判别器会给该图片一个分数，比如0.22，生成器的目标就是使这个分数更高，生成出判别器可以赋予高分的图片</li>
+</ul>
+</li>
+</ul>
+<p>GAN简化后的训练过程如下图</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902205348.png" alt="" /></p>
+<p>图中有3种线，分别是：</p>
+<ul>
+<li>黑线虚线：真实数据的分布。</li>
+<li>蓝色虚线：判别器的判别分数</li>
+<li>绿线：生成器生成的数据分布</li>
+</ul>
+<p>从图中可以看出，一开始(图a)，代表真实数据分布的黑虚线与代表生成数据分布的线差异较大，此时代表判别器分数的蓝虚线可以比较准确的判断出真实数据和生成数据，它给真实数据赋予了较高的分值，而给生成数据赋予较低的分值。</p>
+<p>随着GAN训练次数的增加，生成器为了生成出可以让判别器赋予高分的数据，生成器生成数据的分布渐渐向真实数据的分布靠拢(图b-c)，当生成器完全学习到真实数据的分布情况时，判别器就无法分辨他们的了，也就是无论是真实数据还是生成数据都赋予相同的分数(图d)。</p>
+<p>上图中，真实数据的分布是从判别器学习而来的，所以在训练GAN时要先训练判别器，让其获得真实数据的分布作为一个“标准”。</p>
+<p>从数学角度来解释：</p>
+<ul>
+<li>1.从数据库中拿出真实数据x，将其放到判别器中D(x)，目标是让其D(x)输出的值接近1。</li>
+<li>2.输入随机噪音z给生成器G(z)，生成器希望判别器给自己生成的数据输出的值接近1，D(G(z)输出接近1，而判别器希望自己给生出数据输出的值接近0，D(G(z))输出接近0。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902205511.png" alt="" /></p>
+<p>通过公式表达，就可以获得GAN的公式：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>i</mi><msub><mi>n</mi><mi>G</mi></msub><mi>m</mi><mi>a</mi><msub><mi>x</mi><mi>D</mi></msub><mi>V</mi><mo stretchy="false">(</mo><mi>D</mi><mo separator="true">,</mo><mi>G</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>E</mi><mrow><mi>x</mi><mo>∼</mo><msub><mi>P</mi><mrow><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi></mrow></msub></mrow></msub><mo stretchy="false">[</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>D</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>+</mo><msub><mi>E</mi><mrow><mi>z</mi><mo>∼</mo><msub><mi>P</mi><mi>z</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></mrow></msub><mo stretchy="false">[</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>D</mi><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">min_G max_D V(D,G) = E_{x \sim P_{data}}[log D(x)] + E_{z \sim P_z(z)}[log (1-D(G(z)))]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">G</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">G</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.00586em;vertical-align:-0.25586em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.55em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">x</span><span class="mrel mtight">∼</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3487714285714287em;margin-left:-0.13889em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15122857142857138em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.25586em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1052em;vertical-align:-0.3551999999999999em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="mrel mtight">∼</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.13889em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">G</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">]</span></span></span></span></span></p>
+<p>上述公式中，将D定义为判别器，G定义为生成器。</p>
+<p>将上面公式拆分来看：</p>
+<p>先看前半段，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>E</mi><mrow><mi>x</mi><mo>∼</mo><msub><mi>P</mi><mrow><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi></mrow></msub></mrow></msub><mo stretchy="false">[</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>D</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">E_{x \sim P_{data}}[log D(x)]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00586em;vertical-align:-0.25586em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.55em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">x</span><span class="mrel mtight">∼</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3487714285714287em;margin-left:-0.13889em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15122857142857138em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.25586em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mclose">]</span></span></span></span>其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>E</mi><mrow><mi>x</mi><mo>∼</mo><msub><mi>P</mi><mrow><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi></mrow></msub></mrow></msub></mrow><annotation encoding="application/x-tex">E_{x \sim P_{data}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93919em;vertical-align:-0.25586em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.55em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">x</span><span class="mrel mtight">∼</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3487714285714287em;margin-left:-0.13889em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15122857142857138em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.25586em;"><span></span></span></span></span></span></span></span></span></span>表示期望x从<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>P</mi><mrow><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P_{data}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>分布中获取，x表示真实数据，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>P</mi><mrow><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P_{data}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示真实数据的分布，这段公式的意思是：判别器要判别出真实数据的概率，判别器的目标就是要最大化这一项。</p>
+<p>接着看后半段，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>E</mi><mrow><mi>z</mi><mo>∼</mo><msub><mi>P</mi><mi>z</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></mrow></msub><mo stretchy="false">[</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>D</mi><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">E_{z \sim P_z(z)}[log (1-D(G(z)))]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1052em;vertical-align:-0.3551999999999999em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="mrel mtight">∼</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.13889em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">G</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">]</span></span></span></span>其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>E</mi><mrow><mi>z</mi><mo>∼</mo><msub><mi>P</mi><mi>z</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></mrow></msub></mrow><annotation encoding="application/x-tex">E_{z \sim P_z(z)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.03853em;vertical-align:-0.3551999999999999em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="mrel mtight">∼</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.13889em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span></span></span></span>表示期望z从<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>p</mi><mi>z</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">p_z(z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span>分布中获取，z表示生成数据，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>p</mi><mi>z</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">p_z(z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span>表示生成数据的分布，对判别器D而言，如果向其输入的是生成数据，即<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D(G(z))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">G</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，判别器的目标就是最小化<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D(G(z))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">G</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，即判别器希望最大化<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>D</mi><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">log(1-D(G(z)))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">G</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>。</p>
+<p>但对生成器而言，它去希望最小化<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>D</mi><mo stretchy="false">(</mo><mi>G</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">log(1-D(G(z)))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">(</span><span class="mord mathdefault">G</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，这就与判别器的目标相冲突的，这也是这种神经网络被称为生成对抗网络的原因。</p>
+<p>传统的GAN有较多的缺陷，如生成器与判别器能力失衡造成训练不稳定，模型整体难以收敛(简单而言，就是训练过程不稳定)，此外还容易产生模式崩溃或梯度消失的问题，但近年经过各方的努力，GAN展示出了巨大的力量。下图展示了这几年，GAN在人脸生成的上的进步(算力需求也大幅提高，个人玩家几乎玩不起)。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902095943.png" alt="" /></p>
+<p>除了在图像生成上，利用GAN还可以做很多有趣的事情。</p>
+<p>比如智能PS。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902100035.png" alt="" /></p>
+<p>比如通过一张图片生成一段视频。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902162611.png" alt="" /></p>
+<h2 id="6pix2pix替换人脸"><a class="markdownIt-Anchor" href="#6pix2pix替换人脸"></a> 6.Pix2Pix替换人脸</h2>
+<p>有了GAN的基本概念后，Pix2Pix就不难理解了。</p>
+<p>与传统GAN不同，Pix2Pix中的判别器要判断输入的两张图像是否是真实的一对图像，而生成器也不是从噪音数据中生成图像，而是从某一张图像生成另一张图像，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902215800.png" alt="" /></p>
+<p>判别器的目的除了判断生成的图像是否真实外，还需要判断生成的图像是否与另一张图像可以组成正常的一对图像。</p>
+<p>Pix2Pix除了使用标准GAN损失函数外，还使用生成图像与对应真实图像之间的L1距离作为损失，从其论文描述中可知，Pix2Pix利用GAN损失捕捉图像中的高频特征，而利用L1损失捕捉图像中的低频特征。</p>
+<p>此外，为了让生成器更加容易生成与输入图像相关的图像，采用了U型网络结构(Unet)。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902220357.png" alt="" /></p>
+<p>U型网络中使用了Skip-Connection，简单来说就是将前面层中的一些数据不经过后面层的运算处理(运算会丢失细节)，而直接交由较后面的层直接使用。这很大程度让生成器网络结构中的后面几层也得到了很多细节数据，从而让生成器更容易生成与输入图像相关的数据。</p>
+<p>训练好Pix2Pix后，就可以实现图像的双域转换了，所谓域指的就是某种类型的图像。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902212821.png" alt="" /></p>
+<p>Pix2Pix的整体思想比较简单，但有一个缺陷，就是训练数据不好找，比如我想利用Pix2Pix黑夜转白天的效果，就需要准备一堆黑夜的数据以及对应的一堆白天的数据，一对图像，你就需要在同一个地方，白天拍摄一张，晚上拍摄一张，有很多对这样的图像，才能训练出具有比较好效果的Pix2Pix，但这明显不现实。</p>
+<p>但有些需求数据是很好找的，比如去除马赛克，只需要找到一张图像，然后为其打上马赛克就可以构成一对数据了，Pix2Pix可以实现效果不错的马赛克去除工具，比如下面对某些植物进行马赛克的去除，取得不俗的效果。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902221313.png" alt="" /></p>
+<p>对真人呢？</p>
+<p>而替换人脸其实也是类似的思路，下图就是Brannon Dorsey 使用Pix2Pix实现Person-to-Person的效果，虽然看上去不咋样。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902230125.png" alt="" /></p>
+<p>原始的Pix2Pix难以产生高清的图像，所以Pix2PixHD被提出，它在保持了原始Pix2Pix能力的前提下提高了其生成高质量的图像的能力。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903113538.png" alt="" /></p>
+<h2 id="7cyclegan替换人脸"><a class="markdownIt-Anchor" href="#7cyclegan替换人脸"></a> 7.CycleGAN替换人脸</h2>
+<p>因为训练Pix2Pix需要成对的图像，而很多时候，成对的数据是难以获得的，而CycleGAN可以解决这个问题，实现两个域内的图像相互转换的目的。</p>
+<p>在训练CycleGAN时，并不需要使用成对的数据，这是怎么做到的？</p>
+<p>一个直观的想法就是先通过生成器获取域X中的图像，将其转换为域Y中的图像，然后再将其转换回来，形象如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902224017.png" alt="" /></p>
+<p>其中域X为马的图像，域Y为斑马的图像。</p>
+<p>一开始，通过生成器，将马转换成斑马，即G(X-&gt;Y)，接着再通过另外一个生成器，将斑马转换为马，即G(Y-&gt;X)。</p>
+<p>简单而言，生成器接收马的图像生成斑马，然后另外一个生成器接受斑马的图像生成马，此时可以计算原始的马图像与还原生成马图像的损失，论文中将这种损失称为循环一致性损失。</p>
+<p>单单这样做还不行，因为在训练过程中，神经网络很有可能发现，你就是想将图像还原回输入图像的样子，那么它会慢慢倾向于不做什么有价值的操作，直接将输入图像的大部分数据直接还原，这并不是我们想要的，所以还需要另外一个损失来判断中间状态的生成的斑马是否真实。</p>
+<p>再多加一个相似的结构，就可以构成CycleGAN了</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902224402.png" alt="" /></p>
+<p>如果觉得上图有些难理解，可以看到下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902224708.png" alt="" /></p>
+<p>CycleGAN为了让模型训练的更加稳定，相比此前的GAN模型CycleGAN做了如下改变：</p>
+<ul>
+<li>1.Instance normalization代替Batch normalization</li>
+<li>2.目标损失函数使用了LSGAN平方差损失代替传统的GAN损失</li>
+<li>3.生成器中使用了残差网络，可以更好的保存图像的语义</li>
+<li>4.使用缓存历史图像来训练生成器，减小训练时的震荡，让模型更加稳定</li>
+</ul>
+<p>下图就是我通过CycleGAN训练出的效果。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902224625.png" alt="" /></p>
+<p>通过CycleGAN对人进行换脸本质依旧是不同域图像之间的转换。</p>
+<p>此外，通过这种技术，还可以做一些变态的事情了，如给女优脱衣。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902225023.png" alt="" /></p>
+<p>如果你还记得「DeepNude」这款给女性脱衣的应用，此时你应该可以明白其背后技术了(利用Pix2Pix或CycleGAN理论上都可以实现DeepNude这类应用)。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902225406.png" alt="" /></p>
+<p>声明：这对女性是极其不尊重的，也不是技术应该使用的地方，在本文「10.威胁」中会简单的讨论一下这类技术产生的风波。</p>
+<p>CycleGAN已经可以比较好的实现双域图像的转换的，那如何比较好的实现多域图像的转换呢？可以搜索阅读StarGAN相关的资料，因为与本文主题无关，就不多讨论了。</p>
+<p>下图是我通过StarGAN模型得到的效果，StarGAN可以实现图像的多域转换，下图的每一列表示不同的域不同域即不同的效果，其中分布是：原图、黑发、金发、褐色头发、反性化、老年化。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902211950.png" alt="" /></p>
+<p>可以看出，早些时候在国外社交媒体火爆的FaceApp背后的技术其实也是GAN，将StarGAN完善一下，让模型具有工业级的参数规模(以及工业级的训练数据与算力支持)，一个FaceApp就被弄出来了。</p>
+<h2 id="8faceswap-gan换脸应用"><a class="markdownIt-Anchor" href="#8faceswap-gan换脸应用"></a> 8.Faceswap-GAN换脸应用</h2>
+<p>前面讨论了这么多，是否已经有开源实现好的项目呢？</p>
+<p>当然有，我们来看一下Faceswap-GAN，它是最初换脸项目deepfakes_faceswap的升级版。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903114934.png" alt="" /></p>
+<p>deepfake_faceswap虽然实现了人脸替换，但还是有一些问题，比如原版中使用了dlib人脸识别库，该库在非「全脸」或脸比较偏的时候，人脸识别率就不高了，而Faceswap-GAN使用了MTCNN来作为人脸识别引擎，代价就是慢。</p>
+<p>我们可以通过下面几张图片来理解Faceswap-GAN大致的实现思路，需要注意，Faceswap-GAN具体的实现细节与图中的流程并不完全相同。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903120010.png" alt="" /></p>
+<p>从图中可以看出，在训练阶段，首先输入带有人脸的图像Person A，然后通过MTCNN人脸识别获得真脸图像 Real face A，接着将Real face A进行扭曲操作得到Warped face A(注意，扭曲只对人脸周围扭曲，不对人脸特征扭曲，如眼睛、鼻子等，这种做法与往图像上添加马赛克没有本质区别)，然后通过自编码器将扭曲后的人脸图像还原，从而获得重建后的人脸 Reconstructed face A。</p>
+<p>deepfake_faceswap项目使用了自编码器，但改进后的Faceswap-GAN通过GAN实现了相同的过程。</p>
+<p>获得了Reconstructed face A后并没有结束，它还会获得人脸特征面具，图中称为Segmentation mask，人脸特征面具会与重建后的脸做运算，目的是只获取人脸的特征，特征外的其他部分不再需要，接着将人脸特征域用于扭曲后人脸Warped face A从而获得最终的结果Masked face A。</p>
+<p>而在测试阶段，流程也是相同的，传入带有人脸的图像Person B，然后MTCNN识别人脸，随后直接将人脸传入，不需要进行扭曲造成，因为我们训练时，使用了Person A，此时使用Person B的真实人脸，自编码器会将其认为是扭曲后的人脸A，即 Warped A，此时会进行重建操作，然后再通过相同的方式将人脸特征面具与还原重构后的人脸运算获得仅需要的人脸特征部分，再与Real face B融合就可以获得最终的结果face B，但因为它的五官有face A的特点，所以看起来像face A。</p>
+<p>Faceswap-GAN使用了3种不同的损失来训练整个神经网络，分别是重建损失(reconsturction loss)、对抗损失(Adversarial loss)与感性损失(Perceptual loss)。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903121633.png" alt="" /></p>
+<p>重建损失：对比重建后的人脸与真实人脸之间的差距，具体而言，就是使用平均绝对误差(MAE)对图像中的每一个像素进行计算，希望随着训练，将这个损失降低到最小。</p>
+<p>对抗损失：判别器判断数据是真实数据还是虚假数据，对于生成器而言，它希望判别器给它生成的数据标记为真实数据，而对判别器而言，它希望给生成器生成的数据标记为虚假数据，两者博弈产生的损失。</p>
+<p>感性损失：用于改善生成图像中眼球的方向，使生成的图像更加真实，并且可以平滑处理生成图像中可能产生的伪影，该损失使用了VggFace模型(VggFace使用了VGG16实现人脸识别的模型)</p>
+<p>Faceswap-GAN还使用了很多技巧来完善生成的数据，并且它还提供了可以在Google的colab上直接执行的代码，使得使用门槛进一步降低(colab最长只能运行12个小时，这份代码只能生成一个轻量的Faceswap-GAN)。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903101723.png" alt="" /></p>
+<p>最后提一句：Faceswap-GAN背后采用的是CycleGAN。</p>
+<h2 id="9一张图像实现视频换脸"><a class="markdownIt-Anchor" href="#9一张图像实现视频换脸"></a> 9.一张图像实现视频换脸</h2>
+<p>聪明的读者可以发现了，前面的方式很酷，但似乎与「ZAO」的不一样，「ZAO」似乎只用上传一张图像就是实现换脸了。</p>
+<p>比如Faceswap-GAN，想通过它进行换脸，就需要准备两个人的大量图像，然后经过一定时长的训练，从而实现两者的换脸，此时如果传入第三者的脸(未经过训练)进行换脸操作，效果是不好的。</p>
+<p>那「ZAO」是如何只通过一张图像就实现换脸的呢？</p>
+<p>具体我也不清楚，因为「ZAO」团队没有说是通过什么技术实现的，但可以确定，并不是利用AutoEncoder、Pix2Pix或CycleGAN之类的，即与DeepFace或Faceswap使用的技术不同。</p>
+<p>虽然不知道「ZAO」如何实现，但想要实现这种的效果可以通过Meta-GAN的思路，即元学习+GAN。</p>
+<p>在2019年的5月，三星给出了《Few-Shot Adversarial Learning of Realistic Neural Talking Head Models》论文。</p>
+<p>在论文中，提供了通过少量图像甚至一张图像就可以实现人物换脸效果的思路，其中主要的就是元学习+GAN。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903165652.png" alt="" /></p>
+<p>元学习简单而言就是学习如何学习，这涉及了大量的话题(本人对元学习所知也不多)，本文不深入探讨，这里简单的讨论一下论文的大体思路：</p>
+<ul>
+<li>1.通过基于GAN的元学习，在大量的视频数据中训练获得模型</li>
+<li>2.训练完后，元学习会获得一个映射矩阵，元学习可以为GAN的生成器与判别器自动初始为适合目标人脸的参数，从而实现少量图像甚至一张图像就可以换脸的效果。</li>
+</ul>
+<p>其模型的大致结构如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903165742.png" alt="" /></p>
+<p>从论文描述可知，Embedder嵌入器会将头像以及面部标记数据都映射到嵌入向量中，该向量包含了与姿势无关的信息。</p>
+<p>生成器会利用输入的面部标记数据去生成数据，生成器的卷积层会通过AdaIN获取嵌入向量中的信息(人脸特征信息)来生成人脸。</p>
+<p>判别器由两步构成，一步是通过编码网络将三种图像编码为向量，然后与W矩阵相乘从而获得最终得分。</p>
+<p>通过论文中的思路构建神经网络可以实现惊人的效果，比如通过一张蒙拉丽莎的图片，让她活过来给你讲故事。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903171655.png" alt="" /></p>
+<h2 id="10威胁"><a class="markdownIt-Anchor" href="#10威胁"></a> 10.威胁</h2>
+<p>这种技术的兴起也带来了坏的一面，如DeepNude(脱去女性衣服)，此外国内很多人闻风而起，搭建了各种DeepFace网站，在降低使用技术门槛的同时，也更容易被一些心怀不轨的人利用。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190902151252.png" alt="" /></p>
+<p>这种技术在国外大多是被批评的，你无法想象，犯罪分子利用这种技术合成勒索视频给你父母、你的前任将你的脸合成到低俗视频中带来的影响。</p>
+<p>人的脸不再属于自己是可怕的。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903172241.png" alt="" /></p>
+<p>不要觉得受害的只是明星，我们要抵制技术使用到这种方面。</p>
+<h2 id="11ai对ai识破假视频"><a class="markdownIt-Anchor" href="#11ai对ai识破假视频"></a> 11.AI对AI，识破假视频</h2>
+<p>知道了一些换脸的技术以及明白了它会带来的危害，那如何识别假视频呢？</p>
+<p>现在生成的视频通过肉眼已经难以分辨出真假了，难道只能坐以待毙？</p>
+<p>下面介绍一下我看见的几种识别假视频的方法。</p>
+<h3 id="使用循环神经网络来识别视频"><a class="markdownIt-Anchor" href="#使用循环神经网络来识别视频"></a> 使用循环神经网络来识别视频</h3>
+<p>目前大多数生成视频都是利用DeepFace相关的技术，其背后就是AutoEncoder、Pix2Pix或者CycleGAN，但单纯的使用这一类技术实现人脸的替换会存在一些小问题，具体而言，就是视频的当前帧与前一帧之间是独立的，这样前一帧的一些重要信息就无法用于当前帧，当视频中画面光源有所变化时，通过这种方式生成的视频就会有「闪屏现象」，这里说的闪屏不是我们常说的闪屏，而是通过人眼难以观察到的像素异常变化。</p>
+<p>此时训练一个模型来观察则可，如果视频中连贯的部分存在这种现象，则可能是生成的造假视频，这就需要视频时间维度上的信息(当前帧的画面受上一帧的影响)。</p>
+<p>谈论到时间维度，自然会想到循环神经网络RNN、LSTM、GRU之类的，这里以LSTM作为代表来简单介绍一下。</p>
+<p>RNN在时间维度较长的数据上使用容易出现梯度消失的现象，人话说就是RNN不适合处理太长的数据，比如一段话，一段话中的每个词都是与前一个词或后一个词是相关的，而RNN要处理一段话中比较后面的词汇时，容易「忘记」这段话中排的比较前的词汇(梯度消失)，后来就提出了LSTM、GRU等模型来避免这类问题。</p>
+<p>LSTM模型结构如下，其中t表示时间，本质就对数据进行运行，从而决定模型应该记住什么，应当忘记什么，最终让模型记住重要的信息。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903104047.png" alt="" /></p>
+<p>LSTM常用于NLP领域，现在用于视频检测，其本质并没有改变，都是将当前时间节点之前的信息传递到当前时间节点。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903105019.png" alt="" /></p>
+<p>更多细节可以参考中论文8。</p>
+<h3 id="通过眨眼生理信号来识别视频"><a class="markdownIt-Anchor" href="#通过眨眼生理信号来识别视频"></a> 通过眨眼生理信号来识别视频</h3>
+<p>通过标题就明白具体的识别方法了，如果是真实的视频，视频中的人物通常会有眨眼这种生理信号，而换脸后生成的虚假视频并不会有这样的生理特征。</p>
+<p>此时可以利用CNN+LSTM的形式，通过判断视频图像中人物是否存在眨眼情况，来判断当前视频是真实视频还是生成视频。</p>
+<p>论文中将这种方法称为LRCN方法。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903180853.png" alt="" /></p>
+<p>其中(a)是原始的视频序列，(b)是做了面部对齐后的序列，LRCN方法会基于(b)中眼睛周围p1~6，这6个标签来提取特征、进行序列学习与进行眼睛状态的预测。</p>
+<p>值得一提的是，LRCN方法并不是简单的判断视频中人像的眨眼次数，而是会通过视频每一帧中眼睛的状态来判断眼睛在下一帧是否会眨眼，比如人物在当前帧的眼睛是关闭的，那么在下一帧其睁开的概率就会比较大。</p>
+<p>如下图，第一行是原始视频，存在眨眼，而第二行是生成的虚假视频，其中人物没有进行眨眼。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903181531.png" alt="" /></p>
+<p>更多细节可以参考论文9。</p>
+<h3 id="使用肖像中的生物信息识别视频"><a class="markdownIt-Anchor" href="#使用肖像中的生物信息识别视频"></a> 使用肖像中的生物信息识别视频</h3>
+<p>简单而言就是利用视频中人脸的各种动作来捕捉其中的生物信息，而这些信息在生成视频中是不会存在的，或者是不符合规律的。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190903123843.png" alt="" /></p>
+<p>没细看论文，不多言，感兴趣可以参考论文10。</p>
+<h2 id="12结尾"><a class="markdownIt-Anchor" href="#12结尾"></a> 12.结尾</h2>
+<p>本文只是抛砖迎玉，很多细节并没有讨论，如果文中有不妥之处欢迎各位留言斧正，最后希望这些技术可以用到正途之上。</p>
+<p>写作不易，如果喜欢，欢迎点好看。</p>
+<h2 id="13参考"><a class="markdownIt-Anchor" href="#13参考"></a> 13.参考</h2>
+<h3 id="paper"><a class="markdownIt-Anchor" href="#paper"></a> Paper</h3>
+<p>1.Joint Face Detection and Alignment using Multi-task Cascaded Convolutional Networks:<a href="https://kpzhang93.github.io/MTCNN_face_detection_alignment/paper/spl.pdf" target="_blank" rel="noopener">https://kpzhang93.github.io/MTCNN_face_detection_alignment/paper/spl.pdf</a></p>
+<p>2.A Unified Multi-scale Deep Convolutional<br />
+Neural Network for Fast Object Detection:<a href="http://www.svcl.ucsd.edu/publications/conference/2016/mscnn/mscnn.pdf" target="_blank" rel="noopener">http://www.svcl.ucsd.edu/publications/conference/2016/mscnn/mscnn.pdf</a></p>
+<p>3.Auto-Encoding Variational Bayes:<a href="https://arxiv.org/pdf/1312.6114.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1312.6114.pdf</a></p>
+<p>4.Generative Adversarial Nets:<a href="https://arxiv.org/pdf/1406.2661.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1406.2661.pdf</a></p>
+<p>5.Image-to-Image Translation with Conditional Adversarial Networks:<a href="https://arxiv.org/pdf/1611.07004.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1611.07004.pdf</a></p>
+<p>6.Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks<a href="https://arxiv.org/pdf/1703.10593.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1703.10593.pdf</a></p>
+<p>7.Few-Shot Adversarial Learning of Realistic Neural Talking Head Models:<a href="https://arxiv.org/pdf/1905.08233.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1905.08233.pdf</a></p>
+<p>8.Deepfake Video Detection Using Recurrent Neural Networks:<a href="https://engineering.purdue.edu/~dgueraco/content/deepfake.pdf" target="_blank" rel="noopener">https://engineering.purdue.edu/~dgueraco/content/deepfake.pdf</a></p>
+<p><a href="http://9.In" target="_blank" rel="noopener">9.In</a> Ictu Oculi: Exposing AI Created Fake Videos by Detecting Eye Blinking<a href="https://ieeexplore.ieee.org/document/8630787" target="_blank" rel="noopener">https://ieeexplore.ieee.org/document/8630787</a></p>
+<p>10.FakeCatcher: Detection of Synthetic Portrait Videos using Biological Signals<a href="https://arxiv.org/pdf/1901.02212.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1901.02212.pdf</a></p>
+<h3 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h3>
+<p>1.WIDER FACE: A Face Detection Benchmark:<a href="http://shuoyang1213.me/WIDERFACE/" target="_blank" rel="noopener">http://shuoyang1213.me/WIDERFACE/</a></p>
+<p>2.Deep Convolutional Network Cascade for Facial Point Detection:<a href="http://mmlab.ie.cuhk.edu.hk/archive/CNN_FacePoint.htm" target="_blank" rel="noopener">http://mmlab.ie.cuhk.edu.hk/archive/CNN_FacePoint.htm</a></p>
+<h3 id="代码"><a class="markdownIt-Anchor" href="#代码"></a> 代码</h3>
+<p>1.MTCNN_face_detection_alignment:<a href="https://github.com/kpzhang93/MTCNN_face_detection_alignment" target="_blank" rel="noopener">https://github.com/kpzhang93/MTCNN_face_detection_alignment</a></p>
+<p>2.pix2pix<a href="https://phillipi.github.io/pix2pix/" target="_blank" rel="noopener">https://phillipi.github.io/pix2pix/</a></p>
+<p>3.faceswap-GAN:<a href="https://github.com/shaoanlu/faceswap-GAN" target="_blank" rel="noopener">https://github.com/shaoanlu/faceswap-GAN</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E4%BD%BF%E7%94%A8Matplotlib%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96-%E4%B8%80/" rel="prev" title="Python进阶：使用Matplotlib进行数据可视化(一)">
+      <i class="fa fa-chevron-left"></i> Python进阶：使用Matplotlib进行数据可视化(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/PyConChina-2019-%E6%B7%B1%E5%9C%B3%E4%B9%8B%E8%A1%8C/" rel="next" title="PyConChina 2019 深圳之行">
+      PyConChina 2019 深圳之行 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如果我来做个zao换脸app全网最硬核换脸技术简析万字长文"><span class="nav-number">1.</span> <span class="nav-text"> 如果我来做个「ZAO」换脸app，全网最硬核换脸技术简析(万字长文)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1什么是神经网络"><span class="nav-number">1.2.</span> <span class="nav-text"> 1.什么是神经网络？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2怎么训练神经网络"><span class="nav-number">1.3.</span> <span class="nav-text"> 2.怎么训练神经网络？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3使用卷积神经网络识别图像"><span class="nav-number">1.4.</span> <span class="nav-text"> 3.使用卷积神经网络识别图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4mtcnn人脸检测技术"><span class="nav-number">1.5.</span> <span class="nav-text"> 4.MTCNN人脸检测技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5vae与gan的简介"><span class="nav-number">1.6.</span> <span class="nav-text"> 5.VAE与GAN的简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变分自编码器vae简介"><span class="nav-number">1.6.1.</span> <span class="nav-text"> 变分自编码器VAE简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成对抗网络gan简介"><span class="nav-number">1.6.2.</span> <span class="nav-text"> 生成对抗网络GAN简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6pix2pix替换人脸"><span class="nav-number">1.7.</span> <span class="nav-text"> 6.Pix2Pix替换人脸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7cyclegan替换人脸"><span class="nav-number">1.8.</span> <span class="nav-text"> 7.CycleGAN替换人脸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8faceswap-gan换脸应用"><span class="nav-number">1.9.</span> <span class="nav-text"> 8.Faceswap-GAN换脸应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9一张图像实现视频换脸"><span class="nav-number">1.10.</span> <span class="nav-text"> 9.一张图像实现视频换脸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10威胁"><span class="nav-number">1.11.</span> <span class="nav-text"> 10.威胁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11ai对ai识破假视频"><span class="nav-number">1.12.</span> <span class="nav-text"> 11.AI对AI，识破假视频</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用循环神经网络来识别视频"><span class="nav-number">1.12.1.</span> <span class="nav-text"> 使用循环神经网络来识别视频</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过眨眼生理信号来识别视频"><span class="nav-number">1.12.2.</span> <span class="nav-text"> 通过眨眼生理信号来识别视频</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用肖像中的生物信息识别视频"><span class="nav-number">1.12.3.</span> <span class="nav-text"> 使用肖像中的生物信息识别视频</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12结尾"><span class="nav-number">1.13.</span> <span class="nav-text"> 12.结尾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13参考"><span class="nav-number">1.14.</span> <span class="nav-text"> 13.参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#paper"><span class="nav-number">1.14.1.</span> <span class="nav-text"> Paper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集"><span class="nav-number">1.14.2.</span> <span class="nav-text"> 数据集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.14.3.</span> <span class="nav-text"> 代码</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

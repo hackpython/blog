@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="HackPython致力于有趣有价值的编程教学   简介 在上一篇，讨论了阻塞&#x2F;非阻塞、同步&#x2F;异步、并发&#x2F;并行等概念，本节主要来讨论一下生成器、yield以及yield from概念并进行简单的使用。  关键概念 Python中利用了asyncio这个标准库作为异步编程框架，而aysncio以及其他多数协程库内部都大量使用了生成器，所以先从生成器聊起。为什么会是生成器🤔？回想一下生成器的特性，">
+<meta name="keywords" content="Python,进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python进阶：百万「并发」基础之异步编程（中篇）">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;07&#x2F;05&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="HackPython致力于有趣有价值的编程教学   简介 在上一篇，讨论了阻塞&#x2F;非阻塞、同步&#x2F;异步、并发&#x2F;并行等概念，本节主要来讨论一下生成器、yield以及yield from概念并进行简单的使用。  关键概念 Python中利用了asyncio这个标准库作为异步编程框架，而aysncio以及其他多数协程库内部都大量使用了生成器，所以先从生成器聊起。为什么会是生成器🤔？回想一下生成器的特性，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;07&#x2F;05&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89&#x2F;media&#x2F;15620500849438&#x2F;15620762990215.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;07&#x2F;05&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89&#x2F;media&#x2F;15620500849438&#x2F;15620800978164.jpg">
+<meta property="og:updated_time" content="2019-07-05T14:34:52.562Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;07&#x2F;05&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89&#x2F;media&#x2F;15620500849438&#x2F;15620762990215.jpg">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Python进阶：百万「并发」基础之异步编程（中篇） | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python进阶：百万「并发」基础之异步编程（中篇）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-07-05 22:33:33 / 修改时间：22:34:52" itemprop="dateCreated datePublished" datetime="2019-07-05T22:33:33+08:00">2019-07-05</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>在上一篇，讨论了阻塞/非阻塞、同步/异步、并发/并行等概念，本节主要来讨论一下生成器、yield以及yield from概念并进行简单的使用。</p>
+<h2 id="关键概念"><a class="markdownIt-Anchor" href="#关键概念"></a> 关键概念</h2>
+<p>Python中利用了asyncio这个标准库作为异步编程框架，而aysncio以及其他多数协程库内部都大量使用了生成器，所以先从生成器聊起。为什么会是生成器🤔？回想一下生成器的特性，其利用了yield关键字做到了随时暂停以及随时执行的能力，而协程从技术实现角度而言，它的作用其实就是一个可以随时暂停会执行的函数。</p>
+<h2 id="生成器"><a class="markdownIt-Anchor" href="#生成器"></a> 生成器</h2>
+<p>生成器与迭代器关系紧密，😗其实生成器就是迭代器另一种更优雅的实现方式，其利用了yield关键字实现了迭代器的功能，生成器可以迭代式的利用内存空间，让数据在需要使用时才被载入，这减少内存的消耗，其利用yield关键字使用了这个功能，当生成器函数执行过程中遇到yield就会被展厅执行，等下次迭代时再次从暂停处继续执行。</p>
+<p>为了让生成器可以实现简单的协程，🤩在Python 2.5 的时候对生成器的能力进行了增强，此时利用yield可以暂停生成器函数的执行返回数据，也可以通过send()方法向生成器发送数据，并且还可以利用throw()向生成器内抛出异常以实现可随时终止生成器的目的。</p>
+<p>yield的作用直观如下图：</p>
+<p><img src="media/15620500849438/15620762990215.jpg" alt="" /></p>
+<p>从图中可看出，在一开始调用simple_coro2()方法时，获得的my_coro2变量并不是具体的值，而是一个生成器对象，此时调用其next()方法进行迭代，next()方法会让生成器函数执行到yield处，到yield后就会会将紧随在其后的变量返回，接着可以利用send()方法将值传递到生成器中，并让暂停的函数继续从暂停处执行😏，next()与send()的不同之处在于next()并不能向生成器内部传递值而send()可以，可以直接使用send(None)来实现next()方法的效果。从图中也可以看出，next()与send()会获得下一个yield返回的值。</p>
+<p>顺带一提，for迭代也调用了迭代器中的__next__方法，next()内部也是该方法🤫。</p>
+<h2 id="yield-from"><a class="markdownIt-Anchor" href="#yield-from"></a> yield from</h2>
+<p>为了让生成器分成多个子生成器后可以很容易使用next()、send()、throw()等方法，Python3.3中引入了yield from语言🤩，它允许将一个生成器的部分操作委派给另一个生成器。</p>
+<p>虽然yield from设计的目的是为了让生成器本身可以委派给子生成器，但yield from可以向任意可迭代对象进行委派操作🤭。</p>
+<p>yield from iterable 本质其实就是 for item in iterable: yield item，只是写法更优雅了，简单使用如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="function"><span class="keyword">def</span> <span class="title">gen1</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">'abc'</span>:</span><br><span class="line">   ...:         <span class="keyword">yield</span> i</span><br><span class="line">   ...:     <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">   ...:         <span class="keyword">yield</span> i</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: list(gen1())</span><br><span class="line">Out[<span class="number">2</span>]: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: <span class="function"><span class="keyword">def</span> <span class="title">gen2</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     <span class="keyword">yield</span> <span class="keyword">from</span> <span class="string">'abc'</span></span><br><span class="line">   ...:     <span class="keyword">yield</span> <span class="keyword">from</span> range(<span class="number">5</span>)</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: list(gen2())</span><br><span class="line">Out[<span class="number">5</span>]: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>上述代码中其实涉及几个概念，其中gen2()方法因为包含了yield from表达式，所以被称为😀委派生成器，而yield from后接着的表达式通常称为😀子生成器，上述代码中的’abc’,range(5)都是子生成器，而滴啊用委派生成器的代码称为😀调用方。</p>
+<p>此外，yield from还可以直接将调用方发送的信息直接传递给子生成器，具体可以看下面代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line">Result = namedtuple(<span class="string">'Result'</span>, <span class="string">'count average'</span>)</span><br><span class="line"><span class="comment"># the subgenerator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">averager</span><span class="params">()</span>:</span></span><br><span class="line">    total = <span class="number">0.0</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    average = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        term = <span class="keyword">yield</span></span><br><span class="line">        print(<span class="string">'term:'</span>, term)</span><br><span class="line">        <span class="keyword">if</span> term <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += term</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total / count</span><br><span class="line">    <span class="keyword">return</span> Result(count, average)</span><br><span class="line"></span><br><span class="line"><span class="comment"># the delegating generator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">grouper</span><span class="params">(results, key)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment">#只有当生成器averager()结束，才会返回结果给results赋值</span></span><br><span class="line">        results[key] = <span class="keyword">yield</span> <span class="keyword">from</span> averager()</span><br><span class="line">        print(<span class="string">'resluts[key]:'</span>, results[key])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">report</span><span class="params">(results)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> key, result <span class="keyword">in</span> sorted(results.items()):</span><br><span class="line">        group, unit = key.split(<span class="string">';'</span>)</span><br><span class="line">        print(<span class="string">'&#123;:2&#125; &#123;:5&#125; averaging &#123;:.2f&#125;&#123;&#125;'</span>.format(result.count, group, result.average, unit))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(data)</span>:</span></span><br><span class="line">    results = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> key, values <span class="keyword">in</span> data.items():</span><br><span class="line">        group = grouper(results, key)</span><br><span class="line">        print(type(group))</span><br><span class="line">        next(group)</span><br><span class="line">        <span class="keyword">for</span> value <span class="keyword">in</span> values:</span><br><span class="line">            r = group.send(value)</span><br><span class="line">            print(<span class="string">'r:'</span>,r)</span><br><span class="line">            print(<span class="string">'value:'</span>,value)</span><br><span class="line">        group.send(<span class="literal">None</span>)</span><br><span class="line">    report(results)</span><br><span class="line">    </span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'girls;kg'</span>:[<span class="number">40.9</span>, <span class="number">38.5</span>, <span class="number">44.3</span>, <span class="number">42.2</span>, <span class="number">45.2</span>, <span class="number">41.7</span>, <span class="number">44.5</span>, <span class="number">38.0</span>, <span class="number">40.6</span>, <span class="number">44.5</span>],</span><br><span class="line">    <span class="string">'girls;m'</span>:[<span class="number">1.6</span>, <span class="number">1.51</span>, <span class="number">1.4</span>, <span class="number">1.3</span>, <span class="number">1.41</span>, <span class="number">1.39</span>, <span class="number">1.33</span>, <span class="number">1.46</span>, <span class="number">1.45</span>, <span class="number">1.43</span>],</span><br><span class="line">    <span class="string">'boys;kg'</span>:[<span class="number">39.0</span>, <span class="number">40.8</span>, <span class="number">43.2</span>, <span class="number">40.8</span>, <span class="number">43.1</span>, <span class="number">38.6</span>, <span class="number">41.4</span>, <span class="number">40.6</span>, <span class="number">36.3</span>],</span><br><span class="line">    <span class="string">'boys;m'</span>:[<span class="number">1.38</span>, <span class="number">1.5</span>, <span class="number">1.32</span>, <span class="number">1.25</span>, <span class="number">1.37</span>, <span class="number">1.48</span>, <span class="number">1.25</span>, <span class="number">1.49</span>, <span class="number">1.46</span>],</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(data)</span><br></pre></td></tr></table></figure>
+<p>在上述代码中，grouper函数是委托生成器😗，averager函数是子生成器😗，而main()函数就是调度者😗。</p>
+<p>在main()函数中，首先通过grouper()获得对应的生成器对象，然后调用next()方法进行初步的迭代，此时会执行到averager()的yield处，因为yield后没有跟对应的变量，则yield返回的值为None，该值会有grouper()委托生成器直接传递给main()调度者，观察变量r的打印则可，接着for迭代中使用委托生成器的send()方法，该方法发送的数据会有委托生成器直接传递给子生成器，即averager()函数中term的值，上述代码调度的关系如下图：</p>
+<p><img src="media/15620500849438/15620800978164.jpg" alt="" /></p>
+<p>从图中看出，😐调度者使用send()方法传递的数据会被委派生成器直接传递给子生成器，而子生成器yield的方法数据也被直接传递会调度者，如果子生成器产生StopIteration异常则表示子生成器已经迭代完了，此时委派生成器会接收到该异常，从而继续执行yield from整个表达式后的其他表达式，这里grouper()函数中yield from执行完后，就没有逻辑了。</p>
+<p>可以看出，委派生成器具有组织多个子生成器的能力，并将调度者的信息转手传递给子生成器😯。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>在本节中，主要介绍Python中生成器、yield以及yield from的概念与使用，在下一篇中，会接着讨论Python的asyncio框架以及async/await原生协程，最后欢迎学习HackPython的教学课程并感谢您的阅读与支持。</p>
+<h2 id="参考文章"><a class="markdownIt-Anchor" href="#参考文章"></a> 参考文章</h2>
+<p><a href="https://hatboy.github.io/2019/02/16/Python%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E8%AF%A6%E8%A7%A3/#%E4%BA%8C%E3%80%81Python%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E8%BF%9B%E5%8C%96%E5%8F%B2" target="_blank" rel="noopener">Python 异步编程详解</a><br />
+<a href="https://blog.51cto.com/youerning/2161196" target="_blank" rel="noopener">Python 也能高并发</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python-%E8%BF%9B%E9%98%B6/" rel="tag"># Python,进阶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/07/01/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89/" rel="prev" title="Python进阶：百万「并发」基础之异步编程（上篇）">
+      <i class="fa fa-chevron-left"></i> Python进阶：百万「并发」基础之异步编程（上篇）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8B%E7%AF%87%EF%BC%89/" rel="next" title="Python进阶：百万「并发」基础之异步编程（下篇）">
+      Python进阶：百万「并发」基础之异步编程（下篇） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键概念"><span class="nav-number">2.</span> <span class="nav-text"> 关键概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成器"><span class="nav-number">3.</span> <span class="nav-text"> 生成器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yield-from"><span class="nav-number">4.</span> <span class="nav-text"> yield from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">5.</span> <span class="nav-text"> 结尾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text"> 参考文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="HackPython，最酷的方式学习python">
+<meta name="keywords" content="python,web,hack">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HackPython">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;page&#x2F;4&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="HackPython，最酷的方式学习python">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/page/4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/07/05/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/" class="post-title-link" itemprop="url">Python进阶：百万「并发」基础之异步编程（中篇）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-07-05 22:33:33 / 修改时间：22:34:52" itemprop="dateCreated datePublished" datetime="2019-07-05T22:33:33+08:00">2019-07-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>在上一篇，讨论了阻塞/非阻塞、同步/异步、并发/并行等概念，本节主要来讨论一下生成器、yield以及yield from概念并进行简单的使用。</p>
+<h2 id="关键概念"><a class="markdownIt-Anchor" href="#关键概念"></a> 关键概念</h2>
+<p>Python中利用了asyncio这个标准库作为异步编程框架，而aysncio以及其他多数协程库内部都大量使用了生成器，所以先从生成器聊起。为什么会是生成器🤔？回想一下生成器的特性，其利用了yield关键字做到了随时暂停以及随时执行的能力，而协程从技术实现角度而言，它的作用其实就是一个可以随时暂停会执行的函数。</p>
+<h2 id="生成器"><a class="markdownIt-Anchor" href="#生成器"></a> 生成器</h2>
+<p>生成器与迭代器关系紧密，😗其实生成器就是迭代器另一种更优雅的实现方式，其利用了yield关键字实现了迭代器的功能，生成器可以迭代式的利用内存空间，让数据在需要使用时才被载入，这减少内存的消耗，其利用yield关键字使用了这个功能，当生成器函数执行过程中遇到yield就会被展厅执行，等下次迭代时再次从暂停处继续执行。</p>
+<p>为了让生成器可以实现简单的协程，🤩在Python 2.5 的时候对生成器的能力进行了增强，此时利用yield可以暂停生成器函数的执行返回数据，也可以通过send()方法向生成器发送数据，并且还可以利用throw()向生成器内抛出异常以实现可随时终止生成器的目的。</p>
+<p>yield的作用直观如下图：</p>
+<p><img src="media/15620500849438/15620762990215.jpg" alt="" /></p>
+<p>从图中可看出，在一开始调用simple_coro2()方法时，获得的my_coro2变量并不是具体的值，而是一个生成器对象，此时调用其next()方法进行迭代，next()方法会让生成器函数执行到yield处，到yield后就会会将紧随在其后的变量返回，接着可以利用send()方法将值传递到生成器中，并让暂停的函数继续从暂停处执行😏，next()与send()的不同之处在于next()并不能向生成器内部传递值而send()可以，可以直接使用send(None)来实现next()方法的效果。从图中也可以看出，next()与send()会获得下一个yield返回的值。</p>
+<p>顺带一提，for迭代也调用了迭代器中的__next__方法，next()内部也是该方法🤫。</p>
+<h2 id="yield-from"><a class="markdownIt-Anchor" href="#yield-from"></a> yield from</h2>
+<p>为了让生成器分成多个子生成器后可以很容易使用next()、send()、throw()等方法，Python3.3中引入了yield from语言🤩，它允许将一个生成器的部分操作委派给另一个生成器。</p>
+<p>虽然yield from设计的目的是为了让生成器本身可以委派给子生成器，但yield from可以向任意可迭代对象进行委派操作🤭。</p>
+<p>yield from iterable 本质其实就是 for item in iterable: yield item，只是写法更优雅了，简单使用如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="function"><span class="keyword">def</span> <span class="title">gen1</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">'abc'</span>:</span><br><span class="line">   ...:         <span class="keyword">yield</span> i</span><br><span class="line">   ...:     <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">   ...:         <span class="keyword">yield</span> i</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: list(gen1())</span><br><span class="line">Out[<span class="number">2</span>]: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: <span class="function"><span class="keyword">def</span> <span class="title">gen2</span><span class="params">()</span>:</span></span><br><span class="line">   ...:     <span class="keyword">yield</span> <span class="keyword">from</span> <span class="string">'abc'</span></span><br><span class="line">   ...:     <span class="keyword">yield</span> <span class="keyword">from</span> range(<span class="number">5</span>)</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: list(gen2())</span><br><span class="line">Out[<span class="number">5</span>]: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>上述代码中其实涉及几个概念，其中gen2()方法因为包含了yield from表达式，所以被称为😀委派生成器，而yield from后接着的表达式通常称为😀子生成器，上述代码中的’abc’,range(5)都是子生成器，而滴啊用委派生成器的代码称为😀调用方。</p>
+<p>此外，yield from还可以直接将调用方发送的信息直接传递给子生成器，具体可以看下面代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line">Result = namedtuple(<span class="string">'Result'</span>, <span class="string">'count average'</span>)</span><br><span class="line"><span class="comment"># the subgenerator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">averager</span><span class="params">()</span>:</span></span><br><span class="line">    total = <span class="number">0.0</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    average = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        term = <span class="keyword">yield</span></span><br><span class="line">        print(<span class="string">'term:'</span>, term)</span><br><span class="line">        <span class="keyword">if</span> term <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += term</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total / count</span><br><span class="line">    <span class="keyword">return</span> Result(count, average)</span><br><span class="line"></span><br><span class="line"><span class="comment"># the delegating generator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">grouper</span><span class="params">(results, key)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment">#只有当生成器averager()结束，才会返回结果给results赋值</span></span><br><span class="line">        results[key] = <span class="keyword">yield</span> <span class="keyword">from</span> averager()</span><br><span class="line">        print(<span class="string">'resluts[key]:'</span>, results[key])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">report</span><span class="params">(results)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> key, result <span class="keyword">in</span> sorted(results.items()):</span><br><span class="line">        group, unit = key.split(<span class="string">';'</span>)</span><br><span class="line">        print(<span class="string">'&#123;:2&#125; &#123;:5&#125; averaging &#123;:.2f&#125;&#123;&#125;'</span>.format(result.count, group, result.average, unit))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(data)</span>:</span></span><br><span class="line">    results = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> key, values <span class="keyword">in</span> data.items():</span><br><span class="line">        group = grouper(results, key)</span><br><span class="line">        print(type(group))</span><br><span class="line">        next(group)</span><br><span class="line">        <span class="keyword">for</span> value <span class="keyword">in</span> values:</span><br><span class="line">            r = group.send(value)</span><br><span class="line">            print(<span class="string">'r:'</span>,r)</span><br><span class="line">            print(<span class="string">'value:'</span>,value)</span><br><span class="line">        group.send(<span class="literal">None</span>)</span><br><span class="line">    report(results)</span><br><span class="line">    </span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'girls;kg'</span>:[<span class="number">40.9</span>, <span class="number">38.5</span>, <span class="number">44.3</span>, <span class="number">42.2</span>, <span class="number">45.2</span>, <span class="number">41.7</span>, <span class="number">44.5</span>, <span class="number">38.0</span>, <span class="number">40.6</span>, <span class="number">44.5</span>],</span><br><span class="line">    <span class="string">'girls;m'</span>:[<span class="number">1.6</span>, <span class="number">1.51</span>, <span class="number">1.4</span>, <span class="number">1.3</span>, <span class="number">1.41</span>, <span class="number">1.39</span>, <span class="number">1.33</span>, <span class="number">1.46</span>, <span class="number">1.45</span>, <span class="number">1.43</span>],</span><br><span class="line">    <span class="string">'boys;kg'</span>:[<span class="number">39.0</span>, <span class="number">40.8</span>, <span class="number">43.2</span>, <span class="number">40.8</span>, <span class="number">43.1</span>, <span class="number">38.6</span>, <span class="number">41.4</span>, <span class="number">40.6</span>, <span class="number">36.3</span>],</span><br><span class="line">    <span class="string">'boys;m'</span>:[<span class="number">1.38</span>, <span class="number">1.5</span>, <span class="number">1.32</span>, <span class="number">1.25</span>, <span class="number">1.37</span>, <span class="number">1.48</span>, <span class="number">1.25</span>, <span class="number">1.49</span>, <span class="number">1.46</span>],</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(data)</span><br></pre></td></tr></table></figure>
+<p>在上述代码中，grouper函数是委托生成器😗，averager函数是子生成器😗，而main()函数就是调度者😗。</p>
+<p>在main()函数中，首先通过grouper()获得对应的生成器对象，然后调用next()方法进行初步的迭代，此时会执行到averager()的yield处，因为yield后没有跟对应的变量，则yield返回的值为None，该值会有grouper()委托生成器直接传递给main()调度者，观察变量r的打印则可，接着for迭代中使用委托生成器的send()方法，该方法发送的数据会有委托生成器直接传递给子生成器，即averager()函数中term的值，上述代码调度的关系如下图：</p>
+<p><img src="media/15620500849438/15620800978164.jpg" alt="" /></p>
+<p>从图中看出，😐调度者使用send()方法传递的数据会被委派生成器直接传递给子生成器，而子生成器yield的方法数据也被直接传递会调度者，如果子生成器产生StopIteration异常则表示子生成器已经迭代完了，此时委派生成器会接收到该异常，从而继续执行yield from整个表达式后的其他表达式，这里grouper()函数中yield from执行完后，就没有逻辑了。</p>
+<p>可以看出，委派生成器具有组织多个子生成器的能力，并将调度者的信息转手传递给子生成器😯。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>在本节中，主要介绍Python中生成器、yield以及yield from的概念与使用，在下一篇中，会接着讨论Python的asyncio框架以及async/await原生协程，最后欢迎学习HackPython的教学课程并感谢您的阅读与支持。</p>
+<h2 id="参考文章"><a class="markdownIt-Anchor" href="#参考文章"></a> 参考文章</h2>
+<p><a href="https://hatboy.github.io/2019/02/16/Python%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E8%AF%A6%E8%A7%A3/#%E4%BA%8C%E3%80%81Python%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E8%BF%9B%E5%8C%96%E5%8F%B2" target="_blank" rel="noopener">Python 异步编程详解</a><br />
+<a href="https://blog.51cto.com/youerning/2161196" target="_blank" rel="noopener">Python 也能高并发</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/07/01/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/07/01/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E7%99%BE%E4%B8%87%E3%80%8C%E5%B9%B6%E5%8F%91%E3%80%8D%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89/" class="post-title-link" itemprop="url">Python进阶：百万「并发」基础之异步编程（上篇）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-07-01 22:16:54" itemprop="dateCreated datePublished" datetime="2019-07-01T22:16:54+08:00">2019-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-07-05 22:34:49" itemprop="dateModified" datetime="2019-07-05T22:34:49+08:00">2019-07-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>因为GIL(全局锁)的存在，Python在运行性能方便一直是个短板，但在IO密集型网络编程里，利用aysncio等异步处理的方式可以提升百倍运行效率，但在计算密集型程序中，Python并不是最佳的选择。</p>
+<p>异步编程会涉及比较多的概念，为了减轻阅读压力，将其分为上、中、下三篇文章。</p>
+<h2 id="关键概念"><a class="markdownIt-Anchor" href="#关键概念"></a> 关键概念</h2>
+<p>要理解异步编程，首先需要理解阻塞、非阻塞、同步以及异步的概念与关系。</p>
+<p>当程序在等待某个操作完成期间，自己无法做其他事情的状态称为「阻塞」，专业点讲，当程序因未得到运行所需要的计算资源而被挂起的等待状态称为「阻塞」，「阻塞」其实无处不在，常见的有：磁盘IO阻塞、网络IO阻塞。</p>
+<h2 id="阻塞与非阻塞"><a class="markdownIt-Anchor" href="#阻塞与非阻塞"></a> 阻塞与非阻塞</h2>
+<p>与「阻塞」对应的就是「非阻塞」状态，所谓「非阻塞」指的是程序在等待某个操作是，自己还可以做其他事情，需要注意的是，「非阻塞」并不能在任何程序级别都可以存在，只有当程序可以囊括独立子程序单元时，它才可能存在非阻塞状态，其本质原因在于CPU单个核在那个瞬间只能处理一件事情。</p>
+<p>与「阻塞」和「非阻塞」关联很大的概念分别是「同步」与「异步」。「同步」指不同的程序单元为了完成某个任务通过某种通信方式协调一致，此时可以称这些程序是同步执行的，这里协调一致并不是说要同时做，而是指大家有个顺序，「同步其实也就意味着有序」。</p>
+<h2 id="同步与异步"><a class="markdownIt-Anchor" href="#同步与异步"></a> 同步与异步</h2>
+<p>对应的「异步」指不同程序单元直接不需要协调也可单独完成任务，通常，没有先后顺序关联的业务逻辑可言利用异步的方式来实现，比如爬虫下载不同的网页、保存等操作都可以独立完成，下载程序单元直接无需通信协调，这也造成了「异步」是无序的。</p>
+<p>一个「非阻塞」进程中通常由多个独立的子进程构成，如执行到下载逻辑时，交由下载子进程去执行自身的逻辑，而自己继续之前其他逻辑，这个「交由下载子进程」的动作就可以称为「异步」。</p>
+<p>关于「同步」或「异步」描述中提出通信协调通常指异步编程或「并发」编程的同步原语，如信号量、锁、同步队列等。</p>
+<p>从具体的技术层面而言，如果调用一个耗时函数，函数会挂起直达执行完毕，返回结果，那么这个函数所在程序就是「阻塞」的，其操作就是「同步」的，如果调用一个耗时函数立刻返回，等需要的数据到达后再通知函数的调用者，则该函数所在程序就是「非阻塞」的，其操作就是「异步」的。</p>
+<h2 id="并发与并行"><a class="markdownIt-Anchor" href="#并发与并行"></a> 并发与并行</h2>
+<p>「同步」和「异步」的概念可能会与「并发」和「并行」混淆，但两者其实描述的是不同级别的事情，对于「并发」和「并行」，Erlang 之父 Joe Armstrong 给出的图很好的解释了两者的区别</p>
+<p><img src="https://pic2.zhimg.com/80/v2-674f0d37fca4fac1bd2df28a2b78e633_hd.jpg" alt="" /></p>
+<p>「并发」是两个队列交替使用一台咖啡机，「并行」是两个队列同时使用两台咖啡机。</p>
+<p>「并发」表示多个程序可以在同一个时间段内被执行，主要用于描述程序的组织结构，我们称这个程序是可以并发的通常指该程序设计了多个可独立执行的子任务，从而可以在同一时间段内利用有限的计算资源让多个任务以近实时的形式执行。</p>
+<p>而「并行」表示多个程序可以在同一时刻被执行，「并行」的关键要有物理上的支持，比如有两台咖啡机，它通常用于描述程序的执行状态而不是程序组织结构，通常用来表示有足够的计算资源让多个任何同时执行。</p>
+<p>更严谨的描述为：<br />
+1.「并发」是说进程B的开始时间是在进程A的开始时间与结束时间之间，我们就说A和B是「并发」的。<br />
+2.「并行」是「并发」的真子集，指同一时间两个进程运行在不同的机器上或者同一个机器不同的核心上。</p>
+<p>简单总结上面的概念：<br />
+非阻塞可以提高程序整体的执行效率，异步是一种组织非阻塞任务的方式(即操作其中的程序单元)，而并发是为了让独立的子任务有机会被尽快执行，但不一定可以加快任务整体的进度，而并行则是利用多核资源加快多任务的完成进度。</p>
+<p>要实现并发，就需要将整体任务拆分为多个相互独立的子任务，而不同子任务之间才会有所谓的阻塞/非阻塞、同步/异步等说法，所以并发、非阻塞、异步三个概念总是如影随形。</p>
+<h2 id="进程-线程与协程"><a class="markdownIt-Anchor" href="#进程-线程与协程"></a> 进程、线程与协程</h2>
+<p>「进程」是操作系统中的最小的资源分配单位，每个「进程」都有各自独立的地址空间、资源句柄，它们相互独立，每个「进程」中都会有个用于描述当前进程的数据结构，操作系统会利用这些描述来管理进程，同时对操作系统而言，进程的创建于销毁时比较消耗资源的。</p>
+<p>「进程」会抢占式的争夺CPU资源，同一时刻下，CPU的一个核只能执行<br />
+一个进程，而单核CPU可以快速切换不同的进程来使得多进程看像去在同时执行。</p>
+<p>「线程」是CPU调度的最小单位，「线程」是进程的一个实体，一个进程可以包含多个「线程」，同进程的多个「线程」是可以共享当前进程的内存地址空间与资源句柄的，「线程」的切换需要操作系统来实现调度，我们写的程序无法控制这个调度过程，适用于IO密集型任务。</p>
+<p>如果想人为的控制线程的调度过程，可以使用「协程」，「协程」不等于可以自己调度的线程，它是属于线程的，即一个线程可以有多个「协程」，是一种用户状态下的轻量级线程，协程的调度可以完全由用户做主，因此使用更加灵活，可以将协程理解为可以在特定位置暂停或恢复的函数/子程序。</p>
+<h2 id="异步编程"><a class="markdownIt-Anchor" href="#异步编程"></a> 异步编程</h2>
+<p>异步编程就是以进程、线程、协程、函数/方法作为执行任务程序的基本单位，结合回调、事件循环、信号量等机制，以提高程序整体执行效率和并发能力的编程方式。</p>
+<p>无论什么语言，要想实现异步编程就跳不开回调与事件循环。</p>
+<p>在执行耗时函数时，函数会提前注册回调函数返回给调度程序，而函数耗时操作的等待与监听任务交个了操作系统，当操作系统监听到耗时操作的状态改变后就调用回调函数通知调度程序，这整个过程称为「回调」。</p>
+<p>而「事件循环」是一种等待程序分配事件或消息的编程框架，简单来说就是当「 A 发生时，执行 B」，即监听当有什么发生时，就去执行什么，事件循环本质就是一种循环，它会不停的收集事件并执行对应这些事件的响应逻辑。</p>
+<p>因为异步编程离不开「回调」与「事件循环」，但回调与事件循环的使用容易出现回调地狱、堆栈撕裂、错误定位与处理困难等问题，Python基于asyncio标准库来实现事件循环，为了避免其带来的危害，衍生出了基于协程的处理方案，协程本身的特性也满足了回调的要求。</p>
+<p>在Python中协程与asyncio一同构建了异步编程。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>在本节中，主要介绍了异步编程中会涉及的各种概念，在下一篇中，会接着探讨Python中的异步编程，最后欢迎学习HackPython的教学课程并感谢您的阅读与支持。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/06/29/Python%E8%BF%9B%E9%98%B6%E5%BF%85%E5%AD%A6%E5%BA%93%EF%BC%9Aelasticsearch-py%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3-%E4%B8%8B%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/06/29/Python%E8%BF%9B%E9%98%B6%E5%BF%85%E5%AD%A6%E5%BA%93%EF%BC%9Aelasticsearch-py%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3-%E4%B8%8B%E7%AF%87/" class="post-title-link" itemprop="url">Python进阶必学库：elasticsearch-py使用详解(下篇)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-06-29 13:51:21 / 修改时间：13:51:50" itemprop="dateCreated datePublished" datetime="2019-06-29T13:51:21+08:00">2019-06-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>在上一篇文件中，介绍了 Elasticsearch 以及其中的关键概念，并且安装了 Elasticsearch 与 对应的 elasticsearch-py ，本章就来使用一下其基本的功能👹。</p>
+<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
+<p>Elasticsearch 本身提供了一系列 Restful API 来进行存取和查询操作，我们可以使用任意语言来使用这些API，而 elasticsearch-py 已经将这些API封装后，直接调用其中方法则可。</p>
+<p>为了正常使用，先运行 elasticsearch</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>elasticsearch<span class="regexp">/6.8.0/</span>bin &amp;&amp; .<span class="regexp">/elasticsearch</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建索引-index"><a class="markdownIt-Anchor" href="#创建索引-index"></a> 创建索引 (Index)</h3>
+<p>导入 elasticsearch 库的 Elasticsearch 类，使用create()方法创建一个名为 names 的 Index</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">from</span> <span class="variable">elasticsearch</span> <span class="variable">import</span> <span class="variable">Elasticsearch</span></span><br><span class="line"></span><br><span class="line"><span class="variable">es</span> = <span class="function"><span class="title">Elasticsearch</span>()</span></span><br><span class="line"></span><br><span class="line"><span class="variable"><span class="class">result</span></span> = <span class="variable">es.indices.create</span>(<span class="variable">index</span>=<span class="string">'names'</span>)</span><br><span class="line"><span class="function"><span class="title">print</span>(<span class="variable"><span class="class">result</span></span>)</span></span><br></pre></td></tr></table></figure>
+<p>如果创建成功，则会返回下面结果🎉</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="symbol">'acknowledged</span>': <span class="literal">True</span>, <span class="symbol">'shards_acknowledged</span>': <span class="literal">True</span>, <span class="symbol">'index</span>': <span class="symbol">'names</span>'&#125;</span><br></pre></td></tr></table></figure>
+<p>Elasticsearch 中不可以创建同名的 Index ，如果重复执行上述代码，则会出现如下错误💔</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">elasticsearch.exceptions.RequestError: <span class="constructor">RequestError(400, '<span class="params">resource_already_exists_exception</span>', '<span class="params">index</span> [<span class="params">names</span><span class="operator">/</span><span class="params">x</span>-AtvCZ-Q5uL-NB0hNeoFQ] <span class="params">already</span> <span class="params">exists</span>')</span></span><br></pre></td></tr></table></figure>
+<p>错误表明，names 这个 Index 已经存在了，不可以重复创建，错误类型为 400，在创建代码中添加 ignore = 400 可以让程序忽略这个报错。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch()</span><br><span class="line"></span><br><span class="line">result = es.indices.create(<span class="attribute">index</span>=<span class="string">'names'</span>, ignore = 400)</span><br><span class="line"><span class="builtin-name">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>对于一些已知的、可处理的报错可以将其忽略来保证程序的正常运行，但编写程序时，我们是无法保证程序无法出错的，如果程序出现不再预知范围内的错误，最佳的方式就是让其崩溃，而不是隐藏错误，让程序以不正常的状态苟延残喘的运行下去🙅‍♂️。</p>
+<h2 id="删除-index"><a class="markdownIt-Anchor" href="#删除-index"></a> 删除 Index</h2>
+<p>与创建 Index 类似，代码如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch()</span><br><span class="line"></span><br><span class="line">result = es.indices.delete(<span class="attribute">index</span>=<span class="string">'names'</span>, ignore=[400, 404])</span><br><span class="line"><span class="builtin-name">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>同样使用了 ignore 参数，来忽略 Index 不存在而删除失败导致程序中断的问题，如果成功删除，会输出如下结果🎉：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="symbol">'acknowledged</span>': <span class="literal">True</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 Index 已经被删除，再执行删除则会输出如下结果💔：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="symbol">'error'</span>: &#123;<span class="symbol">'root_cause'</span>: [&#123;<span class="symbol">'type'</span>: <span class="symbol">'index_not_found_exception'</span>, <span class="symbol">'reason'</span>: <span class="symbol">'no</span> such index', <span class="symbol">'resource</span>.type': <span class="symbol">'index_or_alias'</span>, <span class="symbol">'resource</span>.id': <span class="symbol">'names'</span>, <span class="symbol">'index_uuid'</span>: <span class="symbol">'_na_'</span>, <span class="symbol">'index'</span>: <span class="symbol">'names'</span>&#125;], <span class="symbol">'type'</span>: <span class="symbol">'index_not_found_exception'</span>, <span class="symbol">'reason'</span>: <span class="symbol">'no</span> such index', <span class="symbol">'resource</span>.type': <span class="symbol">'index_or_alias'</span>, <span class="symbol">'resource</span>.id': <span class="symbol">'names'</span>, <span class="symbol">'index_uuid'</span>: <span class="symbol">'_na_'</span>, <span class="symbol">'index'</span>: <span class="symbol">'names'</span>&#125;, <span class="symbol">'status'</span>: <span class="number">404</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>结果表明当前 Index 不存在，删除失败，返回的结果同样是 JSON，状态码是 400，但是由于我们添加了 ignore 参数，忽略了 400 状态码，因此程序正常执行输出 JSON 结果，而不是抛出异常。</p>
+<h2 id="插入数据"><a class="markdownIt-Anchor" href="#插入数据"></a> 插入数据</h2>
+<p>Elasticsearch 可以直接插入结构化字典数据，代码如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> elasticsearch import Elasticsearch</span><br><span class="line"> </span><br><span class="line">es = Elasticsearch()</span><br><span class="line">es.indices.create(<span class="attribute">index</span>=<span class="string">'people'</span>, <span class="attribute">ignore</span>=400)</span><br><span class="line"> </span><br><span class="line">data = &#123;<span class="string">'name'</span>: <span class="string">' 二两'</span>, <span class="string">'age'</span>: <span class="string">'28'</span>&#125;</span><br><span class="line">result = es.create(<span class="attribute">index</span>=<span class="string">'people'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>, <span class="attribute">id</span>=1, <span class="attribute">body</span>=data)</span><br><span class="line"><span class="builtin-name">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>🙊创建一条数据，包括人名和年龄，然后通过调用 create () 方法插入了这条数据，在调用 create () 方法时，我们传入了四个参数，index 参数代表了索引名称，doc_type 代表了文档类型，body 则代表了文档具体内容，id 则是数据的唯一标识 ID。</p>
+<p>运行结果：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;'_index': 'people', '_type': 'politics', '_id': '1', '_version': <span class="number">1</span>, 'result': 'created', '_shards': &#123;'total': <span class="number">2</span>, 'successful': <span class="number">1</span>, 'failed': <span class="number">0</span>&#125;, '_seq_no': <span class="number">0</span>, '_primary_term': <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>结果中 result 字段为 created，代表该数据插入成功🎉。</p>
+<p>除 create() 方法外还可以使用 index () 方法来插入数据，create () 方法需要我们指定 id 字段来唯一标识该条数据，而 index () 方法则不需要，如果不指定 id，会自动生成一个 id，调用 index () 方法的写法如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">es.index(<span class="attribute">index</span>=<span class="string">'people'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>, <span class="attribute">body</span>=data)</span><br></pre></td></tr></table></figure>
+<h3 id="更新数据"><a class="markdownIt-Anchor" href="#更新数据"></a> 更新数据</h3>
+<p>指定数据的 id 和内容，调用 update () 方法即可，但需要注意的是， Elasticsearch 对应的更新 API 对传递数据的格式是有要求的，更新时使用的具体代码如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">es = Elasticsearch()</span><br><span class="line">data = &#123;</span><br><span class="line">   <span class="string">'doc'</span> : &#123;</span><br><span class="line">       <span class="string">'name'</span>: <span class="string">'二两'</span>,</span><br><span class="line">       <span class="string">'age'</span>: <span class="string">'30'</span>,</span><br><span class="line">       <span class="string">'desc'</span>: <span class="string">'Java工程师'</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.update(<span class="attribute">index</span>=<span class="string">'people'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>, <span class="attribute">body</span>=data, <span class="attribute">id</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>这里为数据增加了一个日期字段，然后调用了 update () 方法, update() 其他的数据格式为：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     “ doc ”：&#123;&#125;，</span><br><span class="line">     “<span class="built_in"> script </span>”：&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成功更新后，可以看到如下结果🎉：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;'_index': 'people', '_type': 'politics', '_id': '1', '_version': <span class="number">2</span>, 'result': 'updated', '_shards': &#123;'total': <span class="number">2</span>, 'successful': <span class="number">1</span>, 'failed': <span class="number">0</span>&#125;, '_seq_no': <span class="number">1</span>, '_primary_term': <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>result 字段为 updated，即表示更新成功， _version字段，这代表更新后的版本号数，2 代表这是第二个版本，因为之前已经插入过一次数据，所以第一次插入的数据是版本 1。</p>
+<p>此外，还可以直接使用 index() 方法来实现更新操作，代码如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">es = Elasticsearch()</span><br><span class="line">data = &#123;</span><br><span class="line">   <span class="string">'name'</span>: <span class="string">'二两'</span>,</span><br><span class="line">   <span class="string">'age'</span>: <span class="string">'29'</span>,</span><br><span class="line">   <span class="string">'desc'</span>: <span class="string">'Python工程师'</span></span><br><span class="line">&#125;</span><br><span class="line">result = es.index(<span class="attribute">index</span>=<span class="string">'people'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>, <span class="attribute">body</span>=data, <span class="attribute">id</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>成功后，会返回相同的结果，只是 _version 变为了 3。 index() 方法对格式没有要求。</p>
+<h3 id="删除数据"><a class="markdownIt-Anchor" href="#删除数据"></a> 删除数据</h3>
+<p>删除数据调用 delete() 方法，指定需要删除的数据 id ，代码如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">es = Elasticsearch()</span><br><span class="line">result = es.delete(<span class="attribute">index</span>=<span class="string">'people'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>, <span class="attribute">id</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>成功删除后，输出如下结果🎉：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;'_index': 'people', '_type': 'politics', '_id': '1', '_version': <span class="number">4</span>, 'result': 'deleted', '_shards': &#123;'total': <span class="number">2</span>, 'successful': <span class="number">1</span>, 'failed': <span class="number">0</span>&#125;, '_seq_no': <span class="number">3</span>, '_primary_term': <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查询数据"><a class="markdownIt-Anchor" href="#查询数据"></a> 查询数据</h3>
+<p>上面几个操作都非常简单，而 Elasticsearch 最强大的功能是查询功能，这里来使用了 Elasticsearch ，因为中文数据与英文数据不同，英文单词之间天然由空格分割，所以可以直接利用 Elasticsearch 来搜索，而中文数据词与词时相互连接在一起的，所以需要先进行分词，即将中文数据中的词汇分割出来，🙈这里可以使用 elasticsearch-analysis-ik 插件，该插件 Elasticsearch 实现了中文分词🙈，可以使用 elasticsearch-plugin 来安装 Elasticsearch 插件，注意，插件的版本要与 Elasticsearch 主版本对应，这里使用的是 6.8.0 版本，所以安装 6.x 版本的 elasticsearch-analysis-ik 则可。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.<span class="regexp">/elasticsearch-plugin install https:/</span><span class="regexp">/github.com/m</span>edcl<span class="regexp">/elasticsearch-analysis-ik/</span>releases<span class="regexp">/download/</span>v6.<span class="number">8.0</span><span class="regexp">/elasticsearch-analysis-ik-6.8.0.zip</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>elasticsearch-analysis-ik Github 地址为: <a href="https://github.com/medcl/elasticsearch-analysis-ik" target="_blank" rel="noopener">https://github.com/medcl/elasticsearch-analysis-ik</a> 🤫</p>
+</blockquote>
+<p>你安装时，请将 6.8.0 替换为自己 Elasticsearch 的版本，然后交给 elasticsearch-plugin 完成下载与安装。</p>
+<p>安装完后，需要重启 Elasticsearch ，启动的过程中 Elasticsearch 会自动加载其中的数据。</p>
+<p>简单重启方式🌚：</p>
+<p>1.找到Elastic进程ID</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ps</span> aux | <span class="keyword">grep</span> elastic | <span class="keyword">grep</span> -v <span class="keyword">grep</span></span><br></pre></td></tr></table></figure>
+<p>2.kill</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">kill</span> <span class="number">-9</span> Elastic 进程<span class="keyword">ID</span></span><br></pre></td></tr></table></figure>
+<p>3.再次启动</p>
+<p>启动后，新建一个索引并指定需要分词的字段，代码如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> elasticsearch import Elasticsearch</span><br><span class="line"></span><br><span class="line">es = Elasticsearch()</span><br><span class="line">mapping = &#123;</span><br><span class="line">    <span class="string">'properties'</span>: &#123;</span><br><span class="line">        <span class="string">'title'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: <span class="string">'text'</span>,</span><br><span class="line">            <span class="string">'analyzer'</span>: <span class="string">'ik_max_word'</span>,</span><br><span class="line">            <span class="string">'search_analyzer'</span>: <span class="string">'ik_max_word'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">es.indices.delete(<span class="attribute">index</span>=<span class="string">'people'</span>, ignore=[400, 404])</span><br><span class="line">es.indices.create(<span class="attribute">index</span>=<span class="string">'news'</span>, <span class="attribute">ignore</span>=400)</span><br><span class="line">result = es.indices.put_mapping(<span class="attribute">index</span>=<span class="string">'news'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>, <span class="attribute">body</span>=mapping)</span><br><span class="line"><span class="builtin-name">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>上述代码中，先将之前名为 people 的索引删除，然后新建了名为 news 的索引，然后更新了它的 mapping 信息， mapping 信息中指定了分词的字段，🌝其中将 title 字段的类型 type 指定为 text，并将分词器 analyzer 和搜索分词器 search_analyzer 设置为 ik_max_word ，即使用刚刚安装的中文分词插件，如果不指定，则默认使用英文分词器🙅‍♂️。</p>
+<p>接着，插入一些数据，代码如下：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">def test2():</span><br><span class="line">    datas = [</span><br><span class="line">        &#123;</span><br><span class="line">            'title': '设计灵魂离职，走下神坛的苹果设计将去向何方？',</span><br><span class="line">            'url': 'https://www.tmtpost.com/<span class="number">403339</span>7.html',</span><br><span class="line">            'date': '<span class="number">2019-06-29</span> 11:30'</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            'title': '医生中的建筑设计师，凭什么挽救了上万人的生命？',</span><br><span class="line">            'url': 'https://www.tmtpost.com/<span class="number">403405</span>2.html',</span><br><span class="line">            'date': '<span class="number">2019-06-29</span> 11:10'</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            'title': '中国网红二十年：从痞子蔡、芙蓉姐姐到李佳琦，流量与变现的博弈',</span><br><span class="line">            'url': 'https://www.tmtpost.com/<span class="number">403404</span>5.html',</span><br><span class="line">            'date': '<span class="number">2019-06-29</span> 11:03'</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            'title': '网易云音乐、喜马拉雅等音频类应用被下架，或因违反相关规定',</span><br><span class="line">            'url': 'https://www.tmtpost.com/nictation/<span class="number">403404</span>0.html',</span><br><span class="line">            'date': '<span class="number">2019-06-29</span> 10:07'</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    for data in datas:</span><br><span class="line">        es.index(index='news', doc_type='politics', body=data)</span><br></pre></td></tr></table></figure>
+<p>可以将插入的内容查询打印出来看看：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = es.search(<span class="attribute">index</span>=<span class="string">'news'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>)</span><br><span class="line"><span class="builtin-name">print</span>(json.dumps(result, <span class="attribute">indent</span>=4, <span class="attribute">ensure_ascii</span>=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+<p>输出结果如下🎉：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"took"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">"timed_out"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"_shards"</span>: &#123;</span><br><span class="line">        <span class="attr">"total"</span>: <span class="number">5</span>,</span><br><span class="line">        <span class="attr">"successful"</span>: <span class="number">5</span>,</span><br><span class="line">        <span class="attr">"skipped"</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">"failed"</span>: <span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"hits"</span>: &#123;</span><br><span class="line">        <span class="attr">"total"</span>: <span class="number">4</span>,</span><br><span class="line">        <span class="attr">"max_score"</span>: <span class="number">1.0</span>,</span><br><span class="line">        <span class="attr">"hits"</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"_index"</span>: <span class="string">"news"</span>,</span><br><span class="line">                <span class="attr">"_type"</span>: <span class="string">"politics"</span>,</span><br><span class="line">                <span class="attr">"_id"</span>: <span class="string">"MclZoWsB7N68fyc5DUS7"</span>,</span><br><span class="line">                <span class="attr">"_score"</span>: <span class="number">1.0</span>,</span><br><span class="line">                <span class="attr">"_source"</span>: &#123;</span><br><span class="line">                    <span class="attr">"title"</span>: <span class="string">"网易云音乐、喜马拉雅等音频类应用被下架，或因违反相关规定"</span>,</span><br><span class="line">                    <span class="attr">"url"</span>: <span class="string">"https://www.tmtpost.com/nictation/4034040.html"</span>,</span><br><span class="line">                    <span class="attr">"date"</span>: <span class="string">"2019-06-29 10:07"</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>返回结果会出现在 hits 字段里面，其中有 total 字段标明了查询的结果条目数， max_score 代表了最大匹配分数。</p>
+<p>我们还可以进行全文检索，这才是 Elasticsearch 搜索引擎的特性🥊：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dsl = &#123;</span><br><span class="line">        <span class="string">'query'</span>: &#123;</span><br><span class="line">            <span class="string">'match'</span>: &#123;</span><br><span class="line">                <span class="string">'title'</span>: <span class="string">'网红 设计师'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">es = Elasticsearch()</span><br><span class="line">result = es.search(<span class="attribute">index</span>=<span class="string">'news'</span>, <span class="attribute">doc_type</span>=<span class="string">'politics'</span>, <span class="attribute">body</span>=dsl)</span><br><span class="line"><span class="builtin-name">print</span>(json.dumps(result, <span class="attribute">indent</span>=2, <span class="attribute">ensure_ascii</span>=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+<p>Elasticsearch 支持的 DSL 语句来进行查询，使用 match 指定全文检索，检索的字段是 title，内容是 “网红 设计师”，搜索结果如下</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"took"</span>: <span class="number">18</span>,</span><br><span class="line">  <span class="attr">"timed_out"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"_shards"</span>: &#123;</span><br><span class="line">    <span class="attr">"total"</span>: <span class="number">5</span>,</span><br><span class="line">    <span class="attr">"successful"</span>: <span class="number">5</span>,</span><br><span class="line">    <span class="attr">"skipped"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"failed"</span>: <span class="number">0</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"hits"</span>: &#123;</span><br><span class="line">    <span class="attr">"total"</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="attr">"max_score"</span>: <span class="number">2.2950945</span>,</span><br><span class="line">    <span class="attr">"hits"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"_index"</span>: <span class="string">"news"</span>,</span><br><span class="line">        <span class="attr">"_type"</span>: <span class="string">"politics"</span>,</span><br><span class="line">        <span class="attr">"_id"</span>: <span class="string">"L8lZoWsB7N68fyc5DUSx"</span>,</span><br><span class="line">        <span class="attr">"_score"</span>: <span class="number">2.2950945</span>,</span><br><span class="line">        <span class="attr">"_source"</span>: &#123;</span><br><span class="line">          <span class="attr">"title"</span>: <span class="string">"医生中的建筑设计师，凭什么挽救了上万人的生命？"</span>,</span><br><span class="line">          <span class="attr">"url"</span>: <span class="string">"https://www.tmtpost.com/4034052.html"</span>,</span><br><span class="line">          <span class="attr">"date"</span>: <span class="string">"2019-06-29 11:10"</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"_index"</span>: <span class="string">"news"</span>,</span><br><span class="line">        <span class="attr">"_type"</span>: <span class="string">"politics"</span>,</span><br><span class="line">        <span class="attr">"_id"</span>: <span class="string">"MMlZoWsB7N68fyc5DUS2"</span>,</span><br><span class="line">        <span class="attr">"_score"</span>: <span class="number">1.8132976</span>,</span><br><span class="line">        <span class="attr">"_source"</span>: &#123;</span><br><span class="line">          <span class="attr">"title"</span>: <span class="string">"中国网红二十年：从痞子蔡、芙蓉姐姐到李佳琦，流量与变现的博弈"</span>,</span><br><span class="line">          <span class="attr">"url"</span>: <span class="string">"https://www.tmtpost.com/4034045.html"</span>,</span><br><span class="line">          <span class="attr">"date"</span>: <span class="string">"2019-06-29 11:03"</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"_index"</span>: <span class="string">"news"</span>,</span><br><span class="line">        <span class="attr">"_type"</span>: <span class="string">"politics"</span>,</span><br><span class="line">        <span class="attr">"_id"</span>: <span class="string">"LslZoWsB7N68fyc5DEQC"</span>,</span><br><span class="line">        <span class="attr">"_score"</span>: <span class="number">0.71580166</span>,</span><br><span class="line">        <span class="attr">"_source"</span>: &#123;</span><br><span class="line">          <span class="attr">"title"</span>: <span class="string">"设计灵魂离职，走下神坛的苹果设计将去向何方？"</span>,</span><br><span class="line">          <span class="attr">"url"</span>: <span class="string">"https://www.tmtpost.com/4033397.html"</span>,</span><br><span class="line">          <span class="attr">"date"</span>: <span class="string">"2019-06-29 11:30"</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>匹配的结果有两条，第一条的分数为 2.29，第二条的分数为 1.81，即查询“网红 设计师”时， Elasticsearch 认为第一个结果权重更高。从该检索结果可以看出，检索时会对对应的字段全文检索，结果还会按照检索关键词的相关性进行排序，这已经是一个搜索引擎的雏形了🙉。</p>
+<blockquote>
+<p>Elasticsearch 还支持非常多的查询方式:<br />
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl.html</a> 🤫</p>
+</blockquote>
+<h2 id="进一步学习"><a class="markdownIt-Anchor" href="#进一步学习"></a> 进一步学习</h2>
+<p>🤓1.Elasticsearch 权威指南：<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html" target="_blank" rel="noopener">https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html</a><br />
+🤓2.Elastic 中文社区：<a href="https://www.elasticsearch.cn/" target="_blank" rel="noopener">https://www.elasticsearch.cn/</a></p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>Elasticsearch 简单使用就介绍到这里，Elasticsearch 本身具有一定的复杂性，简单几篇文章只能让大家对其有个基本的理解，后续还会以[课外知识]的方式分享更多 Elasticsearch 方面的内容，最后欢迎学习 HackPython 的教学课程并感觉您的阅读与支持。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/06/28/Python%E8%BF%9B%E9%98%B6%E5%BF%85%E5%AD%A6%E5%BA%93%EF%BC%9Aelasticsearch-py%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3-%E4%B8%8A%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/06/28/Python%E8%BF%9B%E9%98%B6%E5%BF%85%E5%AD%A6%E5%BA%93%EF%BC%9Aelasticsearch-py%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3-%E4%B8%8A%E7%AF%87/" class="post-title-link" itemprop="url">Python进阶必学库：elasticsearch-py使用详解(上篇)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-06-28 10:44:48 / 修改时间：10:45:52" itemprop="dateCreated datePublished" datetime="2019-06-28T10:44:48+08:00">2019-06-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>当爬虫爬取了很多数据后，如何全面的了解爬取数据的特征？这就需要对数据进行搜索了，传统通过 SQL 方式进行搜索，在数据量较大时，效率并不佳，此时 Elasticsearch 就是首选，它是一个开源的搜索引擎，建立在全文搜索引擎库 Apache Lucene 的基础上，而 Lucene 是当前无论开源还是私有的搜索引擎中最先进、高性能与全功能的搜索引擎之一，但 Lucene 使用比较复杂，而 Elasticesarch 在 Luncene 基础上进行了封装并提供了一套简单的 RESTful API ，而 elasticsearch-py 则是在这套 API 上的封装，让我们可以在 Python 项目中直接使用 Elasticsearh。</p>
+<p>Elasticsearch 的准确形容：</p>
+<p>一个分布式的实时文档存储系统，每个字段可以被索引与搜索<br />
+一个分布式实时分析搜索引擎<br />
+可以在上百个服务节点扩展，并支持 PB 级别的结构化或非结构化数据搜索</p>
+<h2 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h2>
+<p>可以到 Elasticsearch 的官方网站下载 Elasticsearch 下载不同平台的安装包：</p>
+<p><a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="noopener">https://www.elastic.co/downloads/elasticsearch</a></p>
+<p>具体安装步骤可以参考官网提供的内容或自行搜索，在 Mac 上可以直接使用 brew 安装。</p>
+<p>因为 Elasticsearch 是基于 Java 开发的，所有系统中需要预先安装 Java JDK，在 Mac 中同样可使用 brew 安装。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 JDK</span></span><br><span class="line">brew cask <span class="keyword">install</span> homebrew/cask-<span class="keyword">versions</span>/adoptopenjdk8</span><br><span class="line"><span class="comment"># 安装 Elasticsearch</span></span><br><span class="line">brew <span class="keyword">install</span> elasticsearch</span><br></pre></td></tr></table></figure>
+<p>Mac 下通过 brew 安装完后，可以进入 <code>/usr/local/Cellar/elasticsearch/6.8.0/bin</code> 运行 elasticsearch 。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>elasticsearch<span class="regexp">/6.8.0/</span>bin &amp;&amp; .<span class="regexp">/elasticsearch</span></span><br></pre></td></tr></table></figure>
+<p>如果想将 Elasticsearh 作为守护进程在后台运行，需要加上 -d 参数。</p>
+<p>如果你是在 Windows 上面运行 Elasticseach，你应该运行 bin\elasticsearch.bat 而不是 bin\elasticsearch 。</p>
+<p>正常启动后，访问 <code>localhost:9200</code> 可看到如下信息：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="string">localhost:</span><span class="number">9200</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span> : <span class="string">"sbUPsxx"</span>,</span><br><span class="line">  <span class="string">"cluster_name"</span> : <span class="string">"elasticsearch_ayuliao"</span>,</span><br><span class="line">  <span class="string">"cluster_uuid"</span> : <span class="string">"Bv83QVa4QMOJti9Yn1RJsw"</span>,</span><br><span class="line">  <span class="string">"version"</span> : &#123;</span><br><span class="line">    <span class="string">"number"</span> : <span class="string">"6.8.0"</span>,</span><br><span class="line">    <span class="string">"build_flavor"</span> : <span class="string">"oss"</span>,</span><br><span class="line">    <span class="string">"build_type"</span> : <span class="string">"tar"</span>,</span><br><span class="line">    <span class="string">"build_hash"</span> : <span class="string">"65b6179"</span>,</span><br><span class="line">    <span class="string">"build_date"</span> : <span class="string">"2019-05-15T20:06:13.172855Z"</span>,</span><br><span class="line">    <span class="string">"build_snapshot"</span> : <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"lucene_version"</span> : <span class="string">"7.7.0"</span>,</span><br><span class="line">    <span class="string">"minimum_wire_compatibility_version"</span> : <span class="string">"5.6.0"</span>,</span><br><span class="line">    <span class="string">"minimum_index_compatibility_version"</span> : <span class="string">"5.0.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"tagline"</span> : <span class="string">"You Know, for Search"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上述信息中，可知我们安装的是 6.8.0 版本的 elasticsearch，版本很重要，因为只有安装了对应主版本的 elasticsearch-py 才能在 python 中正常使用 elasticsearch。</p>
+<p>对于Elasticsearch 6.0及更高版本，请使用库的主要版本 6（6.x.y）。<br />
+对于Elasticsearch 5.0及更高版本，请使用库的主要版本 5（5.x.y）。<br />
+对于Elasticsearch 2.0及更高版本，请使用库的主要版本 2（2.x.y），依此类推。</p>
+<p>在setup.py或 requirements.txt 中设置需求的推荐方法是：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Elasticsearch <span class="number">6.</span>x</span><br><span class="line">elasticsearch&gt;=<span class="number">6.0</span><span class="number">.0</span>,&lt;<span class="number">7.0</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line"># Elasticsearch <span class="number">5.</span>x</span><br><span class="line">elasticsearch&gt;=<span class="number">5.0</span><span class="number">.0</span>,&lt;<span class="number">6.0</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line"># Elasticsearch <span class="number">2.</span>x</span><br><span class="line">elasticsearch&gt;=<span class="number">2.0</span><span class="number">.0</span>,&lt;<span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+<p>通过 pip 安装一下</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install elasticsearch==<span class="number">6.4</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+<h2 id="关键概念"><a class="markdownIt-Anchor" href="#关键概念"></a> 关键概念</h2>
+<p>Elasticsearch 是面向文档的，意味着它存储整个对象或文档。Elasticsearch 不仅存储文档，而且索引每个文档的内容使之可以被检索。在 Elasticsearch 中，你对文档进行索引、检索、排序和过滤 – 而不是对行列数据。这是一种完全不同的思考数据的方式，也是 Elasticsearch 能支持复杂全文检索的原因。</p>
+<p>下面简单介绍其中几个关键的概念：</p>
+<p>节点 (Node) 与集群 (Cluster)</p>
+<p>Elasticsearch 本质上是一个分布式数据库，允许多台服务器协同工作，每台服务器可以运行多个 Elasticsearch 实例。</p>
+<p>单个 Elasticsearch 实例称为一个节点（node），一组节点构成一个集群（cluster），而一个 集群 是一组拥有相同 <a href="http://cluster.name" target="_blank" rel="noopener">cluster.name</a> 的节点， 他们能一起工作并共享数据，还提供容错与可伸缩性。</p>
+<p>索引 (Index)</p>
+<p>Elasticsearch 会索引所有字段，经过处理后写入一个反向索引（Inverted Index）。查找数据的时候，直接查找该索引。</p>
+<p>Elasticsearch 数据管理的顶层单位就叫做 Index（索引），每个 Index 的名称必须是全小写形式的。</p>
+<p>文档 (Document)</p>
+<p>Index 中单条记录称为文档 (Document)，许多条 Document 构成了一个 Index。Document 使用 JSON 格式表示，例子如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"张三"</span>,</span><br><span class="line">    <span class="attr">"age"</span>: <span class="number">28</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同一个 Index 里面的 Document，不要求有相同的结构（scheme），但是最好保持相同，这样有利于提高搜索效率。</p>
+<p>Type</p>
+<p>Document 可以分组，比如 weather 这个 Index 里面，可以按城市分组（北京和上海），也可以按气候分组（晴天和雨天）。这种分组就叫做 Type，它是虚拟的逻辑分组，用来过滤 Document。但 Elasticsearch 在 7.x 之后的版本中逐渐移除 Type，为了提升搜索速度。</p>
+<p>字段 (Fields)</p>
+<p>每个 Document 都是一个 JSON 结构，它包含了许多字段，每个字段都有其对应的值，多个字段组成了一个 Document。</p>
+<h2 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h2>
+<p>很多人将 Elsticsearch 中的 index 理解为关系数据中的 database，而将 type 理解为数据库中的一个数据表，虽然表面上看两者确实存在相似性，但却是错误的类比。</p>
+<p>我们都知道 Elasticsearch 是基于 Lucene 开发的，而 Elasticsearch 中不同 type 下名称相同的 filed 最终在 Lucene 中的处理方式是一样的。举个例子，两个不同 type 下的两个 user_name，在 Elasticsearch 同一个索引下其实被认为是同一个 filed，你必须在两个不同的 type 中定义相同的 filed 映射。否则，不同 type 中的相同字段名称就会在处理中出现冲突的情况，导致 Lucene 处理效率下降。</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>具体如何使用 Elsaticsearch 与 Elasticsearch-py 留到下一篇再详解，最后欢迎学习 HackPython 的教学课程并感觉您的阅读与支持。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/06/28/Python%E8%BF%9B%E9%98%B6%E5%BF%85%E5%AD%A6%E5%BA%93%EF%BC%9APyinstaller%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2019/06/28/Python%E8%BF%9B%E9%98%B6%E5%BF%85%E5%AD%A6%E5%BA%93%EF%BC%9APyinstaller%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Python进阶必学库：Pyinstaller使用详解</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-06-28 10:19:20 / 修改时间：10:45:51" itemprop="dateCreated datePublished" datetime="2019-06-28T10:19:20+08:00">2019-06-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>HackPython致力于有趣有价值的编程教学</p>
+</blockquote>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>当我们希望将自己编写好的程序传送给他人使用时，如果对方没有安装 Python 环境就无法使用程序了，我们难以让每个使用者都安装 Python 环境，是否可以在不必安装 Python 环境的前提下使用Python程序呢？</p>
+<p>可以使用 Pyinstaller 将程序打包，然后再分享给其他人使用，他人使用只需双击运行打包好的程序。</p>
+<p>可以通过 pip 来安装，命令如下：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> pyinstaller</span><br></pre></td></tr></table></figure>
+<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
+<p>pyinstaller 最重要的两个参数就是 -F 与 -D 参数。</p>
+<p>使用-F参数， pyinstaller 会将 python 程序打包成单个可执行文件。</p>
+<p>使用-D参数， pyinstaller 会将 python 程序打包成一个文件夹，运行程序时，需要进入该文件夹，点击运行相应的可执行程序。</p>
+<p>为了美观，还可以通过-i参数指定打包程序的图标(icon)，但这个命令只能在 Windows 平台下生效，此外还可以使用-n参数指定生成打包文件的名称。</p>
+<p>如果你使用了 PyQt5 或 tkinter 开发了界面，通常不会希望程序运行时弹出 cmd 命令行，此时就可以使用-w参数。</p>
+<p>简单总结一下：</p>
+<p>-F：打包 Python 程序为单个可执行文件<br />
+-D：打包 Python 程序为一个文件夹<br />
+-i：生成图标，只适用于 Windows 平台<br />
+-n：指定打包后生成文件的名称<br />
+-w：禁止命令行弹出</p>
+<p>综上所述，最常见的命令为：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">pyinstaller</span> <span class="selector-tag">-i</span> <span class="selector-tag">xxx</span><span class="selector-class">.ico</span> <span class="selector-tag">-n</span> <span class="selector-tag">xxx</span> <span class="selector-tag">-w</span> <span class="selector-tag">-D</span> <span class="selector-tag">xxx</span><span class="selector-class">.py</span></span><br></pre></td></tr></table></figure>
+<p>-i 参数后必须接 .ico 结尾的图标文件<br />
+-D 或 -F 后必须接 python 程序的入库程序，常见情况为 <a href="http://main.py" target="_blank" rel="noopener">main.py</a></p>
+<p>对应依赖比较多的程序，建议使用 -D， -F 更适合单文件的 py 脚本。</p>
+<h2 id="简单原理"><a class="markdownIt-Anchor" href="#简单原理"></a> 简单原理</h2>
+<p>打包时，pyinstaller此时会生成相应的spec文件，大体流程如下：</p>
+<p>1、在脚本目录生成 xxx.spec 文件(取决于 -n 参数，没传，则与 <a href="http://xxx.py" target="_blank" rel="noopener">xxx.py</a> 同名为 xxx )；<br />
+2、创建一个 build 目录；<br />
+3、写入一些日志文件和中间流程文件到 build 目录；<br />
+4、创建 dist 目录；<br />
+5、生成可执行文件或文件夹到 dist 目录；</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190514155505.png" alt="" /></p>
+<p>此时，进入 dist 目录就可以看见自己的打包文件了。</p>
+<p><img src="media/15578194904208/15578205835319.jpg" alt="" /></p>
+<p>双击 nameauto.exe 文件，效果如下：</p>
+<p>效果如下：<br />
+<img src="media/15578194904208/15578205987182.jpg" alt="" /></p>
+<p>这是一个利用 tkinter 构建的程序。</p>
+<h2 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h2>
+<p>Pyinstaller 是跨平台的，但并不是指其生成应用是跨平台的，而是 Pyinstaller 本身是跨平台的，在 Windows 平台下，可以打包出 exe 文件。</p>
+<p>避免打包后，包文件过大</p>
+<p>为了避免 Pyinstaller 打包后程序或文件夹过大，如：几百 KB 的程序打包后编程 500M 左右的程序，在引用包时，尽量使用 from … import … 语句，这是因为 Pyinstaller 打包的路径其实是将 python 解释器以及项目中使用的库直接复制过来，所以如果你没事就别 import… ，那么 Pyinstaller 会将整个模块复制过去，此时打出来的包就会很大。</p>
+<p>考虑路径问题</p>
+<p>使用 python 时，要养成使用 os.path.join 的习惯，这不仅可以避免跨平台的路径坑( windows 路径表达与类 Unix 是不同)，又可以在打包时不会出现相对路径的问题，很多 python 程序员编写路径喜欢使用 + 号来链接路径，这会增加项目的维护成本</p>
+<p>pyinstaller 打包的项目遇到路径都使用 os.path.join 则可</p>
+<p>外部数据问题</p>
+<p>虽然在上节中，提及了使用外部数据时，可以自定义 spec 文件中的 datas 字段，但我更常用的做法是直接将数据复制过去，不去修改datas。</p>
+<p>比如我的项目中依赖 config 文件夹下的配置文件，执行将 config 文件夹整体直接复制到打包好的文件夹中则可</p>
+<p>闪屏结束</p>
+<p>如果是简单的程序，可能会出现运行可执行程序后出现一闪而过的情况，这种情况下要么是程序运行结束（比如直接打印的 helloWorld），要么程序出现错误退出了。</p>
+<p>这种情况要么通过 input() 函数捕捉输入自己主动结束程序，要么就在 cmd 下运行 exe 文件，从而通过 cmd 看到效果</p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>掌握了 Pyinstaller 后，你就可以将任意程序打包发送给他人了，最后欢迎学习 HackPython 的教学课程并感觉您的阅读与支持。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/blog/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/blog/">1</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

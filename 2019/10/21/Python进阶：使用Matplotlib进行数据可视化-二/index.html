@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-minimal.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://hackpython.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Python进阶：使用Matplotlib进行数据可视化(二)  简介 接着 使用Matplotlib进行数据可视化(一) ，继续使用 Matplotlib 绘制图像，公众号回复 data2 就可以获得本文章的代码与使用数据。  箱线图(BoxPlot) 箱线图(BoxPlot)也称箱须图(Box-whisker Plot)，它利用数据中的五个统计量：最小值、第一四分位数、中位数、第三四分位数与">
+<meta name="keywords" content="Python,进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python进阶：使用Matplotlib进行数据可视化(二)">
+<meta property="og:url" content="http:&#x2F;&#x2F;hackpython.github.io&#x2F;blog&#x2F;2019&#x2F;10&#x2F;21&#x2F;Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E4%BD%BF%E7%94%A8Matplotlib%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96-%E4%BA%8C&#x2F;index.html">
+<meta property="og:site_name" content="HackPython">
+<meta property="og:description" content="Python进阶：使用Matplotlib进行数据可视化(二)  简介 接着 使用Matplotlib进行数据可视化(一) ，继续使用 Matplotlib 绘制图像，公众号回复 data2 就可以获得本文章的代码与使用数据。  箱线图(BoxPlot) 箱线图(BoxPlot)也称箱须图(Box-whisker Plot)，它利用数据中的五个统计量：最小值、第一四分位数、中位数、第三四分位数与">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826100715.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826104943.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826105404.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826130800.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826131720.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826132919.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826134314.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826135044.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826140727.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826141312.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190821150724.png">
+<meta property="og:updated_time" content="2019-10-21T08:44:16.636Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ayuLiao&#x2F;images&#x2F;master&#x2F;20190826100715.png">
+
+<link rel="canonical" href="http://hackpython.github.io/blog/2019/10/21/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E4%BD%BF%E7%94%A8Matplotlib%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96-%E4%BA%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Python进阶：使用Matplotlib进行数据可视化(二) | HackPython</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HackPython</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">HackPython</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hackpython.github.io/blog/blog/2019/10/21/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E4%BD%BF%E7%94%A8Matplotlib%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96-%E4%BA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/header.jpeg">
+      <meta itemprop="name" content="hackpython">
+      <meta itemprop="description" content="HackPython，最酷的方式学习python">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HackPython">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python进阶：使用Matplotlib进行数据可视化(二)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-21 16:43:09 / 修改时间：16:44:16" itemprop="dateCreated datePublished" datetime="2019-10-21T16:43:09+08:00">2019-10-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="python进阶使用matplotlib进行数据可视化二"><a class="markdownIt-Anchor" href="#python进阶使用matplotlib进行数据可视化二"></a> Python进阶：使用Matplotlib进行数据可视化(二)</h1>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>接着 使用Matplotlib进行数据可视化(一) ，继续使用 Matplotlib 绘制图像，公众号回复 data2 就可以获得本文章的代码与使用数据。</p>
+<h2 id="箱线图boxplot"><a class="markdownIt-Anchor" href="#箱线图boxplot"></a> 箱线图(BoxPlot)</h2>
+<p>箱线图(BoxPlot)也称箱须图(Box-whisker Plot)，它利用数据中的五个统计量：最小值、第一四分位数、中位数、第三四分位数与最大值来描述数据的一种方法，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826100715.png" alt="" /></p>
+<p>1.minimum(最小值)与maximum(最大值)是数据中的最小值和最大值</p>
+<p>2.median(中位数)：对数据排序，找到中间位置的数，称为中位数，如果中间位置有两个数，则相加再除以2，如有数字1,2,4,5,7,7,8,9，此时中位数为：(5+7)/2 = 6</p>
+<p>3.lower quartile，也称为第一四分位数：它是数据排序后，中位数左边数据的中位数，如有数字1,2,4,5,7,7,8,9，此时第一四分位数为1,2,4的中位数，则为2</p>
+<p>4.upper quartile，也称第三四分位数：它是数据排序后，中位数右边数据的中位数，如有数字1,2,4,5,7,7,8,9，此时第三四分位数为7,8,9的中位数，则为8</p>
+<p>5.IQR(Inter Quartile Range)，即第一四分位数到第三四分位数这一部分的数据，它估计了中间50%的数据，上图没有绘制出IQR</p>
+<p>5.outlier，也称离群值，如果一个值小于(第一四分位数 - 1.5*IQR)或大于(第三四分位数 + 1.5*IQR)，则称这个值为离群值</p>
+<p>使用箱线图可以粗略的判断出数据是否具有对称性以及数据分布的离散程度，下面就来绘制一下。</p>
+<p>一开始，依旧先读取数据并进行简单的处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">exam_data = pd.read_csv(<span class="string">'datasets/exams.csv'</span>)</span><br><span class="line"><span class="comment"># 仅提取考试分数相关的信息</span></span><br><span class="line">exam_scores = exam_data[[<span class="string">'math score'</span>, <span class="string">'reading score'</span>, <span class="string">'writing score'</span>]]</span><br><span class="line">exam_scores.head()</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826104943.png" alt="" /></p>
+<p>为了方便绘制boxplot，将数据转为numpy中的数组类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exam_scores_array = np.array(exam_scores)</span><br></pre></td></tr></table></figure>
+<p>使用matplotlib绘制boxplot</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">colors = [<span class="string">'blue'</span>, <span class="string">'grey'</span>, <span class="string">'lawngreen'</span>]</span><br><span class="line"></span><br><span class="line">bp = plt.boxplot(exam_scores_array,  <span class="comment"># 数据</span></span><br><span class="line">                 patch_artist=<span class="literal">True</span>, <span class="comment"># patch_artist设置为True，在后面才能设置不同的颜色</span></span><br><span class="line">                 notch=<span class="literal">True</span>) <span class="comment"># 显示是否有凹槽</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(bp[<span class="string">'boxes'</span>])):</span><br><span class="line">    bp[<span class="string">'boxes'</span>][i].set(facecolor=colors[i]) <span class="comment"># 设置颜色，前提是：patch_artist要设置为True</span></span><br><span class="line">    bp[<span class="string">'caps'</span>][<span class="number">2</span>*i + <span class="number">1</span>].set(color=colors[i])</span><br><span class="line">    </span><br><span class="line">plt.xticks([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="string">'Math'</span>, <span class="string">'Reading'</span>, <span class="string">'Writing'</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826105404.png" alt="" /></p>
+<h2 id="小提琴图violinplot"><a class="markdownIt-Anchor" href="#小提琴图violinplot"></a> 小提琴图(ViolinPlot)</h2>
+<p>小提琴图(ViolinPlot)用于显示数据分布以及概率密度，它结合了箱线图与密度图的特征。</p>
+<p>形象如图：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826130800.png" alt="" /></p>
+<p>95% confidence interval(95%的置信区间)在图中指的是延伸出来的黑色细线<br />
+Density Plot((数据分布)密度图)<br />
+Median(中位数)<br />
+Interquartile range(四分位数范围)<br />
+Split densities by category(按类别划分密度图)</p>
+<p>使用绘制箱线图的数据绘制小提琴图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vp = plt.violinplot(exam_scores_array,</span><br><span class="line">                    showmedians=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">plt.xticks([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="string">'Math'</span>, <span class="string">'Reading'</span>, <span class="string">'Writing'</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(vp[<span class="string">'bodies'</span>])):</span><br><span class="line">    vp[<span class="string">'bodies'</span>][i].set(facecolor=colors[i])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826131720.png" alt="" /></p>
+<p>从图中可以看出，小提琴图的中间部分数据分布密度更大，这表明学生分数大部分都在平均水平附近</p>
+<h2 id="双轴图twinaxis-plot"><a class="markdownIt-Anchor" href="#双轴图twinaxis-plot"></a> 双轴图(TwinAxis Plot)</h2>
+<p>双轴图，顾名思义，就是一张图有两个y轴，当我们的数据使用相同x轴时，就可以考虑绘制双轴图。</p>
+<p>​通过双轴图可以很直观的感受出两种数据之间的关联性，比如人口数据与国内生产总值数据在相同的时间轴(x轴)上，此时就可以用双轴图来判断两者的变化有没有关联性。</p>
+<p>这里以Austin(奥斯汀，美国得克萨斯州的首府)城镇的天气数据来绘制双轴图，主要使用其中的平均气温与平均风速这两列数据，从而判断这两者有没有什么联系</p>
+<p>首先，依旧是将数据读入，并取其中需要的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">austin_weather = pd.read_csv(<span class="string">'datasets/austin_weather.csv'</span>)</span><br><span class="line">austin_weather.head()</span><br><span class="line"><span class="comment"># Data 日期</span></span><br><span class="line"><span class="comment"># TempAvgF 平均气温，华氏温度</span></span><br><span class="line"><span class="comment"># WindAvgMPH 平均风速，以英里/小时为单位</span></span><br><span class="line">austin_weather = austin_weather[[<span class="string">'Date'</span>, <span class="string">'TempAvgF'</span>, <span class="string">'WindAvgMPH'</span>]].head(<span class="number">5</span>)</span><br><span class="line">pritn(austin_weather)</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826132919.png" alt="" /></p>
+<p>使用这些数据绘制双轴图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 创建子图</span></span><br><span class="line">fig, ax_tempF = plt.subplots()  </span><br><span class="line"></span><br><span class="line"><span class="comment">#fig=plt.figure(figsize=(12,6)) 可以实现相同效果</span></span><br><span class="line">fig.set_figwidth(<span class="number">12</span>)</span><br><span class="line">fig.set_figheight(<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置x标签</span></span><br><span class="line">ax_tempF.set_xlabel(<span class="string">'Date'</span>)</span><br><span class="line"></span><br><span class="line">ax_tempF.tick_params(axis = <span class="string">'x'</span>,</span><br><span class="line">                    bottom=<span class="literal">False</span>, <span class="comment"># 禁用 ticks</span></span><br><span class="line">                    labelbottom=<span class="literal">False</span> <span class="comment"># 禁用 x 轴标签</span></span><br><span class="line">                    ) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置左 Y 轴标签</span></span><br><span class="line">ax_tempF.set_ylabel(<span class="string">'Temp (F)'</span>, </span><br><span class="line">                    color=<span class="string">'red'</span>,</span><br><span class="line">                    size=<span class="string">'x-large'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为左 Y 轴标签设置labelcolor(标签颜色)与labelsize(标签大小)</span></span><br><span class="line">ax_tempF.tick_params(axis=<span class="string">'y'</span>, </span><br><span class="line">                     labelcolor=<span class="string">'red'</span>, </span><br><span class="line">                     labelsize=<span class="string">'large'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 AvgTemp 绘制到 左 Y 轴上</span></span><br><span class="line">ax_tempF.plot(austin_weather[<span class="string">'Date'</span>], </span><br><span class="line">              austin_weather[<span class="string">'TempAvgF'</span>], </span><br><span class="line">              color=<span class="string">'red'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为两个图设置相同的x轴</span></span><br><span class="line">ax_precip = ax_tempF.twinx()</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置右 Y 轴标签</span></span><br><span class="line">ax_precip.set_ylabel(<span class="string">'Avg Wind Speed (MPH)'</span>, </span><br><span class="line">                     color=<span class="string">'blue'</span>, </span><br><span class="line">                     size=<span class="string">'x-large'</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 为右 Y 轴标签设置labelcolor(标签颜色)与labelsize(标签大小)</span></span><br><span class="line">ax_precip.tick_params(axis=<span class="string">'y'</span>, </span><br><span class="line">                      labelcolor=<span class="string">'blue'</span>,</span><br><span class="line">                      labelsize=<span class="string">'large'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 WindAVg 绘制到 右 Y 轴上</span></span><br><span class="line">ax_precip.plot(austin_weather[<span class="string">'Date'</span>], </span><br><span class="line">         austin_weather[<span class="string">'WindAvgMPH'</span>], </span><br><span class="line">         color=<span class="string">'blue'</span>)</span><br><span class="line"></span><br><span class="line">fig.legend(loc=<span class="number">1</span>, bbox_to_anchor=(<span class="number">1</span>,<span class="number">1</span>), bbox_transform=ax_tempF.transAxes)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826134314.png" alt="" /></p>
+<p>从图中可以看出，两者有些关系，但平均温度并不只受平均风速影响。</p>
+<h2 id="堆叠图stack-plot"><a class="markdownIt-Anchor" href="#堆叠图stack-plot"></a> 堆叠图(Stack Plot)</h2>
+<p>堆叠图是一种特殊的面积图，可以用来比较一个区间内的多个变量，与普通面积图不同，堆叠图每个数据面积的绘制起点都是基于前面一个数据面积来绘制的。</p>
+<p>这里使用国家公园的数据来绘制堆叠图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np_data= pd.read_csv(<span class="string">'datasets/national_parks.csv'</span>)</span><br><span class="line">print(np_data.head())</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826135044.png" alt="" /></p>
+<p>national parks(国家公园)数据中有Badlands(荒废土地)、GrandCanyon(大峡谷)以及BryceCanyon(布莱斯峡谷)这3种类别的土地面积数据。</p>
+<p>因为要绘制堆叠图，所以先要讲3中类别土地面积数据整合成一个二维数组，这里直接通过numpy的vstack()方法来实现这个效果，vstack()方法简单示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">b=[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">print(np.vstack((a,b)))</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
+<p>接着就使用national parks数据来绘制一下堆叠图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">x = np_data[<span class="string">'Year'</span>]</span><br><span class="line">y = np.vstack([np_data[<span class="string">'Badlands'</span>], </span><br><span class="line">               np_data[<span class="string">'GrandCanyon'</span>], </span><br><span class="line">               np_data[<span class="string">'BryceCanyon'</span>]])</span><br><span class="line">               </span><br><span class="line"><span class="comment"># 每个面积区域的标签</span></span><br><span class="line">labels = [<span class="string">'Badlands'</span>, </span><br><span class="line">          <span class="string">'GrandCanyon'</span>, </span><br><span class="line">          <span class="string">'BryceCanyon'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个面积区域的颜色</span></span><br><span class="line">colors = [<span class="string">'sandybrown'</span>, </span><br><span class="line">          <span class="string">'tomato'</span>, </span><br><span class="line">          <span class="string">'skyblue'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 与 pandas 的 df.plot.area() 类似</span></span><br><span class="line"><span class="comment"># stackplot()创建堆叠图</span></span><br><span class="line">plt.stackplot(x, y, </span><br><span class="line">              labels=labels,</span><br><span class="line">              colors=colors, </span><br><span class="line">              edgecolor=<span class="string">'black'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制标注</span></span><br><span class="line">plt.legend(loc=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826140727.png" alt="" /></p>
+<h2 id="百分比堆叠图"><a class="markdownIt-Anchor" href="#百分比堆叠图"></a> 百分比堆叠图</h2>
+<p>百分比堆叠图类似于普通堆叠图，只是每个数据被转换成了对应的百分比然后再绘制到图中，依旧使用national parks(国家公园)数据来绘制百分比堆叠图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># divide函数：在整数和浮点数除法中均只保留整数部分</span></span><br><span class="line">data_perc = np_data.divide(np_data.sum(axis=<span class="number">1</span>), axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">plt.stackplot(x,</span><br><span class="line">              data_perc[<span class="string">"Badlands"</span>],data_perc[<span class="string">"GrandCanyon"</span>],data_perc[<span class="string">"BryceCanyon"</span>],</span><br><span class="line">              edgecolor=<span class="string">'black'</span>,</span><br><span class="line">              colors=colors,</span><br><span class="line">              labels=labels)</span><br><span class="line"></span><br><span class="line">plt.legend(loc=<span class="string">'center left'</span>, bbox_to_anchor=(<span class="number">1</span>, <span class="number">0.5</span>))</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190826141312.png" alt="" /></p>
+<h2 id="结尾"><a class="markdownIt-Anchor" href="#结尾"></a> 结尾</h2>
+<p>本篇文章介绍了一部分Matplotlib可视化数据的用法，在下一文章中会介绍Matplotlib绘制其他图的用法，记得关注HackPython，拜拜。</p>
+<p><img src="https://raw.githubusercontent.com/ayuLiao/images/master/20190821150724.png" alt="" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Python-%E8%BF%9B%E9%98%B6/" rel="tag"># Python,进阶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/AutoPublish-%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%96%87%E7%AB%A0%E5%8F%91%E5%B8%83%E8%BD%AF%E4%BB%B6/" rel="prev" title="AutoPublish:多平台文章发布软件">
+      <i class="fa fa-chevron-left"></i> AutoPublish:多平台文章发布软件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/21/Python%E8%BF%9B%E9%98%B6%EF%BC%9A%E4%BD%BF%E7%94%A8Matplotlib%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96-%E4%B8%80/" rel="next" title="Python进阶：使用Matplotlib进行数据可视化(一)">
+      Python进阶：使用Matplotlib进行数据可视化(一) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#python进阶使用matplotlib进行数据可视化二"><span class="nav-number">1.</span> <span class="nav-text"> Python进阶：使用Matplotlib进行数据可视化(二)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#箱线图boxplot"><span class="nav-number">1.2.</span> <span class="nav-text"> 箱线图(BoxPlot)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小提琴图violinplot"><span class="nav-number">1.3.</span> <span class="nav-text"> 小提琴图(ViolinPlot)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双轴图twinaxis-plot"><span class="nav-number">1.4.</span> <span class="nav-text"> 双轴图(TwinAxis Plot)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆叠图stack-plot"><span class="nav-number">1.5.</span> <span class="nav-text"> 堆叠图(Stack Plot)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#百分比堆叠图"><span class="nav-number">1.6.</span> <span class="nav-text"> 百分比堆叠图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">1.7.</span> <span class="nav-text"> 结尾</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hackpython"
+      src="/blog/images/header.jpeg">
+  <p class="site-author-name" itemprop="name">hackpython</p>
+  <div class="site-description" itemprop="description">HackPython，最酷的方式学习python</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hackpython" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hackpython" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hackpython</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+
+<div class="powered-by">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <i class="fa fa-user-md"></i>
+    <span id="busuanzi_container_site_uv">
+        本站访客数:<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站访问量<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+<script src="/blog/js/utils.js"></script><script src="/blog/js/motion.js"></script>
+<script src="/blog/js/schemes/pisces.js"></script>
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/blog/js/local-search.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
